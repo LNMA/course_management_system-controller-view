@@ -6,12 +6,12 @@
     <style>
         @import url(../libr/bootstrap-4.5.0/css/bootstrap.min.css);
         @import url(../sign-up/student-sign_up-css.css);
-        @import url(../libr/bootstrap-formHelper-2.3.0/css/bootstrap-formhelpers.min.css);
+        @import url(../libr/bootstrap-formHelper-2.3.0/css/bootstrap-formhelpers.css);
     </style>
     <script src="../libr/jQuery-3.5.1/jquery-3.5.1.min.js"></script>
     <script src="../libr/popper-2.4.3/popper.min.js"></script>
     <script src="../libr/bootstrap-4.5.0/js/bootstrap.bundle.min.js"></script>
-    <script src="../libr/bootstrap-formHelper-2.3.0/js/bootstrap-formhelpers.min.js"></script>
+    <script src="../libr/bootstrap-formHelper-2.3.0/js/bootstrap-formhelpers.js"></script>
     <script src="../libr/angularJS-1.8.0/angular.min.js"></script>
     <script src="../sign-up/student-sign_up-js.js"></script>
     <title>Sign Up in Chatting`by Louay Amr`</title>
@@ -119,8 +119,9 @@
                         <div class="form-group col-md-6">
                             <label for="inputCountry">*Country</label>
                             <br>
-                            <select class="custom-select bfh-countries w-75" data-country="JO"
-                                    ng-model="registerForm.country" id="inputCountry"></select>
+                            <select class="custom-select w-75" ng-options="x for x in insertCountry"
+                                    name="country" ng-model="registerForm.country" id="inputCountry" ></select>
+                            {{registerForm.country}}
                         </div>
                     </div>
 
@@ -128,8 +129,11 @@
                         <div class="form-group col-md-6">
                             <label for="inputState">State</label>
                             <br>
-                            <select class="custom-select bfh-states w-75" data-country="inputCountry" data-state="AM"
-                                    ng-model="registerForm.state" id="inputState"></select>
+                            <select class="custom-select bfh-states w-75"
+                                    ng-model="state" name="registerForm.state" id="inputState">
+                                <option ng-repeat="s in insertState">{{s.}}</option>
+                            </select>
+
                         </div>
 
                         <div class="form-group col-md-6">
@@ -153,6 +157,7 @@
             </div>
         </div>
     </div>
+
 </main>
 
 <footer>

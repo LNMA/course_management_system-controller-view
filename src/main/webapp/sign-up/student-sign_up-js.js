@@ -1,116 +1,283 @@
 /*jshint esversion: 6 */
 /*jshint sub:true*/
-angular.module('registerApp' ,[])
-    .controller('registerCtrl', ['$scope', '$http', function($scope, $http) {
+angular.module('registerApp', [])
+    .controller('registerCtrl', ['$scope', function () {
+        'use strict';
+
+
+    }]);
+
+angular.module('registerApp', [])
+    .controller('registerCtrl', ['$scope', '$http', function ($scope, $http) {
         'use strict';
         $scope.registerForm = {};
-        $scope.registerSubmit = function(){
+        $scope.insertCountry =
+            ['Afghanistan',
+                'Albania',
+                'Algeria',
+                'American Samoa',
+                'Andorra',
+                'Angola',
+                'Anguilla',
+                'Antarctica',
+                'Antigua and Barbuda',
+                'Argentina',
+                'Armenia',
+                'Aruba',
+                'Australia',
+                'Austria',
+                'Azerbaijan',
+                'Bahrain',
+                'Bangladesh',
+                'Barbados',
+                'Belarus',
+                'Belgium',
+                'Belize',
+                'Benin',
+                'Bermuda',
+                'Bhutan',
+                'Bolivia',
+                'Bosnia and Herzegovina',
+                'Botswana',
+                'Bouvet Island',
+                'Brazil',
+                'British Indian Ocean Territory',
+                'British Virgin Islands',
+                'Brunei',
+                'Bulgaria',
+                'Burkina Faso',
+                'Burundi',
+                'Côte d\'Ivoire',
+                'Cambodia',
+                'Cameroon',
+                'Canada',
+                'Cape Verde',
+                'Cayman Islands',
+                'Central African Republic',
+                'Chad',
+                'Chile',
+                'China',
+                'Christmas Island',
+                'Cocos (Keeling) Islands',
+                'Colombia',
+                'Comoros',
+                'Congo',
+                'Cook Islands',
+                'Costa Rica',
+                'Croatia',
+                'Cuba',
+                'Cyprus',
+                'Czech Republic',
+                'Democratic Republic of the Congo',
+                'Denmark',
+                'Djibouti',
+                'Dominica',
+                'Dominican Republic',
+                'East Timor',
+                'Ecuador',
+                'Egypt',
+                'El Salvador',
+                'Equatorial Guinea',
+                'Eritrea',
+                'Estonia',
+                'Ethiopia',
+                'Faeroe Islands',
+                'Falkland Islands',
+                'Fiji',
+                'Finland',
+                'Former Yugoslav Republic of Macedonia',
+                'France',
+                'France, Metropolitan',
+                'French Guiana',
+                'French Polynesia',
+                'French Southern Territories',
+                'Gabon',
+                'Georgia',
+                'Germany',
+                'Ghana',
+                'Gibraltar',
+                'Greece',
+                'Greenland',
+                'Grenada',
+                'Guadeloupe',
+                'Guam',
+                'Guatemala',
+                'Guinea',
+                'Guinea-Bissau',
+                'Guyana',
+                'Haiti',
+                'Heard and Mc Donald Islands',
+                'Honduras',
+                'Hong Kong',
+                'Hungary',
+                'Iceland',
+                'India',
+                'Indonesia',
+                'Iran',
+                'Iraq',
+                'Ireland',
+                'Italy',
+                'Jamaica',
+                'Japan',
+                'Jordan',
+                'Kazakhstan',
+                'Kenya',
+                'Kiribati',
+                'Kuwait',
+                'Kyrgyzstan',
+                'Laos',
+                'Latvia',
+                'Lebanon',
+                'Lesotho',
+                'Liberia',
+                'Libya',
+                'Liechtenstein',
+                'Lithuania',
+                'Luxembourg',
+                'Macau',
+                'Madagascar',
+                'Malawi',
+                'Malaysia',
+                'Maldives',
+                'Mali',
+                'Malta',
+                'Marshall Islands',
+                'Martinique',
+                'Mauritania',
+                'Mauritius',
+                'Mayotte',
+                'Mexico',
+                'Micronesia',
+                'Moldova',
+                'Monaco',
+                'Mongolia',
+                'Montenegro',
+                'Montserrat',
+                'Morocco',
+                'Mozambique',
+                'Myanmar',
+                'Namibia',
+                'Nauru',
+                'Nepal',
+                'Netherlands',
+                'Netherlands Antilles',
+                'New Caledonia',
+                'New Zealand',
+                'Nicaragua',
+                'Niger',
+                'Nigeria',
+                'Niue',
+                'Norfolk Island',
+                'North Korea',
+                'Northern Marianas',
+                'Norway',
+                'Oman',
+                'Pakistan',
+                'Palau',
+                'Palestine',
+                'Panama',
+                'Papua New Guinea',
+                'Paraguay',
+                'Peru',
+                'Philippines',
+                'Pitcairn Islands',
+                'Poland',
+                'Portugal',
+                'Puerto Rico',
+                'Qatar',
+                'Reunion',
+                'Romania',
+                'Russia',
+                'Rwanda',
+                'São Tomé and Príncipe',
+                'Saint Helena',
+                'St. Pierre and Miquelon',
+                'Saint Kitts and Nevis',
+                'Saint Lucia',
+                'Saint Vincent and the Grenadines',
+                'Samoa',
+                'San Marino',
+                'Saudi Arabia',
+                'Senegal',
+                'Serbia',
+                'Seychelles',
+                'Sierra Leone',
+                'Singapore',
+                'Slovakia',
+                'Slovenia',
+                'Solomon Islands',
+                'Somalia',
+                'South Africa',
+                'South Georgia and the South Sandwich Islands',
+                'South Korea',
+                'Spain',
+                'Sri Lanka',
+                'Sudan',
+                'Suriname',
+                'Svalbard and Jan Mayen Islands',
+                'Swaziland',
+                'Sweden',
+                'Switzerland',
+                'Syria',
+                'Taiwan',
+                'Tajikistan',
+                'Tanzania',
+                'Thailand',
+                'The Bahamas',
+                'The Gambia',
+                'Togo',
+                'Tokelau',
+                'Tonga',
+                'Trinidad and Tobago',
+                'Tunisia',
+                'Turkey',
+                'Turkmenistan',
+                'Turks and Caicos Islands',
+                'Tuvalu',
+                'US Virgin Islands',
+                'Uganda',
+                'Ukraine',
+                'United Arab Emirates',
+                'United Kingdom',
+                'United States',
+                'United States Minor Outlying Islands',
+                'Uruguay',
+                'Uzbekistan',
+                'Vanuatu',
+                'Vatican City',
+                'Venezuela',
+                'Vietnam',
+                'Wallis and Futuna Islands',
+                'Western Sahara',
+                'Yemen',
+                'Zambia',
+                'Zimbabwe'];
+
+        $scope.insertState = [{'Jordan':['\'Amman', 'Ajlun', 'Al\'Aqabah', 'Al Balqa\'',
+                        'Al Karak', 'Al Mafraq', 'At Tafilah', 'Az Zarqa\'', 'Irbid', 'Jarash', 'Ma\'an', 'Madaba']}];
+
+
+        $scope.registerSubmit = function () {
 
             $http({
-                method : 'post',
-                url : '../subStudentSignUp',
+                method: 'post',
+                url: '../subStudentSignUp',
                 contentType: "application/json; charset=utf-8",
                 async: false,    //Cross-domain requests and dataType: "jsonp" requests do not support synchronous operation
                 cache: false,    //This will force requested pages not to be cached by the browser
-                processData:false, //To avoid making query String instead of JSON
-                data : {'email': $scope.registerForm.email,
-                        'password': $scope.registerForm.password,
-                        'forename': $scope.registerForm.forename,
-                        'surname': $scope.registerForm.surname,
-                        'gender': $scope.registerForm.gender,
-                        'birthday': $scope.registerForm.birthday,
-                        'phone': $scope.registerForm.phone,
-                        'country': $scope.registerForm.country,
-                        'state': $scope.registerForm.state,
-                        'address': $scope.registerForm.address}
+                processData: false, //To avoid making query String instead of JSON
+                data: {
+                    'email': $scope.registerForm.email,
+                    'password': $scope.registerForm.password,
+                    'forename': $scope.registerForm.forename,
+                    'surname': $scope.registerForm.surname,
+                    'gender': $scope.registerForm.gender,
+                    'birthday': $scope.registerForm.birthday,
+                    'phone': $scope.registerForm.phone,
+                    'country': $scope.registerForm.country,
+                    'state': $scope.registerForm.state,
+                    'address': $scope.registerForm.address
+                }
             })
-
-
         };
     }]);
-
-
-function signUpValidateForm() {
-    'use strict';
-    let username = document.forms['signUpForm']['username'].value;
-    let password = document.forms['signUpForm']['password'].value;
-    let firstName = document.forms['signUpForm']['firstName'].value;
-    let lastName = document.forms['signUpForm']['lastName'].value;
-    let gender = document.forms['signUpForm']['gender'].value;
-    let birthday = document.forms['signUpForm']['birthday'].value;
-    let telephone = document.forms['signUpForm']['telephone'].value;
-    let email = document.forms['signUpForm']['email'].value;
-    let country = document.forms['signUpForm']['country'].value;
-
-    if ((username === '') || (password === '') || (firstName === '') || (lastName === '') || (gender === '') ||
-        (birthday === '') || (email === '') || (telephone === '') || (country === '')) {
-        document.getElementById('topAlert').innerHTML = '   <div class=\"container\">\n' +
-            '        <div class=\"alert alert-danger alert-dismissible\" data-dismiss=\"alert\" id=\"myAlert\">\n' +
-            '            <button type=\"button\" class=\"close\">&times;</button>\n' +
-            '            <strong>Error!</strong> All required field must be filled.\n' +
-            '        </div>\n' +
-            '    </div>';
-        return false;
-    }
-
-    let telNum = parseFloat(telephone);
-    if (isNaN(telNum)) {
-        document.getElementById('topAlert').innerHTML = '   <div class=\"container\">\n' +
-            '        <div class=\"alert alert-danger alert-dismissible\" data-dismiss=\"alert\" id=\"myAlert\">\n' +
-            '            <button type=\"button\" class=\"close\">&times;</button>\n' +
-            '            <strong>Error!</strong> Telephone number must be integer number.\n' +
-            '        </div>\n' +
-            '    </div>';
-        return false;
-    }
-
-    if (/\s/.test(username) || /\s/.test(password)) {
-        document.getElementById('topAlert').innerHTML = '   <div class=\"container\">\n' +
-            '        <div class=\"alert alert-danger alert-dismissible\" data-dismiss=\"alert\" id=\"myAlert\">\n' +
-            '            <button type=\"button\" class=\"close\">&times;</button>\n' +
-            '            <strong>Error!</strong> Username and password must not contain whitespace.\n' +
-            '        </div>\n' +
-            '    </div>';
-        return false;
-    }
-
-    if (username.length < 4) {
-        document.getElementById('topAlert').innerHTML = '   <div class=\"container\">\n' +
-            '        <div class=\"alert alert-danger alert-dismissible\" data-dismiss=\"alert\" id=\"myAlert\">\n' +
-            '            <button type=\"button\" class=\"close\">&times;</button>\n' +
-            '            <strong>Error!</strong> Username length must be at least 4 character.\n' +
-            '        </div>\n' +
-            '    </div>';
-        return false;
-    }
-
-    if (password.length < 8) {
-        document.getElementById('topAlert').innerHTML = '   <div class=\"container\">\n' +
-            '        <div class=\"alert alert-danger alert-dismissible\" data-dismiss=\"alert\" id=\"myAlert\">\n' +
-            '            <button type=\"button\" class=\"close\">&times;</button>\n' +
-            '            <strong>Error!</strong> Password must be at least 8 character.\n' +
-            '        </div>\n' +
-            '    </div>';
-        return false;
-    }
-
-    if (/[^0-9]/.test(telephone)) {
-        document.getElementById('topAlert').innerHTML = '   <div class=\"container\">\n' +
-            '        <div class=\"alert alert-danger alert-dismissible\" data-dismiss=\"alert\" id=\"myAlert\">\n' +
-            '            <button type=\"button\" class=\"close\">&times;</button>\n' +
-            '            <strong>Error!</strong> Telephone number must be integer number.\n' +
-            '        </div>\n' +
-            '    </div>';
-        return false;
-    }
-
-    if ((/\W+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/.test(email))) {
-        document.getElementById('topAlert').innerHTML = '   <div class=\"container\">\n' +
-            '        <div class=\"alert alert-danger alert-dismissible\" data-dismiss=\"alert\" id=\"myAlert\">\n' +
-            '            <button type=\"button\" class=\"close\">&times;</button>\n' +
-            '            <strong>Error!</strong> Email form you entered is wrong.\n' +
-            '        </div>\n' +
-            '    </div>';
-        return false;
-    }
-}

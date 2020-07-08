@@ -20,7 +20,7 @@ public class SignUp implements Serializable {
 
     @RequestMapping(value = "/subStudentSignUp", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public String studentSignUp(@RequestBody Student student){
-        System.out.println(student.getEmail());
+        System.out.println(student.getEmail()+student.getPassword()+student.getForename()+student.getSurname()+student.getBirthday()+student.getGender()+student.getCountry()+student.getState()+student.getAddress());
         return "";
     }
 }
