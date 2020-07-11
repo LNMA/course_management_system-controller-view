@@ -119,8 +119,9 @@
                         <div class="form-group col-md-6">
                             <label for="inputCountry">*Country</label>
                             <br>
-                            <select class="custom-select w-75" ng-options="x for x in insertCountry"
-                                    name="country" ng-model="registerForm.country" id="inputCountry" ></select>
+                            <select class="custom-select w-75" name="country" ng-model="registerForm.country" id="inputCountry" >
+                                <option ng-repeat="countries in countryList" value="{{countries.name}}">{{countries.name}}</option>
+                            </select>
                             {{registerForm.country}}
                         </div>
                     </div>
@@ -129,9 +130,9 @@
                         <div class="form-group col-md-6">
                             <label for="inputState">State</label>
                             <br>
-                            <select class="custom-select bfh-states w-75"
-                                    ng-model="state" name="registerForm.state" id="inputState">
-                                <option ng-repeat="s in insertState">{{s.}}</option>
+                            <select class="custom-select w-75" ng-model="registerForm.state" name="state"
+                                    id="inputState">
+                                <option ng-repeat="states in stateList[registerForm.country]" value='{{states.name}}'>{{states.name}}</option>
                             </select>
 
                         </div>
