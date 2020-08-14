@@ -1,7 +1,12 @@
 /*jshint esversion: 6 */
 /*jshint sub:true*/
 /*Content-Disposition:inline;filename=f.txt*/
-app.controller('StudentRegisterController', RegisterCtrl);
+app.config(function($httpProvider) {
+    $httpProvider.defaults.useXDomain = true;
+    $httpProvider.defaults.withCredentials = true;
+    $httpProvider.defaults.xsrfCookieName = 'XSRF-TOKEN';
+    $httpProvider.defaults.xsrfHeaderName = 'X-XSRF-TOKEN';
+}).controller('StudentRegisterController', RegisterCtrl);
 RegisterCtrl.$inject = ['$scope', '$http','RegisterStudentSubmitService', 'CountryStateService'];
 function RegisterCtrl($scope, $http, RegisterStudentSubmitService, CountryStateService) {
     $scope.submitted = false;
