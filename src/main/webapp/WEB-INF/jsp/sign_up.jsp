@@ -1,0 +1,183 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <style>
+        @import url(<c:url value="/static/lib/bootstrap-4.5.1/css/bootstrap.min.css"/>);
+        @import url(<c:url value="/static/css/register.css"/>);
+    </style>
+    <script src="<c:url value="/static/lib/jQuery-3.5.1/jquery-3.5.1.min.js"/>"></script>
+    <script src="<c:url value="/static/lib/popper-2.4.3/popper.min.js"/>"></script>
+    <script src="<c:url value="/static/lib/bootstrap-4.5.1/js/bootstrap.min.js"/>"></script>
+    <script src="<c:url value="/static/lib/angularJS-1.8.0/angular.min.js"/>"></script>
+    <script src="<c:url value="/static/lib/angularJS-1.8.0/angular-messages.min.js"/>"></script>
+    <script src="<c:url value="/static/js/control/student_sign_up.js"/>"></script>
+
+    <title>Sign Up`by Louay Amr`</title>
+</head>
+<body>
+<header>
+    <div class="jumbotron mb-0 h2 text-center">
+        Course Management System
+    </div>
+    <nav class="navbar navbar-expand-md navbar-dark" style="background-color: #3e3c4e;">
+        <p class="text-light text-capitalize h3">Sign Up</p>
+    </nav>
+</header>
+
+<main ng-app="app">
+    <div class="mainBody">
+
+        <div id="topAlert">
+            <div class="container">
+                <div class="alert alert-success" id="myAlert" ng-model="registerForm.alert">
+                    <strong>Success!</strong> You are sign up successfully, now go and <a href="../signin/login.jsp">login.</a>
+                    <button type="button" class="close alert-dismissible" data-dismiss="alert">&times;</button>
+                </div>
+            </div>
+
+
+            <div class="container">
+                <div class="alert alert-danger" id="myAlert">
+                    <strong>Error!</strong> Its seem something wrong, try again.
+                    <button type="button" class="close alert-dismissible" data-dismiss="alert">&times;</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="formSignUp">
+
+            <div class="internalForm" ng-controller="RegisterController">
+
+                <form ng-submit="registerSubmit()" name="signUpForm" onsubmit="return signUpValidateForm()">
+
+                    <div class="formHead mb-0 pt-4">Sign Up to chatting system</div>
+                    <small class="form-text text-muted text-left mb-3">* field required</small>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="inputEmail">*Email</label>
+                            <input class="form-control w-75" type="email" ng-model="registerForm.email"
+                                   ng-maxlength="200"
+                                   id="inputEmail" placeholder="Type your email" required="true"/>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="inputPassword">*Password</label>
+                            <input class="form-control w-75" type="password" ng-model="registerForm.password"
+                                   ng-maxlength="100"
+                                   id="inputPassword" placeholder="Type your password"/>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label for="reInputPassword">*re-Password</label>
+                            <input class="form-control w-75" type="password" ng-model="registerForm.rePassword"
+                                   ng-maxlength="100"
+                                   id="reInputPassword" placeholder="re-type your password"/>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="inputForename">*Forename</label>
+                            <input class="form-control w-75" type="text" ng-model="registerForm.forename"
+                                   ng-maxlength="50"
+                                   id="inputForename" placeholder="Type your first name"/>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label for="inputSurname">*Surname</label>
+                            <input class="form-control w-75" type="text" ng-model="registerForm.surname"
+                                   ng-maxlength="50"
+                                   id="inputSurname" placeholder="Type your last name"/>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="inputGender">*Gender</label>
+                            <br>
+                            <select class="custom-select w-75" ng-model="registerForm.gender" id="inputGender">
+                                <option selected disabled value="">Choose...</option>
+                                <option value="MALE">Male</option>
+                                <option value="FEMALE">Female</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label for="inputBirthday">*Birthday</label>
+                            <br>
+                            <input class="form-control w-75" type="date" ng-model="registerForm.birthday"
+                                   id="inputBirthday"/>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="inputPhone">*Phone</label>
+                            <input class="form-control w-75" type="text" ng-model="registerForm.phone" ng-maxlength="15"
+                                   id="inputPhone" placeholder="Type your phone number"/>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label for="inputCountry">*Country</label>
+                            <br>
+                            <select class="custom-select w-75" name="country" ng-model="registerForm.country"
+                                    id="inputCountry">
+                                <option ng-repeat="countries in countryList" value="{{countries.name}}">
+                                    {{countries.name}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="inputState">State</label>
+                            <br>
+                            <select class="custom-select w-75" ng-model="registerForm.state" name="state"
+                                    id="inputState">
+                                <option ng-repeat="states in stateList[registerForm.country]" value='{{states.name}}'>
+                                    {{states.name}}
+                                </option>
+                            </select>
+
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label for="inputAddress">Address</label>
+                            <input class="form-control w-75" type="text" ng-model="registerForm.address"
+                                   ng-maxlength="200"
+                                   id="inputAddress" placeholder="Type your Address"/>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-6"></div>
+                        <div class="form-group col-md-6">
+                            <input class="btn btn-success w-50 p-2" type="submit" value="Sign Up "
+                                   style="margin: 5% 20% 3%"/>
+                        </div>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+</main>
+
+<footer>
+    <nav class="navbar navbar-dark position-relative mb-0" style="background-color: #d3c7cd; height: 9em; width: 100%">
+        <p>Louay Amr © 2020</p>
+    </nav>
+</footer>
+
+</body>
+</html>

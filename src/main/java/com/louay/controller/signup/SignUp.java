@@ -1,26 +1,37 @@
 package com.louay.controller.signup;
 
-import com.louay.model.chains.users.Student;
+import com.louay.model.entity.users.Student;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.PushBuilder;
 import java.io.Serializable;
-import java.util.logging.Logger;
 
 @Controller
+@CrossOrigin(origins = "https://localhost:8443/")
 public class SignUp implements Serializable {
-    private final static Logger LOGGER = Logger.getLogger(SignUp.class.getCanonicalName());
-    private static final long serialVersionUID = 1L;
 
-    @GetMapping(value = "/student_sign_up")
-    public String display() {
-        return "sign-up/student-sign_up.html";
+    private static final long serialVersionUID = 5131323790457804807L;
+
+    @RequestMapping(value = "/student-sign_up")
+    public String display(PushBuilder pushBuilder) {
+        if (null != pushBuilder) {
+            pushBuilder.method("GET");
+            pushBuilder.path("/static/css/register.css")
+                    .addHeader("content-type", "text/css").push();
+            pushBuilder.path("/static/images/background_geometry.png")
+                    .addHeader("content-type", "image/png").push();
+            pushBuilder.path("/WEB-INF/jsp/sign_up.jsp")
+                    .addHeader("content-type", "text/html").push();
+        }
+        return "/sign_up";
     }
 
     @RequestMapping(value = "/subStudentSignUp", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public String studentSignUp(@RequestBody Student student){
-        System.out.println(student.getEmail()+student.getPassword()+student.getForename()+student.getSurname()+student.getBirthday()+student.getGender()+student.getCountry()+student.getState()+student.getAddress());
+    public String studentSignUp(@RequestBody Student student) {
+        System.out.println(student.toString());
+        System.out.println(student.getEmail());
         return "";
     }
 }
