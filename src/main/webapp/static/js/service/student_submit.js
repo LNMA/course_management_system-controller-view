@@ -6,7 +6,6 @@ app.service('RegisterStudentSubmitService', ['$http', function ($http) {
         return $http({
             method: 'POST',
             port: 8443,
-            header: 'HTTP ',
             url: 'https://localhost:8443/subStudentSignUp',
             headers: {'content-type': 'application/json'},
             contentType: "application/json; charset=utf-8",
@@ -29,10 +28,10 @@ app.service('RegisterStudentSubmitService', ['$http', function ($http) {
                     password: student.password
                 }
             }
-        }).then(function successCallback(response) {
+        })/*.then(function successCallback(response) {
             console.log(response.data);
         }, function errorCallback(response) {
             console.log(response);
-        });
+        })*/;
     };
 }]);

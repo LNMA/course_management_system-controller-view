@@ -35,10 +35,10 @@
     <div ng-app="app" ng-controller="StudentRegisterController">
         <div class="mainBody">
 
-            <div class="container" id="message">
+            <div class="container" id="message" ng-model="submitSuccessMessage">
                 <div ng-show="isSuccess">
                     <div class="alert alert-success alert-dismissible fade show">
-                        <strong>Success!</strong>You are sign up successfully, now go and <a href="">login.</a>
+                        <strong>Success!</strong> {{submitSuccessMessage}}, now go and <a href="">login.</a>
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>

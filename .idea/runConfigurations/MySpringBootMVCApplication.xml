@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="MySpringBootMVCApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+    <module name="course_management_system-controller-view" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="com.louay.controller.config.MySpringBootMVCApplication" />
+    <option name="ALTERNATIVE_JRE_PATH" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

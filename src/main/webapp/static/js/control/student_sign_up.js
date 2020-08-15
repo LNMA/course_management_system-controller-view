@@ -15,20 +15,26 @@ function RegisterCtrl($scope, $http, RegisterStudentSubmitService, CountryStateS
 
     $scope.saveStudent = function () {
         $scope.submitted = true;
+        $scope.isError = false;
         if ($scope.studentForm.$valid) {
             if ($scope.student.password === $scope.student.rePassword) {
                 RegisterStudentSubmitService.studentSubmitForm($scope.student)
-                    .then(function success(response) {
+                    .then(function successCallback(response) {
+                        console.log(response.data);
                         $scope.isSuccess = true;
+                        $scope.submitSuccessMessage = response.data;
                         $scope.student = null;
                         $scope.submitted = false;
-                    }, function error(response) {
-                        if (response.status === 409) {
-                            $scope.submitErrorMessage = response.data.message;
+                    }, function errorCallback(response) {
+                        if (response.status === 406) {
+                            $scope.studentForm.email.$invalid = true;
+                            $scope.isError = true;
+                            $scope.submitErrorMessage = response.data;
                         } else {
-                            $scope.submitErrorMessage = 'Error adding student!';
+                            $scope.isError = true;
+                            $scope.studentForm.$invalid = true;
+                            $scope.submitErrorMessage = response.data;
                         }
-                        $scope.message = '';
                     });
             }else {
                 $scope.studentForm.password.$invalid = true;
