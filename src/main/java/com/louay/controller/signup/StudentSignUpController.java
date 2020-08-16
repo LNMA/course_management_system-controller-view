@@ -1,5 +1,9 @@
 package com.louay.controller.signup;
 
+import com.louay.controller.factory.EntitiesFactory;
+import com.louay.controller.factory.ServicesFactory;
+import com.louay.controller.verification.SendingVerificationEmail;
+import com.louay.model.entity.authentication.UsersAuthentication;
 import com.louay.model.entity.role.UsersRoles;
 import com.louay.model.entity.status.UserAccountStatus;
 import com.louay.model.entity.users.Student;
@@ -17,39 +21,31 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.security.SecureRandom;
 
 @Controller
 @CrossOrigin(origins = "https://localhost:8443")
 public class StudentSignUpController implements Serializable {
-    private static final long serialVersionUID = -7832727853818269416L;
-    private final StudentSignUpServicesFactory servicesFactory;
-    private final StudentSignUpEntitiesFactory entitiesFactory;
+    private static final long serialVersionUID = 6281539711407978497L;
+    private final ServicesFactory servicesFactory;
+    private final EntitiesFactory entitiesFactory;
     private final FileProcess fileProcess;
+    private final SendingVerificationEmail sendingVerificationEmail;
     private static final String SUCCESS_MESSAGE = "You are successfully sign up";
     private static final String DUPLICATE_EMAIL_ERROR_MESSAGE = "This email is already Used!.";
 
-
     @Autowired
-    public StudentSignUpController(StudentSignUpServicesFactory servicesFactory,
-                                   StudentSignUpEntitiesFactory entitiesFactory, FileProcess fileProcess) {
-        if (servicesFactory == null || entitiesFactory == null || fileProcess == null) {
+    public StudentSignUpController(ServicesFactory servicesFactory,
+                                   EntitiesFactory entitiesFactory, FileProcess fileProcess,
+                                   SendingVerificationEmail sendingVerificationEmail) {
+        if (servicesFactory == null || entitiesFactory == null || fileProcess == null
+                || sendingVerificationEmail == null) {
             throw new IllegalArgumentException("factory cannot be null at StudentSignUpController.class");
         }
         this.servicesFactory = servicesFactory;
         this.entitiesFactory = entitiesFactory;
         this.fileProcess = fileProcess;
-    }
-
-    private StudentSignUpServicesFactory getServicesFactory() {
-        return servicesFactory;
-    }
-
-    private StudentSignUpEntitiesFactory getEntitiesFactory() {
-        return entitiesFactory;
-    }
-
-    public FileProcess getFileProcess() {
-        return fileProcess;
+        this.sendingVerificationEmail = sendingVerificationEmail;
     }
 
     @RequestMapping(value = "/subStudentSignUp", method = RequestMethod.POST,
@@ -59,7 +55,7 @@ public class StudentSignUpController implements Serializable {
             bindingResult.getAllErrors().forEach(System.out::println);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(bindingResult.toString());
         } else {
-            if (getServicesFactory().getAccountService().isExistUsers(student)) {
+            if (this.servicesFactory.getAccountService().isExistUsers(student)) {
                 return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).eTag("email duplicated")
                         .body(DUPLICATE_EMAIL_ERROR_MESSAGE);
             }
@@ -67,40 +63,83 @@ public class StudentSignUpController implements Serializable {
             createUserAndAccountRole(student);
             createUserAccountStatus(student);
             createAccountPicture(student);
+            UsersAuthentication usersAuthentication = createUserAuthentication(student);
+            this.sendingVerificationEmail.sendMessage(usersAuthentication);
 
             return ResponseEntity.ok().eTag("student create").body(SUCCESS_MESSAGE);
         }
     }
 
     private void createStudent(Student student) {
-        getServicesFactory().getAccountService().createStudentsDetails(student);
+        this.servicesFactory.getAccountService().createStudentsDetails(student);
     }
 
     private void createUserAndAccountRole(Student student) {
-        UsersRoles usersRoles = getEntitiesFactory().getUsersRoles();
+        UsersRoles usersRoles = buildUsersRoles(student);
+
+        this.servicesFactory.getRoleService().createUsersRoles(usersRoles);
+    }
+
+    private UsersRoles buildUsersRoles(Student student){
+        UsersRoles usersRoles = this.entitiesFactory.getUsersRoles();
+        usersRoles.setAccountsRoles(this.entitiesFactory.getAccountsRoles());
         usersRoles.getAccountsRoles().setRoleName(Role.STUDENT);
-        usersRoles.getUsers().setEmail(student.getEmail());
-        getServicesFactory().getRoleService().createUsersRoles(usersRoles);
+        usersRoles.setUsers(student.getAdmin());
+
+        return usersRoles;
     }
 
     private void createUserAccountStatus(Student student) {
-        UserAccountStatus accountStatus = getEntitiesFactory().getUserAccountStatus();
-        accountStatus.getUsers().setEmail(student.getEmail());
+        UserAccountStatus accountStatus = buildUserAccountStatus(student);
+
+        this.servicesFactory.getStatusService().createUserAccountStatus(accountStatus);
+    }
+
+    private UserAccountStatus buildUserAccountStatus(Student student){
+        UserAccountStatus accountStatus = this.entitiesFactory.getUserAccountStatus();
+        accountStatus.setUsers(student);
         accountStatus.setOnline(false);
         accountStatus.setValid(false);
-        getServicesFactory().getStatusService().createUserAccountStatus(accountStatus);
+
+        return accountStatus;
     }
 
     private void createAccountPicture(Student student) {
-        AccountPicture accountPicture = getEntitiesFactory().getAccountPicture();
-        accountPicture.getUsers().setEmail(student.getEmail());
+        AccountPicture accountPicture = buildAccountPicture(student);
+
+        this.servicesFactory.getPictureService().createAccountPicture(accountPicture);
+    }
+
+    private AccountPicture buildAccountPicture(Student student){
+        AccountPicture accountPicture = this.entitiesFactory.getAccountPicture();
+        accountPicture.setUsers(student);
         try {
             //TODO: change image path
-            accountPicture.setPicture(getFileProcess().readFile("C:\\Users\\Oday Amr\\Documents\\IdeaProjects\\" +
+            accountPicture.setPicture(this.fileProcess.readFile("C:\\Users\\Oday Amr\\Documents\\IdeaProjects\\" +
                     "course_management_system-controller-view\\src\\main\\webapp\\static\\images\\person_black.png"));
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
-        getServicesFactory().getPictureService().createAccountPicture(accountPicture);
+
+        return accountPicture;
+    }
+
+    private UsersAuthentication createUserAuthentication(Student student){
+        UsersAuthentication usersAuthentication = buildUsersAuthentication(student);
+
+        this.servicesFactory.getAuthenticationService().createUsersAuthentication(usersAuthentication);
+
+        return usersAuthentication;
+    }
+
+    private UsersAuthentication buildUsersAuthentication(Student student){
+        UsersAuthentication usersAuthentication = this.entitiesFactory.getUsersAuthentication();
+        usersAuthentication.setUsers(student);
+
+        SecureRandom secureRandom = new SecureRandom();
+        int verifyNumber = secureRandom.nextInt(10000000);
+        usersAuthentication.setVerificationNumber(verifyNumber);
+
+        return usersAuthentication;
     }
 }

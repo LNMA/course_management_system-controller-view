@@ -1,5 +1,6 @@
-package com.louay.controller.signup;
+package com.louay.controller.factory;
 
+import com.louay.model.entity.authentication.UsersAuthentication;
 import com.louay.model.entity.role.AccountsRoles;
 import com.louay.model.entity.role.UsersRoles;
 import com.louay.model.entity.status.UserAccountStatus;
@@ -7,22 +8,27 @@ import com.louay.model.entity.users.Admin;
 import com.louay.model.entity.users.Users;
 import com.louay.model.entity.users.picute.AccountPicture;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 @Component
-public class StudentSignUpEntitiesFactory {
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+public class EntitiesFactory {
     private final Admin admin;
     private final Users users;
     private final AccountsRoles accountsRoles;
     private final UsersRoles usersRoles;
     private final AccountPicture accountPicture;
     private final UserAccountStatus userAccountStatus;
+    private final UsersAuthentication usersAuthentication;
 
     @Autowired
-    public StudentSignUpEntitiesFactory(Admin admin, Users users, AccountsRoles accountsRoles, UsersRoles usersRoles,
-                                        AccountPicture accountPicture, UserAccountStatus userAccountStatus) {
+    public EntitiesFactory(Admin admin, Users users, AccountsRoles accountsRoles, UsersRoles usersRoles,
+                           AccountPicture accountPicture, UserAccountStatus userAccountStatus,
+                           UsersAuthentication usersAuthentication) {
         if (admin == null || users == null || accountsRoles == null || usersRoles == null || accountPicture == null
-                || userAccountStatus == null) {
+                || userAccountStatus == null || usersAuthentication == null) {
             throw new IllegalArgumentException("entities cannot be null at StudentSignUpEntitiesFactory.class!");
         }
         this.admin = admin;
@@ -31,34 +37,60 @@ public class StudentSignUpEntitiesFactory {
         this.usersRoles = usersRoles;
         this.accountPicture = accountPicture;
         this.userAccountStatus = userAccountStatus;
+        this.usersAuthentication = usersAuthentication;
     }
 
-    Admin getAdmin() {
+    public Admin getAdmin() {
         return admin;
     }
 
-    Users getUsers() {
+    public Users getUsers() {
+        return users;
+    }
+
+    public Users getBuiltUsers() {
         this.users.setAdmin(getAdmin());
         return users;
     }
 
-    AccountsRoles getAccountsRoles() {
+    public AccountsRoles getAccountsRoles() {
         return accountsRoles;
     }
 
-    UsersRoles getUsersRoles() {
+    public UsersRoles getUsersRoles() {
+        return usersRoles;
+    }
+
+    public UsersRoles getBuiltUsersRoles() {
         this.usersRoles.setAccountsRoles(getAccountsRoles());
         this.usersRoles.setUsers(getAdmin());
         return usersRoles;
     }
 
-    AccountPicture getAccountPicture() {
+    public AccountPicture getAccountPicture() {
+        return accountPicture;
+    }
+
+    public AccountPicture getBuiltAccountPicture() {
         this.accountPicture.setUsers(getUsers());
         return accountPicture;
     }
 
-    UserAccountStatus getUserAccountStatus() {
+    public UserAccountStatus getUserAccountStatus() {
+        return userAccountStatus;
+    }
+
+    public UserAccountStatus getBuiltUserAccountStatus() {
         this.userAccountStatus.setUsers(getUsers());
         return userAccountStatus;
+    }
+
+    public UsersAuthentication getUsersAuthentication() {
+        return usersAuthentication;
+    }
+
+    public UsersAuthentication getBuiltUsersAuthentication() {
+        this.usersAuthentication.setUsers(getUsers());
+        return usersAuthentication;
     }
 }
