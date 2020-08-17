@@ -1,9 +1,13 @@
+import com.louay.controller.config.MySpringBootMVCApplication;
 import com.louay.model.config.MySpringBootJDBCApplication;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.mail.*;
@@ -16,7 +20,6 @@ import java.security.SecureRandom;
 import java.util.Properties;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = {MySpringBootJDBCApplication.class})
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TestCase extends junit.framework.TestCase {
     private Properties getEmailProperties(){
@@ -126,5 +129,14 @@ public class TestCase extends junit.framework.TestCase {
         SecureRandom secureRandom = new SecureRandom();
         int verifyNumber = secureRandom.nextInt(10000000);
         System.out.println(verifyNumber);
+    }
+
+    @Test
+    public void passwordEncrypted(){
+        Argon2PasswordEncoder encoder = new Argon2PasswordEncoder();
+        String result = encoder.encode("myPassword");
+        System.out.println(encoder.matches("myPasswordwewoiepwietj[iwetj09tj[0twgwewgoergjojgajdsgkfgjkfdlgjd15654/*-+@#$%^&*()", result));
+        System.out.println(result.length());
+        System.out.println(result);
     }
 }

@@ -16,6 +16,7 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.resource.CssLinkResourceTransformer;
+import org.springframework.web.servlet.resource.ResourceUrlEncodingFilter;
 import org.springframework.web.servlet.resource.VersionResourceResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
@@ -36,6 +37,17 @@ public class WebConfig implements WebMvcConfigurer {
                 .resourceChain(true)
                 .addResolver(new VersionResourceResolver().addContentVersionStrategy("/**"))
                 .addTransformer(new CssLinkResourceTransformer());
+    }
+
+    @Bean
+    public ResourceUrlEncodingFilter resourceUrlEncodingFilter() {
+        return new ResourceUrlEncodingFilter();
+    }
+
+    @Override
+    public void configureViewResolvers(ViewResolverRegistry registry) {
+        registry.jsp("/WEB-INF/jsp", ".jsp");
+        registry.viewResolver(viewResolver());
     }
 
     @Bean

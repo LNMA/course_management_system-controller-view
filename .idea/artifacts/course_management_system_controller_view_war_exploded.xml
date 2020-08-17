@@ -73,6 +73,7 @@
           <element id="library" level="project" name="Maven: org.springframework.security:spring-security-config:5.3.3.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework.security:spring-security-core:5.3.3.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework.security:spring-security-web:5.3.3.RELEASE" />
+          <element id="library" level="project" name="Maven: org.bouncycastle:bcprov-jdk15on:1.66" />
           <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter-validation:2.3.2.RELEASE" />
           <element id="library" level="project" name="Maven: org.glassfish:jakarta.el:3.0.3" />
           <element id="library" level="project" name="Maven: org.hibernate.validator:hibernate-validator:6.1.5.Final" />

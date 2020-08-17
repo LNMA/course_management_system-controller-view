@@ -1,12 +1,13 @@
 /*jshint esversion: 6 */
 /*jshint sub:true*/
 /*Content-Disposition:inline;filename=f.txt*/
+/*content-type:application/javascript*/
 app.service('RegisterStudentSubmitService', ['$http', function ($http) {
     this.studentSubmitForm = function studentSubmitForm(student) {
         return $http({
             method: 'POST',
             port: 8443,
-            url: 'https://localhost:8443/subStudentSignUp',
+            url: 'https://localhost:8443/submit_student_sign_up',
             headers: {'content-type': 'application/json'},
             contentType: "application/json; charset=utf-8",
             async: false,    //Cross-domain requests and dataType: "jsonp" requests do not support synchronous operation

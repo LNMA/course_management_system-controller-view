@@ -1,6 +1,7 @@
 /*jshint esversion: 6 */
 /*jshint sub:true*/
 /*Content-Disposition:inline;filename=f.txt*/
+/*content-type:application/javascript*/
 app.service('CountryStateService', function () {
     this.allCountry = function () {
         return [{code: 'AF', name: 'Afghanistan'},

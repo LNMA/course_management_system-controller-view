@@ -1,0 +1,12 @@
+/*content-type:text/css*/
+.formSignIn {
+    height: auto;
+    background-color: white;
+    border-radius: 1em 1em;
+}
+
+.formHead {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 25px;
+    font-weight: 900;
+}

@@ -1,3 +1,5 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,20 +10,22 @@
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no"/>
     <meta name="apple-mobile-web-app-capable" content="yes"/>
     <style type="text/css">
-        @import url(../css/register.css);
-        @import url(../css/login.css);
-        @import url(../lib/bootstrap-4.5.1/css/bootstrap.min.css);
+        @import url(<c:url value="/static/css/login.css"/>);
+        @import url(<c:url value="/static/css/register.css"/>);
+        @import url(<c:url value="/static/lib/bootstrap-4.5.1/css/bootstrap.min.css"/>);
     </style>
-    <script type="application/javascript" src="../lib/jQuery-3.5.1/jquery-3.5.1.min.js"></script>
-    <script type="application/javascript" src="../lib/popper-2.4.3/popper.min.js"></script>
-    <script type="application/javascript" src="../lib/bootstrap-4.5.1/js/bootstrap.min.js"></script>
-    <script type="application/javascript" src="../lib/angularJS-1.8.0/angular.min.js"></script>
-    <script type="application/javascript" src="../lib/angularJS-1.8.0/angular-messages.min.js"></script>
-    <script type="application/javascript" src="../js/app.js"></script>
-    <script type="application/javascript" src="../js/control/login.js"></script>
-    <script type="application/javascript" src="../js/service/login_submit.js"></script>
-    <link href="../images/favicon.ico" rel="icon" type="image/x-icon">
-    <title>Sign Up `by Louay Amr`</title>
+    <script type="application/javascript" src="<c:url value="/static/lib/jQuery-3.5.1/jquery-3.5.1.min.js"/>"></script>
+    <script type="application/javascript" src="<c:url value="/static/lib/popper-2.4.3/popper.min.js"/>"></script>
+    <script type="application/javascript"
+            src="<c:url value="/static/lib/bootstrap-4.5.1/js/bootstrap.min.js"/>"></script>
+    <script type="application/javascript" src="<c:url value="/static/lib/angularJS-1.8.0/angular.min.js"/>"></script>
+    <script type="application/javascript"
+            src="<c:url value="/static/lib/angularJS-1.8.0/angular-messages.min.js"/>"></script>
+    <script type="application/javascript" src="<c:url value="/static/js/app.js"/>"></script>
+    <script type="application/javascript" src="<c:url value="/static/js/service/login_submit.js"/>"></script>
+    <script type="application/javascript" src="<c:url value="/static/js/control/login.js"/>"></script>
+    <link href="<c:url value="/static/images/favicon.ico"/>" rel="icon" type="image/x-icon">
+    <title>Login `by Louay Amr`</title>
 <body>
 <header>
     <div class="jumbotron mb-0 h2 text-center">
@@ -134,7 +138,6 @@
                                                    value="Sign in"/>
                                         </div>
                                     </div>
-
                                 </div>
                             </form>
                             <hr class="mx-4">
@@ -142,7 +145,6 @@
                                 <p>If this is first time <a href="https://localhost:8443/student_sign_up">Sign
                                     Up</a></p>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -150,7 +152,6 @@
         </div>
     </div>
 </main>
-
 <footer>
     <nav class="navbar navbar-dark position-relative mb-0" style="background-color: #d3c7cd; height: 9em; width: 100%">
         <p>Louay Amr © 2020</p>

@@ -13,7 +13,7 @@ import java.io.Serializable;
 @Controller
 @CrossOrigin(origins = "https://localhost:8443")
 public class VerifyUserController implements Serializable {
-    private static final long serialVersionUID = 7932850467799585440L;
+    private static final long serialVersionUID = 2585996224351865574L;
     private final ServicesFactory servicesFactory;
     private final EntitiesFactory entitiesFactory;
 
@@ -26,9 +26,8 @@ public class VerifyUserController implements Serializable {
         this.entitiesFactory = entitiesFactory;
     }
 
-    @RequestMapping(value = "/userVerify/{userId}/{verifyNumber}", method = RequestMethod.GET)
-    public void verifyUserThenRedirectIt(@PathVariable(value = "userId", name = "userId") String userId, @PathVariable(value = "verifyNumber") String verifyNumber) {
-        System.out.println(userId + verifyNumber);
+    @GetMapping(value = "/user_verify/{userId}/{verifyNumber}")
+    public void verifyUserThenRedirectIt(@PathVariable String userId, @PathVariable String verifyNumber) {
         UsersAuthentication usersAuthentication = buildUsersAuthentication(userId);
         Integer verifyNumberInteger = Integer.parseInt(verifyNumber);
         if (verifyNumberInteger.equals(usersAuthentication.getVerificationNumber())) {
