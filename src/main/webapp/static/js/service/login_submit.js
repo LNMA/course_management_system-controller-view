@@ -7,7 +7,7 @@ app.service('LoginAccountsSubmitService', ['$http', function ($http) {
         return $http({
             method: 'POST',
             port: 8443,
-            url: 'https://localhost:8443/perform_login',
+            url: 'https://localhost:8443/login/perform_login',
             headers: {'content-type': 'application/json'},
             contentType: "application/json; charset=utf-8",
             async: false,    //Cross-domain requests and dataType: "jsonp" requests do not support synchronous operation

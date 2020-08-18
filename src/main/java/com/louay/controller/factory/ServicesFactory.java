@@ -24,7 +24,7 @@ public class ServicesFactory {
                            AccountPictureService pictureService, StatusService statusService,
                            AuthenticationService authenticationService) {
         if (accountService == null || roleService == null || pictureService == null || statusService == null ||
-        authenticationService == null){
+                authenticationService == null) {
             throw new IllegalArgumentException("Service cannot be null in StudentSignUpServiceWrapper.class!");
         }
         this.accountService = accountService;

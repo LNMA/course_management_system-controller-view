@@ -10,8 +10,8 @@
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no"/>
     <meta name="apple-mobile-web-app-capable" content="yes"/>
     <style type="text/css">
-        @import url(<c:url value="/static/css/login.css"/>);
-        @import url(<c:url value="/static/css/register.css"/>);
+        @import url(<c:url value="/static/css/small_form.css"/>);
+        @import url(<c:url value="/static/css/background-large_form.css"/>);
         @import url(<c:url value="/static/lib/bootstrap-4.5.1/css/bootstrap.min.css"/>);
     </style>
     <script type="application/javascript" src="<c:url value="/static/lib/jQuery-3.5.1/jquery-3.5.1.min.js"/>"></script>
@@ -153,7 +153,9 @@
     </div>
 </main>
 <footer>
-    <nav class="navbar navbar-dark position-relative mb-0" style="background-color: #d3c7cd; height: 9em; width: 100%">
+    <nav class="navbar navbar-dark position-relative mt-0" style="background-color: #d3c7cd; height: 16em; width: 100%">
         <p>Louay Amr © 2020</p>
     </nav>
 </footer>
+</body>
+</html>

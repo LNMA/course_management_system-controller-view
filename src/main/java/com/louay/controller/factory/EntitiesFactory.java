@@ -1,12 +1,15 @@
 package com.louay.controller.factory;
 
+import com.louay.model.entity.authentication.CookieLogin;
 import com.louay.model.entity.authentication.UsersAuthentication;
 import com.louay.model.entity.role.AccountsRoles;
 import com.louay.model.entity.role.UsersRoles;
 import com.louay.model.entity.status.UserAccountStatus;
+import com.louay.model.entity.status.UserSignIn;
 import com.louay.model.entity.users.Admin;
 import com.louay.model.entity.users.Users;
 import com.louay.model.entity.users.picute.AccountPicture;
+import com.louay.model.entity.wrapper.AdminRememberMeWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
@@ -22,13 +25,18 @@ public class EntitiesFactory {
     private final AccountPicture accountPicture;
     private final UserAccountStatus userAccountStatus;
     private final UsersAuthentication usersAuthentication;
+    private final CookieLogin cookieLogin;
+    private final AdminRememberMeWrapper adminRememberMeWrapper;
+    private final UserSignIn userSignIn;
 
     @Autowired
     public EntitiesFactory(Admin admin, Users users, AccountsRoles accountsRoles, UsersRoles usersRoles,
                            AccountPicture accountPicture, UserAccountStatus userAccountStatus,
-                           UsersAuthentication usersAuthentication) {
+                           UsersAuthentication usersAuthentication, CookieLogin cookieLogin,
+                           AdminRememberMeWrapper adminRememberMeWrapper, UserSignIn userSignIn) {
         if (admin == null || users == null || accountsRoles == null || usersRoles == null || accountPicture == null
-                || userAccountStatus == null || usersAuthentication == null) {
+                || userAccountStatus == null || usersAuthentication == null || cookieLogin == null ||
+                adminRememberMeWrapper == null || userSignIn == null) {
             throw new IllegalArgumentException("entities cannot be null at StudentSignUpEntitiesFactory.class!");
         }
         this.admin = admin;
@@ -38,6 +46,9 @@ public class EntitiesFactory {
         this.accountPicture = accountPicture;
         this.userAccountStatus = userAccountStatus;
         this.usersAuthentication = usersAuthentication;
+        this.cookieLogin = cookieLogin;
+        this.adminRememberMeWrapper = adminRememberMeWrapper;
+        this.userSignIn = userSignIn;
     }
 
     public Admin getAdmin() {
@@ -92,5 +103,17 @@ public class EntitiesFactory {
     public UsersAuthentication getBuiltUsersAuthentication() {
         this.usersAuthentication.setUsers(getUsers());
         return usersAuthentication;
+    }
+
+    public CookieLogin getCookieLogin() {
+        return cookieLogin;
+    }
+
+    public AdminRememberMeWrapper getAdminRememberMeWrapper() {
+        return adminRememberMeWrapper;
+    }
+
+    public UserSignIn getUserSignIn() {
+        return userSignIn;
     }
 }
