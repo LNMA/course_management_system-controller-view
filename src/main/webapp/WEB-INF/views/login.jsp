@@ -16,11 +16,9 @@
     </style>
     <script type="application/javascript" src="<c:url value="/static/lib/jQuery-3.5.1/jquery-3.5.1.min.js"/>"></script>
     <script type="application/javascript" src="<c:url value="/static/lib/popper-2.4.3/popper.min.js"/>"></script>
-    <script type="application/javascript"
-            src="<c:url value="/static/lib/bootstrap-4.5.1/js/bootstrap.min.js"/>"></script>
+    <script type="application/javascript" src="<c:url value="/static/lib/bootstrap-4.5.1/js/bootstrap.min.js"/>"></script>
     <script type="application/javascript" src="<c:url value="/static/lib/angularJS-1.8.0/angular.min.js"/>"></script>
-    <script type="application/javascript"
-            src="<c:url value="/static/lib/angularJS-1.8.0/angular-messages.min.js"/>"></script>
+    <script type="application/javascript" src="<c:url value="/static/lib/angularJS-1.8.0/angular-messages.min.js"/>"></script>
     <script type="application/javascript" src="<c:url value="/static/js/app.js"/>"></script>
     <script type="application/javascript" src="<c:url value="/static/js/service/login_submit.js"/>"></script>
     <script type="application/javascript" src="<c:url value="/static/js/control/login.js"/>"></script>
@@ -87,9 +85,10 @@
                             <form ng-submit="loginAccountsSubmit()" name="loginForm" method="post" novalidate>
                                 <div class="ml-5">
 
-                                    <div class="form-group ">
-                                        <label class="mb-0 h3 text-left formHead" style="margin-top: 5%">Sign in to
-                                            course management System</label>
+                                    <div class="form-group">
+                                        <label class="mb-0 text-left formHead" style="margin-top: 5%">
+                                            Sign in to course ms
+                                        </label>
                                         <small class="form-text text-muted text-left">all field required</small>
                                     </div>
 

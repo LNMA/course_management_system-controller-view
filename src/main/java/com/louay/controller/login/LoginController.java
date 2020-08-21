@@ -9,6 +9,7 @@ import com.louay.model.entity.status.UserAccountStatus;
 import com.louay.model.entity.status.UserSignIn;
 import com.louay.model.entity.users.Admin;
 import com.louay.model.entity.users.Users;
+import com.louay.model.entity.users.constant.Role;
 import com.louay.model.entity.wrapper.AdminRememberMeWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.*;
+import java.io.IOException;
 import java.io.Serializable;
 import java.security.SecureRandom;
 
@@ -26,10 +28,12 @@ import java.security.SecureRandom;
 @CrossOrigin(origins = "https://localhost:8443")
 @RequestMapping(value = "/login")
 public class LoginController implements Serializable {
-    private static final long serialVersionUID = 3829776322154556577L;
+    private static final long serialVersionUID = -8497194742910253965L;
     private final ServicesFactory servicesFactory;
     private final EntitiesFactory entitiesFactory;
     private final PasswordEncoder passwordEncoder;
+    private String email;
+    private AccountsRoles accountsRoles;
 
     @Autowired
     public LoginController(ServicesFactory servicesFactory, EntitiesFactory entitiesFactory,
@@ -75,17 +79,18 @@ public class LoginController implements Serializable {
                     .path("/static/lib/popper-2.4.3/popper.min.js")
                     .path("/static/lib/bootstrap-4.5.1/js/bootstrap.min.js")
                     .path("/static/lib/jQuery-3.5.1/jquery-3.5.1.min.js")
-                    .path("/WEB-INF/jsp/login.jsp")
+                    .path("/WEB-INF/views/login.jsp")
                     .push();
         }
         return "/login";
     }
 
-    @RequestMapping(value = "/perform_session_login", method = {RequestMethod.GET, RequestMethod.POST})
-    public String loginSessionProcess(@CookieValue(value = "id", required = false) String sessionEmail,
-                                      @CookieValue(value = "password", required = false) String sessionPassword,
+    @RequestMapping(value = "/perform_session_login")
+    public String loginSessionProcess(@SessionAttribute(value = "id", required = false) String sessionEmail,
+                                      @SessionAttribute(value = "password", required = false) String sessionPassword,
                                       HttpServletRequest request) {
-        if (sessionEmail == null && sessionPassword == null) {
+
+        if (sessionEmail == null || sessionPassword == null) {
             deleteSessionLogin(request);
             return "redirect:/login";
         }
@@ -101,25 +106,19 @@ public class LoginController implements Serializable {
             return "redirect:/login";
         }
 
-        UserAccountStatus userAccountStatus = getUserAccountStatus(adminWrapper);
+        UserAccountStatus userAccountStatus = findUserAccountStatus(adminWrapper);
         if (!userAccountStatus.getValid()) {
             deleteSessionLogin(request);
             return "redirect:/login";
         }
-        if (userAccountStatus.getOnline()) {
-            deleteSessionLogin(request);
-            return "redirect:/login";
-        }
 
-        createSignInDate(adminWrapper);
         updateUserAccountStatusToOnline(adminWrapper);
 
-        createNewSession(request, adminWrapper);
+        createNewSessionForSessionLogin(request, adminWrapper);
 
-        AccountsRoles accountsRoles = getAccountRoles(adminWrapper);
-        System.out.println(accountsRoles.getRoleName().getRole());
-        return "";
-
+        this.accountsRoles = findAccountRoles(adminWrapper);
+        this.email = adminWrapper.getAdmin().getEmail();
+        return "redirect:/login/redirect_tracer_success_login";
     }
 
     private Boolean isEmailAndPasswordSessionMatched(AdminRememberMeWrapper adminWrapper) {
@@ -142,7 +141,7 @@ public class LoginController implements Serializable {
     public String loginCookieProcess(@CookieValue(value = "id", required = false) String cookieEmail,
                                      @CookieValue(value = "secureNumber", required = false) String cookieSecureNumber,
                                      HttpServletRequest request, HttpServletResponse response) {
-        if (cookieEmail == null && cookieSecureNumber == null) {
+        if (cookieEmail == null || cookieSecureNumber == null) {
             deleteCookies(request, response);
             return "redirect:/login";
         }
@@ -158,7 +157,7 @@ public class LoginController implements Serializable {
             return "redirect:/login";
         }
 
-        UserAccountStatus userAccountStatus = getUserAccountStatus(adminWrapper);
+        UserAccountStatus userAccountStatus = findUserAccountStatus(adminWrapper);
         if (!userAccountStatus.getValid()) {
             deleteCookies(request, response);
             return "redirect:/login";
@@ -171,12 +170,28 @@ public class LoginController implements Serializable {
         createSignInDate(adminWrapper);
         updateUserAccountStatusToOnline(adminWrapper);
 
-        createNewSession(request, adminWrapper);
+        createNewSessionCookieLogin(request, adminWrapper);
 
-        AccountsRoles accountsRoles = getAccountRoles(adminWrapper);
-        System.out.println(accountsRoles.getRoleName().getRole());
-        return "";
+        this.accountsRoles = findAccountRoles(adminWrapper);
+        this.email = adminWrapper.getAdmin().getEmail();
 
+        return "redirect:/login/redirect_tracer_success_login";
+    }
+
+    @RequestMapping(value = "/redirect_tracer_success_login")
+    private String getTracerAccountHomePage() {
+        if (Role.STUDENT.compareTo(this.accountsRoles.getRoleName()) == 0) {
+            return String.format("redirect:/student/student_home/%s", this.email);
+
+        } else if (Role.INSTRUCTOR.compareTo(accountsRoles.getRoleName()) == 0) {
+            return String.format("redirect:/instructor/instructor_home/%s", this.email);
+
+        } else if (Role.ADMIN.compareTo(accountsRoles.getRoleName()) == 0) {
+            return String.format("redirect:/admin/admin_home/%s", this.email);
+
+        } else {
+            throw new UnsupportedOperationException("No roles had matched!.");
+        }
     }
 
     private void deleteCookies(HttpServletRequest request, HttpServletResponse response) {
@@ -208,7 +223,7 @@ public class LoginController implements Serializable {
     }
 
     private Boolean isEmailAndSecureNumberMatched(AdminRememberMeWrapper adminWrapper, Integer secureNumber) {
-        Admin admin = this.servicesFactory.getAccountService().findAccountByEmail(adminWrapper.getAdmin());
+        Admin admin = findAdminByEmail(adminWrapper);
         CookieLogin cookieLogin = this.entitiesFactory.getCookieLogin();
         cookieLogin.setAdmin(admin);
         cookieLogin = this.servicesFactory.getAuthenticationService().findCookieLoginByEmail(cookieLogin);
@@ -219,7 +234,10 @@ public class LoginController implements Serializable {
 
     @PostMapping(value = "/perform_login", consumes = MediaType.APPLICATION_JSON_VALUE)
     public String loginProcess(@RequestBody AdminRememberMeWrapper adminWrapper, HttpServletResponse response,
-                               HttpServletRequest request) {
+                               HttpServletRequest request) throws IOException {
+        if (adminWrapper.getAdmin().getEmail() == null || adminWrapper.getAdmin().getPassword() == null) {
+            throw new IllegalArgumentException("email and password cannot be null!.");
+        }
         if (!isAccountExist(adminWrapper)) {
             return "forward:/login/account_not_exist";
         }
@@ -227,7 +245,7 @@ public class LoginController implements Serializable {
             return "forward:/login/account_not_matched";
         }
 
-        UserAccountStatus userAccountStatus = getUserAccountStatus(adminWrapper);
+        UserAccountStatus userAccountStatus = findUserAccountStatus(adminWrapper);
         if (!userAccountStatus.getValid()) {
             return "forward:/login/account_not_valid";
         }
@@ -247,20 +265,26 @@ public class LoginController implements Serializable {
 
         createNewSession(request, adminWrapper);
 
-        AccountsRoles accountsRoles = getAccountRoles(adminWrapper);
-        System.out.println(accountsRoles.getRoleName().getRole());
-        /*if (Role.STUDENT.compareTo(accountsRoles.getRoleName()) == 0) {
-            return "student";
+        this.accountsRoles = findAccountRoles(adminWrapper);
+        this.email = adminWrapper.getAdmin().getEmail();
+
+        return "forward:/login/redirect_success_login";
+    }
+
+    @RequestMapping(value = "/redirect_success_login")
+    private ResponseEntity<String> getAccountHomePage() {
+        if (Role.STUDENT.compareTo(this.accountsRoles.getRoleName()) == 0) {
+            return ResponseEntity.ok().body(String.format("/student/student_home/%s", this.email));
+
         } else if (Role.INSTRUCTOR.compareTo(accountsRoles.getRoleName()) == 0) {
-            return "instructor";
+            return ResponseEntity.ok().body(String.format("/instructor/instructor_home/%s", this.email));
 
         } else if (Role.ADMIN.compareTo(accountsRoles.getRoleName()) == 0) {
-            return "admin";
+            return ResponseEntity.ok().body(String.format("/admin/admin_home/%s", this.email));
 
         } else {
-            throw new UnsupportedOperationException("No roles has matched!.");
-        }*/
-        return "";
+            throw new UnsupportedOperationException("No roles had matched!.");
+        }
     }
 
     @PostMapping(value = "/account_not_exist", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -278,10 +302,14 @@ public class LoginController implements Serializable {
     }
 
     private Boolean isEmailAndPasswordMatched(AdminRememberMeWrapper adminRememberMeWrapper) {
-        Admin admin = this.servicesFactory.getAccountService().findAccountByEmail(adminRememberMeWrapper.getAdmin());
+        Admin admin = findAdminByEmail(adminRememberMeWrapper);
 
         return admin.getEmail().equalsIgnoreCase(adminRememberMeWrapper.getAdmin().getEmail()) &&
                 this.passwordEncoder.matches(adminRememberMeWrapper.getAdmin().getPassword(), admin.getPassword());
+    }
+
+    private Admin findAdminByEmail(AdminRememberMeWrapper adminWrapper) {
+        return this.servicesFactory.getAccountService().findAccountByEmail(adminWrapper.getAdmin());
     }
 
     @PostMapping(value = "/account_not_valid", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -296,13 +324,13 @@ public class LoginController implements Serializable {
     }
 
     private void updateUserAccountStatusToOnline(AdminRememberMeWrapper adminRememberMeWrapper) {
-        UserAccountStatus userAccountStatus = getUserAccountStatus(adminRememberMeWrapper);
+        UserAccountStatus userAccountStatus = findUserAccountStatus(adminRememberMeWrapper);
         userAccountStatus.setOnline(true);
 
         this.servicesFactory.getStatusService().updateUserAccountStatus(userAccountStatus);
     }
 
-    private UserAccountStatus getUserAccountStatus(AdminRememberMeWrapper adminRememberMeWrapper) {
+    private UserAccountStatus findUserAccountStatus(AdminRememberMeWrapper adminRememberMeWrapper) {
         UserAccountStatus userAccountStatus = buildUserAccountStatus(adminRememberMeWrapper);
 
         userAccountStatus = this.servicesFactory.getStatusService()
@@ -320,17 +348,24 @@ public class LoginController implements Serializable {
         return userAccountStatus;
     }
 
-    private AccountsRoles getAccountRoles(AdminRememberMeWrapper adminRememberMeWrapper) {
-        UsersRoles usersRoles = getUsersRoles(adminRememberMeWrapper);
+    private AccountsRoles findAccountRoles(AdminRememberMeWrapper adminRememberMeWrapper) {
+        UsersRoles usersRoles = findUsersRoles(adminRememberMeWrapper);
 
-        AccountsRoles accountsRoles = this.entitiesFactory.getAccountsRoles();
-        accountsRoles.setRoleID(usersRoles.getAccountsRoles().getRoleID());
+        AccountsRoles accountsRoles = buildAccountRole(usersRoles);
+
         accountsRoles = this.servicesFactory.getRoleService().findAccountRoleByRoleId(accountsRoles);
 
         return accountsRoles;
     }
 
-    private UsersRoles getUsersRoles(AdminRememberMeWrapper adminRememberMeWrapper) {
+    private AccountsRoles buildAccountRole(UsersRoles usersRoles) {
+        AccountsRoles accountsRoles = this.entitiesFactory.getAccountsRoles();
+        accountsRoles.setRoleID(usersRoles.getAccountsRoles().getRoleID());
+
+        return accountsRoles;
+    }
+
+    private UsersRoles findUsersRoles(AdminRememberMeWrapper adminRememberMeWrapper) {
         UsersRoles usersRoles = buildUsersRoles(adminRememberMeWrapper);
 
         return this.servicesFactory.getRoleService().findUsersRolesByUserId(usersRoles);
@@ -401,7 +436,6 @@ public class LoginController implements Serializable {
 
     private UserSignIn buildUserSignIn(AdminRememberMeWrapper adminRememberMeWrapper) {
         Users users = this.entitiesFactory.getUsers();
-        users.setAdmin(adminRememberMeWrapper.getAdmin());
         users.setEmail(adminRememberMeWrapper.getAdmin().getEmail());
         UserSignIn userSignIn = this.entitiesFactory.getUserSignIn();
         userSignIn.setUsers(users);
@@ -413,5 +447,18 @@ public class LoginController implements Serializable {
         HttpSession session = request.getSession(true);
         session.setAttribute("id", adminWrapper.getAdmin().getEmail());
         session.setAttribute("password", this.passwordEncoder.encode(adminWrapper.getAdmin().getPassword()));
+    }
+
+    private void createNewSessionCookieLogin(HttpServletRequest request, AdminRememberMeWrapper adminWrapper) {
+        HttpSession session = request.getSession(true);
+        session.setAttribute("id", adminWrapper.getAdmin().getEmail());
+        Admin admin = findAdminByEmail(adminWrapper);
+        session.setAttribute("password", admin.getPassword());
+    }
+
+    private void createNewSessionForSessionLogin(HttpServletRequest request, AdminRememberMeWrapper adminWrapper) {
+        HttpSession session = request.getSession(true);
+        session.setAttribute("id", adminWrapper.getAdmin().getEmail());
+        session.setAttribute("password", adminWrapper.getAdmin().getPassword());
     }
 }

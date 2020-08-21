@@ -137,7 +137,7 @@
 
                     <form ng-submit="saveStudent()" name="studentForm" method="post" novalidate>
 
-                        <div class="formHead mb-0 pt-4">Sign Up to chatting system</div>
+                        <div class="formHead mb-0 pt-4">Sign Up to Course ms</div>
                         <small class="form-text text-muted text-left mb-3">* field required</small>
 
                         <div class="form-row">

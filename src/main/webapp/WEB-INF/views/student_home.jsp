@@ -1,3 +1,5 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,16 +10,16 @@
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no"/>
     <meta name="apple-mobile-web-app-capable" content="yes"/>
     <style type="text/css">
-        @import url(../lib/bootstrap-4.5.1/css/bootstrap.min.css);
+        @import url(<c:url value="/static/lib/bootstrap-4.5.1/css/bootstrap.min.css"/>);
     </style>
-    <script type="application/javascript" src="../lib/jQuery-3.5.1/jquery-3.5.1.min.js"></script>
-    <script type="application/javascript" src="../lib/popper-2.4.3/popper.min.js"></script>
-    <script type="application/javascript" src="../lib/bootstrap-4.5.1/js/bootstrap.min.js"></script>
-    <script type="application/javascript" src="../js/support/dropdown_on_hover.js"></script>
-    <script type="application/javascript" src="../js/support/modal_forms.js"></script>
-    <script type="application/javascript" src="../lib/angularJS-1.8.0/angular.min.js"></script>
-    <script type="application/javascript" src="../lib/angularJS-1.8.0/angular-messages.min.js"></script>
-    <link href="../images/favicon.ico" rel="icon" type="image/x-icon">
+    <script type="application/javascript" src="<c:url value="/static/lib/jQuery-3.5.1/jquery-3.5.1.min.js"/>"></script>
+    <script type="application/javascript" src="<c:url value="/static/lib/popper-2.4.3/popper.min.js"/>"></script>
+    <script type="application/javascript" src="<c:url value="/static/lib/bootstrap-4.5.1/js/bootstrap.min.js"/>"></script>
+    <script type="application/javascript" src="<c:url value="/static/lib/angularJS-1.8.0/angular.min.js"/>"></script>
+    <script type="application/javascript" src="<c:url value="/static/lib/angularJS-1.8.0/angular-messages.min.js"/>"></script>
+    <script type="application/javascript" src="<c:url value="/static/js/support/dropdown_on_hover.js"/>"></script>
+    <script type="application/javascript" src="<c:url value="/static/js/support/modal_forms.js"/>"></script>
+    <link href="<c:url value="/static/images/favicon.ico"/>" rel="icon" type="image/x-icon">
     <title>Student Home `by Louay Amr`</title>
 <body>
 <header>
@@ -70,18 +72,18 @@
                                 <a class="dropdown-toggle nav-link" href="#" id="inboxDropdown" role="button"
                                    data-toggle="dropdown"
                                    aria-haspopup="true" aria-expanded="false">
-                                    <img src="../images/notifications_none-white-48dp.svg" class="rounded-circle"
+                                    <img src="<c:url value="/static/images/notifications_none-white-48dp.svg"/>" class="rounded-circle"
                                          width="36" height="36">
                                     <span class="badge badge-primary badge-pill"></span>
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="inboxDropdown">
                                     <a class="dropdown-item" href="">
-                                        <img src="../images/chat-black-48dp.svg" width="24" height="24">
+                                        <img src="<c:url value="/static/images/chat-black-48dp.svg"/>" width="24" height="24">
                                         Feedback <span class="badge badge-primary badge-pill"></span>
                                     </a>
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="">
-                                        <img src="../images/attach_file-black-48dp.svg" width="24" height="24">
+                                        <img src="<c:url value="/static/images/attach_file-black-48dp.svg"/>" width="24" height="24">
                                         Material <span class="badge badge-primary badge-pill"></span>
                                     </a>
                                 </div>
@@ -93,7 +95,7 @@
                     <div class="dropdown row justify-content-center">
                         <a class="dropdown-toggle nav-link" href="#" id="accountUserDropdown" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <img src="../images/account_circle-white-48dp.svg" class="rounded-circle" width="50"
+                            <img src="<c:url value="/static/images/account_circle-white-48dp.svg"/>" class="rounded-circle" width="50"
                                  height="50"/>
                         </a>
                         <div class="dropdown-menu" aria-labelledby="accountUserDropdown">
@@ -217,7 +219,7 @@
                                                 Password:
                                                 <button class="btn" data-toggle="modal" data-dismiss="modal"
                                                         data-target="#passwordModal">
-                                                    <img src="../images/edit-black-48dp.svg" width="16" height="16">
+                                                    <img src="<c:url value="/static/images/edit-black-48dp.svg"/>" width="16" height="16">
                                                 </button>
                                             </label>
                                             <input class="form-control" id="password" name="password"
@@ -232,7 +234,7 @@
                                              width="256" height="256">
                                         <button class="btn" data-toggle="modal" data-dismiss="modal"
                                                 data-target="#ImageModal">
-                                            <img src="../images/add_photo_alternate-black-48dp.svg" width="28"
+                                            <img src="<c:url value="/static/images/add_photo_alternate-black-48dp.svg"/>" width="28"
                                                  height="28">
                                         </button>
                                     </div>
@@ -247,7 +249,7 @@
                                         Forename:
                                         <button class="btn" data-toggle="modal" data-dismiss="modal"
                                                 data-target="#firstNameModal">
-                                            <img src="../images/edit-black-48dp.svg" width="16" height="16">
+                                            <img src="<c:url value="/static/images/edit-black-48dp.svg"/>" width="16" height="16">
                                         </button>
                                     </label>
                                     <input class="form-control" id="fname" value="${account.getFirstName()}"
@@ -258,7 +260,7 @@
                                         Phone:
                                         <button class="btn" data-toggle="modal" data-dismiss="modal"
                                                 data-target="#telephoneModal">
-                                            <img src="../images/edit-black-48dp.svg" width="16" height="16">
+                                            <img src="<c:url value="/static/images/edit-black-48dp.svg"/>" width="16" height="16">
                                         </button>
                                     </label>
                                     <input class="form-control" id="telephone" value="${account.getTelephone()}"
@@ -272,7 +274,7 @@
                                         Surname:
                                         <button class="btn" data-toggle="modal" data-dismiss="modal"
                                                 data-target="#lastNameModal">
-                                            <img src="../images/edit-black-48dp.svg" width="16" height="16">
+                                            <img src="<c:url value="/static/images/edit-black-48dp.svg"/>" width="16" height="16">
                                         </button>
                                     </label>
                                     <input class="form-control" id="lname" value="${account.getLastName()}"
@@ -283,7 +285,7 @@
                                         Country:
                                         <button class="btn" data-toggle="modal" data-dismiss="modal"
                                                 data-target="#addressModal">
-                                            <img src="../images/edit-black-48dp.svg" width="16" height="16">
+                                            <img src="<c:url value="/static/images/edit-black-48dp.svg"/>" width="16" height="16">
                                         </button>
                                     </label>
                                     <input class="form-control" id="country" value="${account.getCountry()}"
@@ -296,7 +298,7 @@
                                         Gender:
                                         <button class="btn" data-toggle="modal" data-dismiss="modal"
                                                 data-target="#genderModal">
-                                            <img src="../images/edit-black-48dp.svg" width="16" height="16">
+                                            <img src="<c:url value="/static/images/edit-black-48dp.svg"/>" width="16" height="16">
                                         </button>
                                     </label>
                                     <input class="form-control" id="gender" value="${account.getGender()}"
@@ -307,7 +309,7 @@
                                         State:
                                         <button class="btn" data-toggle="modal" data-dismiss="modal"
                                                 data-target="#addressModal">
-                                            <img src="../images/edit-black-48dp.svg" width="16" height="16">
+                                            <img src="<c:url value="/static/images/edit-black-48dp.svg"/>" width="16" height="16">
                                         </button>
                                     </label>
                                     <input class="form-control" id="state" value="${account.getState()}"
@@ -320,7 +322,7 @@
                                         BirthDay:
                                         <button class="btn" data-toggle="modal" data-dismiss="modal"
                                                 data-target="#birthdayModal">
-                                            <img src="../images/edit-black-48dp.svg" width="16" height="16">
+                                            <img src="<c:url value="/static/images/edit-black-48dp.svg"/>" width="16" height="16">
                                         </button>
                                     </label>
                                     <input class="form-control" id="birthday" value="${account.getBirthday()}"
@@ -331,7 +333,7 @@
                                         Address:
                                         <button class="btn" data-toggle="modal" data-dismiss="modal"
                                                 data-target="#addressModal">
-                                            <img src="../images/edit-black-48dp.svg" width="16" height="16">
+                                            <img src="<c:url value="/static/images/edit-black-48dp.svg"/>" width="16" height="16">
                                         </button>
                                     </label>
                                     <input class="form-control" id="address" value="${account.getAddress()}"
@@ -389,3 +391,4 @@
 </nav>
 </body>
 </html>
+

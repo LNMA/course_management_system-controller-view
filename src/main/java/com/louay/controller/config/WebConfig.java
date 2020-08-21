@@ -46,7 +46,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void configureViewResolvers(ViewResolverRegistry registry) {
-        registry.jsp("/WEB-INF/jsp", ".jsp");
+        registry.jsp("/WEB-INF/views", ".jsp");
         registry.viewResolver(viewResolver());
     }
 
@@ -54,7 +54,7 @@ public class WebConfig implements WebMvcConfigurer {
     public ViewResolver viewResolver() {
         InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
         viewResolver.setViewClass(JstlView.class);
-        viewResolver.setPrefix("/WEB-INF/jsp");
+        viewResolver.setPrefix("/WEB-INF/views");
         viewResolver.setSuffix(".jsp");
         return viewResolver;
     }
