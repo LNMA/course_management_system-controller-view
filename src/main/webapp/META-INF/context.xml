@@ -1,0 +1,29 @@
+<Resource name="jdbc/course_management_system_datSource"
+          auth="Container"
+          type="javax.sql.DataSource"
+          factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
+          username="root"
+          password="1729384#General"
+          driverClassName="com.mysql.cj.jdbc.Driver"
+          url="jdbc:mysql://localhost:3306/course_management_system"/>
+
+        <!--
+        testWhileIdle="true"
+        testOnBorrow="true"
+        testOnReturn="false"
+        validationQuery="SELECT 1"
+        validationInterval="30000"
+        timeBetweenEvictionRunsMillis="30000"
+        maxActive="100"
+        minIdle="10"
+        maxWait="10000"
+        initialSize="10"
+        removeAbandonedTimeout="60"
+        removeAbandoned="true"
+        logAbandoned="true"
+        minEvictableIdleTimeMillis="30000"
+        jmxEnabled="true"
+        defaultAutoCommit="true"
+        jdbcInterceptors="org.apache.tomcat.jdbc.pool.interceptor.ConnectionState;
+          org.apache.tomcat.jdbc.pool.interceptor.StatementFinalizer"
+          -->

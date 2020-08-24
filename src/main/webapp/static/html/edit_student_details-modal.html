@@ -1,0 +1,126 @@
+<div class="modal fade" id="forenameModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Change Forename</h4>
+                <button type="button" class="close" data-dismiss="modal">
+                    &times;
+                </button>
+            </div>
+            <form name="editForenameForm" method="post" novalidate>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="form-row">
+                            <div class="form-group col col-md-9">
+                                <label class="font-weight-bold" for="inputForename">
+                                    Forename:
+                                </label>
+                                <input id="inputForename" name="forename" type="text" class="form-control"
+                                       placeholder="type new forename" ng-minlength="2" ng-maxlength="50" required
+                                       ng-class="{'is-invalid': submitted &&
+                                           (editForenameForm.forename.$error.required ||
+                                           editForenameForm.forename.$invalid),
+                                           'is-valid': editForenameForm.forename.$valid}"
+                                       ng-model="editForename.forename">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">
+                        Save
+                    </button>
+                    <button type="button" class="btn btn-danger"
+                            data-dismiss="modal">Close
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="surnameModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Change FirstName</h4>
+                <button type="button" class="close" data-dismiss="modal">
+                    &times;
+                </button>
+            </div>
+            <form name="editSurnameForm" method="post" novalidate>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="form-row">
+                            <div class="form-group col col-md-9">
+                                <label class="font-weight-bold" for="inputSurname">
+                                    Surname:
+                                </label>
+                                <input id="inputSurname" name="surename" type="text" class="form-control"
+                                       placeholder="type new last name" ng-minlength="2" ng-maxlength="50" required
+                                       ng-class="{'is-invalid': submitted &&
+                                           (editSurnameForm.surename.$error.required ||
+                                           editSurnameForm.surename.$invalid),
+                                           'is-valid': editSurnameForm.surename.$valid}"
+                                       ng-model="editSurname.surename">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">
+                        Save
+                    </button>
+                    <button type="button" class="btn btn-danger"
+                            data-dismiss="modal">Close
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="genderModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Change Gender</h4>
+                <button type="button" class="close" data-dismiss="modal">
+                    &times;
+                </button>
+            </div>
+            <form name="editGenderForm" method="post" novalidate>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="form-row">
+                            <div class="form-group col col-md-9">
+                                <label class="font-weight-bold" for="inputGender">
+                                    Gender:
+                                </label>
+                                <select class="custom-select w-75" name="gender" id="inputGender" required
+                                        ng-class="{'is-invalid': submitted &&
+                                           (editGenderForm.gender.$error.required ||
+                                           editGenderForm.gender.$invalid),
+                                           'is-valid': editGenderForm.gender.$valid}"
+                                        ng-model="editGender.gender">
+                                    <option selected disabled value="">Choose...</option>
+                                    <option value="MALE">Male</option>
+                                    <option value="FEMALE">Female</option>
+                                </select>
+                            </div>
+                        </div>
+                        <br>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">
+                        Save
+                    </button>
+                    <button type="button" class="btn btn-danger"
+                            data-dismiss="modal">Close
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
