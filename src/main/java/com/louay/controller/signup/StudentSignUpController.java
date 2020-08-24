@@ -84,17 +84,16 @@ public class StudentSignUpController implements Serializable {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("There is something error!.");
         }
 
-        if (this.servicesFactory.getAccountService().isExistUsers(student)) {
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).eTag("email duplicated")
-                    .body(DUPLICATE_EMAIL_ERROR_MESSAGE);
-        }
-
         if (student.getEmail() == null || student.getAdmin() == null || student.getAdmin().getEmail() == null ||
                 student.getAdmin().getPassword() == null || student.getEmail().length() < 7 ||
                 student.getAdmin().getPassword().length() < 8 || student.getAdmin().getEmail().length() <7 ||
                 student.getForename() == null || student.getForename().length() < 2 || student.getSurname() == null ||
                 student.getSurname().length() < 2){
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("All field must fills!.");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("All field must fills!.");
+        }
+
+        if (this.servicesFactory.getAccountService().isExistUsers(student)) {
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(StudentSignUpController.DUPLICATE_EMAIL_ERROR_MESSAGE);
         }
 
         encryptPassword(student);
@@ -103,9 +102,9 @@ public class StudentSignUpController implements Serializable {
         createUserAccountStatus(student);
         createAccountPicture(student);
         UsersAuthentication usersAuthentication = createUserAuthentication(student);
-        this.sendingVerificationEmail.sendMessage(usersAuthentication);
+       this.sendingVerificationEmail.sendMessage(usersAuthentication);
 
-        return ResponseEntity.status(HttpStatus.CREATED).eTag("student create").body(SUCCESS_MESSAGE);
+        return ResponseEntity.status(HttpStatus.CREATED).body(StudentSignUpController.SUCCESS_MESSAGE);
 
     }
 

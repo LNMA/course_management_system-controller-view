@@ -14,152 +14,38 @@
     </style>
     <script type="application/javascript" src="<c:url value="/static/lib/jQuery-3.5.1/jquery-3.5.1.min.js"/>"></script>
     <script type="application/javascript" src="<c:url value="/static/lib/popper-2.4.3/popper.min.js"/>"></script>
-    <script type="application/javascript" src="<c:url value="/static/lib/bootstrap-4.5.1/js/bootstrap.min.js"/>"></script>
+    <script type="application/javascript"
+            src="<c:url value="/static/lib/bootstrap-4.5.1/js/bootstrap.min.js"/>"></script>
     <script type="application/javascript" src="<c:url value="/static/lib/angularJS-1.8.0/angular.min.js"/>"></script>
-    <script type="application/javascript" src="<c:url value="/static/lib/angularJS-1.8.0/angular-messages.min.js"/>"></script>
-    <script type="application/javascript" src="<c:url value="/static/js/support/dropdown_on_hover.js"/>"></script>
-    <script type="application/javascript" src="<c:url value="/static/js/support/modal_forms.js"/>"></script>
+    <script type="application/javascript"
+            src="<c:url value="/static/lib/angularJS-1.8.0/angular-messages.min.js"/>"></script>
+    <script type="application/javascript"
+            src="<c:url value="/static/lib/angularJS-1.8.0/angular-sanitize.min.js"/>"></script>
+    <script type="application/javascript" src="<c:url value="/static/js/app.js"/>"></script>
+    <script type="application/javascript" src="<c:url value="/static/js/control/student_home.js"/>"></script>
+    <script type="application/javascript" src="<c:url value="/static/js/service/get_student_home_info.js"/>"></script>
     <link href="<c:url value="/static/images/favicon.ico"/>" rel="icon" type="image/x-icon">
     <title>Student Home `by Louay Amr`</title>
-<body>
+<body ng-app="app" ng-controller="StudentHomeController">
 <header>
-    <nav class="navbar navbar-dark navbar-expand-md navbar-expand-lg navbar-expand-xl shadow mb-0"
-         style="background-color: #3e3c4e ;">
-        <div class="container-fluid">
-            <div class="row row-cols-1">
-                <div class="col col-md-1 align-self-center">
-                    <a class="navbar navbar-brand font-weight-bolder h4" href="">Course ms</a>
-                </div>
-                <button class="navbar-toggler nav-item" type="button" data-toggle="collapse"
-                        data-target="#navbarUserAccount" aria-controls="navbarUserAccount" aria-expanded="false"
-                        aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse col col-md-10" id="navbarUserAccount">
-                    <ul class="nav-item navbar-nav container-fluid justify-content-end">
-                        <li class="col col-md-1">
-                            <a class="nav-link" href="">
-                                <span class="font-weight-bold " style="font-size: small;">Home</span>
-                            </a>
-                        </li>
-                        <li class="col col-md-1">
-                            <a class="nav-link" href="">
-                                <span class="font-weight-bold" style="font-size: small;">Courses</span>
-                            </a>
-                        </li>
-                        <li class="col col-md-7">
-                            <div class="">
-                                <form action="" method="get">
-                                    <div class="input-group">
-                                        <input class="form-control border border-warning badge-pill" type="search"
-                                               placeholder="Search" name="keySearch">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-warning badge-pill" type="submit">&telrec;</button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </li>
-                        <li class="col col-md-1">
-                            <div class="row">
-                                <a class="nav-link" href="">
-                                    <span class="font-weight-bolder" style="font-size: small;">My Course</span>
-                                </a>
-                            </div>
-                        </li>
-                        <li class="col col-md-1">
-                            <div class="dropdown ">
-                                <a class="dropdown-toggle nav-link" href="#" id="inboxDropdown" role="button"
-                                   data-toggle="dropdown"
-                                   aria-haspopup="true" aria-expanded="false">
-                                    <img src="<c:url value="/static/images/notifications_none-white-48dp.svg"/>" class="rounded-circle"
-                                         width="36" height="36">
-                                    <span class="badge badge-primary badge-pill"></span>
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="inboxDropdown">
-                                    <a class="dropdown-item" href="">
-                                        <img src="<c:url value="/static/images/chat-black-48dp.svg"/>" width="24" height="24">
-                                        Feedback <span class="badge badge-primary badge-pill"></span>
-                                    </a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="">
-                                        <img src="<c:url value="/static/images/attach_file-black-48dp.svg"/>" width="24" height="24">
-                                        Material <span class="badge badge-primary badge-pill"></span>
-                                    </a>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-                <div class="nav-item navbar-nav col col-md-1">
-                    <div class="dropdown row justify-content-center">
-                        <a class="dropdown-toggle nav-link" href="#" id="accountUserDropdown" role="button"
-                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <img src="<c:url value="/static/images/account_circle-white-48dp.svg"/>" class="rounded-circle" width="50"
-                                 height="50"/>
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="accountUserDropdown">
-                            <button class="dropdown-item" id="dropdownProfile" data-toggle="modal"
-                                    data-target="#profileModal">Profile
-                            </button>
-                            <a class="dropdown-item" href="">Logout</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </nav>
+    <div ng-include="'https://localhost:8443/static/html/student-navbar.html'"></div>
 </header>
 <main class="container-fluid">
     <div class="row row-cols-1">
-        <aside class="col-md-2 mt-3">
+        <aside class="col col-md-2 mt-3 justify-content-center pb-4">
             <div class="form-row">
-                <img src="" class="rounded-circle" width="134" height="134"/>
+                <img src="data:image/*;base64,{{picture}}"
+                     class="rounded-circle" width="134" height="134" alt="My Picture"/>
                 <p class="mt-5 ml-1 font-weight-bold h5">
-                    Louay Amr
+                    {{forename}} {{surname}}
                 </p>
             </div>
-            <hr>
-            <div class="form-row">
-                <a class="btn btn-toolbar btn-link" href="">
-                    <img src="../client/img/send-black-48dp.svg" width="24" height="24">
-                    <p class="ml-3">Messages Sent</p>
-                </a>
-            </div>
-            <div class="form-row">
-                <a class="btn btn-toolbar btn-link" href="../client/request-user-sent.jsp">
-                    <img src="../client/img/how_to_reg-black-48dp.svg" width="24" height="24">
-                    <p class="ml-3">Request Sent</p>
-                </a>
-            </div>
-            <div class="form-row">
-                <a class="btn btn-toolbar btn-link" href="../group/group-control.jsp">
-                    <img src="../client/img/group-black-48dp.svg" width="24" height="24">
-                    <p class="ml-3">My Group</p>
-                </a>
-            </div>
-            <hr>
-            <div class="form-text text-muted font-weight-bold ml-2">
-                <p>Explore</p>
-            </div>
-            <div class="form-row">
-                <a class="btn btn-toolbar btn-link" href="../client/gallery.jsp">
-                    <img src="../client/img/photo_library-black-48dp.svg" width="24" height="24">
-                    <p class="ml-3">My Photo Album</p>
-                </a>
-            </div>
-            <div class="form-row">
-                <a class="btn btn-toolbar btn-link" href="../client/request-user-receive.jsp">
-                    <img src="../client/img/person_add-black-48dp.svg" width="24" height="24">
-                    <p class="ml-3">Request Receive</p>
-                </a>
-            </div>
-            <div class="form-row">
-                <a class="btn btn-toolbar btn-link" href="../client/message-receive.jsp">
-                    <img class="mt-2" src="../client/img/email-black-48dp.svg" width="24" height="24">
-                    <p class="ml-3 mt-2">Message Receive</p>
-                </a>
-            </div>
+            <p class="text-muted font-weight-bold">{{headline}}</p>
+            <p class="font-weight-bold">Interest: {{interests}}</p>
+            <button class="btn btn-outline-secondary btn-sm w-100 dropdownProfile" data-toggle="modal"
+                    data-target="#profileModal">
+                Edit Profile
+            </button>
         </aside>
     </div>
 </main>
@@ -190,8 +76,8 @@
                                             <label for="username" class="font-weight-bold">
                                                 Username:
                                             </label>
-                                            <input class="form-control" id="username" name="username"
-                                                   type="text" value="${account.getUsername()}" readonly disabled>
+                                            <input class="form-control" id="username" name="Studentemail"
+                                                   type="text" value="{{email}}" readonly disabled>
                                         </div>
                                     </div>
                                     <div class="form-row">
@@ -200,8 +86,8 @@
                                                 Account Permission:
                                             </label>
                                             <input class="form-control" id="accountPermission"
-                                                   name="accountPermission" type="text"
-                                                   value="${account.getAccountPermission()}" readonly disabled>
+                                                   name="accountRole" type="text"
+                                                   value="{{userRole}}" readonly disabled>
                                         </div>
                                     </div>
                                     <div class="form-row">
@@ -210,7 +96,7 @@
                                                 Date Create:
                                             </label>
                                             <input class="form-control" id="dateCreate" name="dateCreate"
-                                                   type="text" value="${account.getDateCreate()}" readonly disabled>
+                                                   type="text" value="{{joinDate}}" readonly disabled>
                                         </div>
                                     </div>
                                     <div class="form-row">
@@ -219,23 +105,24 @@
                                                 Password:
                                                 <button class="btn" data-toggle="modal" data-dismiss="modal"
                                                         data-target="#passwordModal">
-                                                    <img src="<c:url value="/static/images/edit-black-48dp.svg"/>" width="16" height="16">
+                                                    <img src="<c:url value="/static/images/edit-black-48dp.svg"/>"
+                                                         width="16" height="16" alt="edit">
                                                 </button>
                                             </label>
                                             <input class="form-control" id="password" name="password"
-                                                   type="password" value="${account.getPassword()}" readonly disabled>
+                                                   type="password" value="{{password}}" readonly disabled>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="align-self-center col col-md-5">
                                     <div class="row justify-content-center ">
-                                        <img src="data:image;base64,${account.getBase64()}" class="rounded-circle"
-                                             width="256" height="256">
+                                        <img src="data:image/*;base64,{{picture}}" class="rounded-circle"
+                                             width="256" height="256" alt="My Picture">
                                         <button class="btn" data-toggle="modal" data-dismiss="modal"
                                                 data-target="#ImageModal">
-                                            <img src="<c:url value="/static/images/add_photo_alternate-black-48dp.svg"/>" width="28"
-                                                 height="28">
+                                            <img src="<c:url value="/static/images/add_photo_alternate-black-48dp.svg"/>"
+                                                 width="28" height="28" alt="add image">
                                         </button>
                                     </div>
                                 </div>
@@ -245,14 +132,15 @@
                         <div class="container-fluid">
                             <div class="form-row">
                                 <div class="form-group col col-md-6">
-                                    <label for="fname" class="font-weight-bold">
+                                    <label for="forename" class="font-weight-bold">
                                         Forename:
                                         <button class="btn" data-toggle="modal" data-dismiss="modal"
-                                                data-target="#firstNameModal">
-                                            <img src="<c:url value="/static/images/edit-black-48dp.svg"/>" width="16" height="16">
+                                                data-target="#forenameModal">
+                                            <img src="<c:url value="/static/images/edit-black-48dp.svg"/>"
+                                                 width="16" height="16" alt="edit">
                                         </button>
                                     </label>
-                                    <input class="form-control" id="fname" value="${account.getFirstName()}"
+                                    <input class="form-control" id="forename" value="{{forename}}"
                                            type="text" readonly disabled>
                                 </div>
                                 <div class="form-group col col-md-6">
@@ -260,10 +148,11 @@
                                         Phone:
                                         <button class="btn" data-toggle="modal" data-dismiss="modal"
                                                 data-target="#telephoneModal">
-                                            <img src="<c:url value="/static/images/edit-black-48dp.svg"/>" width="16" height="16">
+                                            <img src="<c:url value="/static/images/edit-black-48dp.svg"/>"
+                                                 width="16" height="16" alt="edit">
                                         </button>
                                     </label>
-                                    <input class="form-control" id="telephone" value="${account.getTelephone()}"
+                                    <input class="form-control" id="telephone" value="{{phone}}"
                                            type="text" readonly disabled>
                                 </div>
                             </div>
@@ -273,11 +162,12 @@
                                     <label for="lname" class="font-weight-bold">
                                         Surname:
                                         <button class="btn" data-toggle="modal" data-dismiss="modal"
-                                                data-target="#lastNameModal">
-                                            <img src="<c:url value="/static/images/edit-black-48dp.svg"/>" width="16" height="16">
+                                                data-target="#surnameModal">
+                                            <img src="<c:url value="/static/images/edit-black-48dp.svg"/>"
+                                                 width="16" height="16" alt="edit">
                                         </button>
                                     </label>
-                                    <input class="form-control" id="lname" value="${account.getLastName()}"
+                                    <input class="form-control" id="lname" value="{{surname}}"
                                            type="text" readonly disabled>
                                 </div>
                                 <div class="form-group col col-md-6">
@@ -285,10 +175,11 @@
                                         Country:
                                         <button class="btn" data-toggle="modal" data-dismiss="modal"
                                                 data-target="#addressModal">
-                                            <img src="<c:url value="/static/images/edit-black-48dp.svg"/>" width="16" height="16">
+                                            <img src="<c:url value="/static/images/edit-black-48dp.svg"/>"
+                                                 width="16" height="16" alt="edit">
                                         </button>
                                     </label>
-                                    <input class="form-control" id="country" value="${account.getCountry()}"
+                                    <input class="form-control" id="country" value="{{country}}"
                                            type="text" readonly disabled>
                                 </div>
                             </div>
@@ -298,10 +189,11 @@
                                         Gender:
                                         <button class="btn" data-toggle="modal" data-dismiss="modal"
                                                 data-target="#genderModal">
-                                            <img src="<c:url value="/static/images/edit-black-48dp.svg"/>" width="16" height="16">
+                                            <img src="<c:url value="/static/images/edit-black-48dp.svg"/>"
+                                                 width="16" height="16" alt="edit">
                                         </button>
                                     </label>
-                                    <input class="form-control" id="gender" value="${account.getGender()}"
+                                    <input class="form-control" id="gender" value="{{gender}}"
                                            type="text" readonly disabled>
                                 </div>
                                 <div class="form-group col col-md-6">
@@ -309,10 +201,11 @@
                                         State:
                                         <button class="btn" data-toggle="modal" data-dismiss="modal"
                                                 data-target="#addressModal">
-                                            <img src="<c:url value="/static/images/edit-black-48dp.svg"/>" width="16" height="16">
+                                            <img src="<c:url value="/static/images/edit-black-48dp.svg"/>"
+                                                 width="16" height="16" alt="edit">
                                         </button>
                                     </label>
-                                    <input class="form-control" id="state" value="${account.getState()}"
+                                    <input class="form-control" id="state" value="{{state}}"
                                            type="text" readonly disabled>
                                 </div>
                             </div>
@@ -322,10 +215,11 @@
                                         BirthDay:
                                         <button class="btn" data-toggle="modal" data-dismiss="modal"
                                                 data-target="#birthdayModal">
-                                            <img src="<c:url value="/static/images/edit-black-48dp.svg"/>" width="16" height="16">
+                                            <img src="<c:url value="/static/images/edit-black-48dp.svg"/>"
+                                                 width="16" height="16" alt="edit">
                                         </button>
                                     </label>
-                                    <input class="form-control" id="birthday" value="${account.getBirthday()}"
+                                    <input class="form-control" id="birthday" value="{{birthday}}"
                                            type="text" readonly disabled>
                                 </div>
                                 <div class="form-group col col-md-6">
@@ -333,10 +227,11 @@
                                         Address:
                                         <button class="btn" data-toggle="modal" data-dismiss="modal"
                                                 data-target="#addressModal">
-                                            <img src="<c:url value="/static/images/edit-black-48dp.svg"/>" width="16" height="16">
+                                            <img src="<c:url value="/static/images/edit-black-48dp.svg"/>"
+                                                 width="16" height="16" alt="edit">
                                         </button>
                                     </label>
-                                    <input class="form-control" id="address" value="${account.getAddress()}"
+                                    <input class="form-control" id="address" value="{{address}}"
                                            type="text" readonly disabled>
                                 </div>
                             </div>
@@ -345,14 +240,40 @@
                                     <label for="age" class="font-weight-bold">
                                         Age:
                                     </label>
-                                    <input class="form-control" id="age" value="${account.getAge()}"
+                                    <input class="form-control" id="age" value="{{age}}"
                                            type="text" readonly disabled>
                                 </div>
                                 <div class="form-group col col-md-6">
                                     <label for="lLogin" class="font-weight-bold">
                                         Last Login:
                                     </label>
-                                    <input class="form-control" id="lLogin" value="${account.lLogin()}"
+                                    <input class="form-control" id="lLogin" value=""
+                                           type="text" readonly disabled>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col col-md-6">
+                                    <label for="headline" class="font-weight-bold">
+                                        Headline:
+                                        <button class="btn" data-toggle="modal" data-dismiss="modal"
+                                                data-target="#addressModal">
+                                            <img src="<c:url value="/static/images/edit-black-48dp.svg"/>"
+                                                 width="16" height="16" alt="edit">
+                                        </button>
+                                    </label>
+                                    <input class="form-control" id="headline" value="{{headline}}"
+                                           type="text" readonly disabled>
+                                </div>
+                                <div class="form-group col col-md-6">
+                                    <label for="interest" class="font-weight-bold">
+                                        Interests:
+                                        <button class="btn" data-toggle="modal" data-dismiss="modal"
+                                                data-target="#addressModal" ng-click="ss">
+                                            <img src="<c:url value="/static/images/edit-black-48dp.svg"/>"
+                                                 width="16" height="16" alt="edit">
+                                        </button>
+                                    </label>
+                                    <input class="form-control" id="interest" value="{{interests}}"
                                            type="text" readonly disabled>
                                 </div>
                             </div>
@@ -369,24 +290,8 @@
                 </div>
             </div>
         </div>
-        <!-- password modal -->
-        <div id="changePasswordModal"></div>
-        <!-- Image modal -->
-        <div id="changeUserPictureModal"></div>
-        <!-- fname modal -->
-        <div id="changeFNameModal"></div>
-        <!-- lname modal -->
-        <div id="changeLNameModal"></div>
-        <!-- gender modal -->
-        <div id="changeGenderModal"></div>
-        <!-- birthday modal -->
-        <div id="changeBirthdayModal"></div>
-        <!-- telephone modal -->
-        <div id="changeTelephoneModal"></div>
-        <!-- email modal -->
-        <div id="changeEmailModal"></div>
-        <!-- address modal -->
-        <div id="changeAddressModal"></div>
+        <div ng-include="'https://localhost:8443/static/html/edit_password-modal.html'"></div>
+        <div ng-include="'https://localhost:8443/static/html/edit_student_details-modal.html'"></div>
     </div>
 </nav>
 </body>

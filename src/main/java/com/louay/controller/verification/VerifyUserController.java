@@ -43,11 +43,12 @@ public class VerifyUserController implements Serializable {
                     .path("/WEB-INF/views/verify_done.jsp.jsp")
                     .push();
         }
-        return "verify_done";
+        return "/verify_done";
     }
 
     @GetMapping(value = "/perform_verify/{userId}/{verifyNumber}")
-    public String verifyUserThenRedirectIt(@PathVariable String userId, @PathVariable String verifyNumber) {
+    public String verifyUserThenRedirectIt(@PathVariable(value = "userId") String userId,
+                                           @PathVariable(value = "verifyNumber") String verifyNumber) {
         UsersAuthentication usersAuthentication = buildUsersAuthentication(userId);
         Integer verifyNumberInteger = Integer.parseInt(verifyNumber);
         if (verifyNumberInteger.equals(usersAuthentication.getVerificationNumber())) {

@@ -11,8 +11,8 @@ import com.louay.model.entity.users.Instructor;
 import com.louay.model.entity.users.Student;
 import com.louay.model.entity.users.Users;
 import com.louay.model.entity.users.picute.AccountPicture;
-import com.louay.model.entity.wrapper.AdminRememberMeWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -30,7 +30,6 @@ public class EntitiesFactory {
     private UserAccountStatus userAccountStatus;
     private UsersAuthentication usersAuthentication;
     private CookieLogin cookieLogin;
-    private AdminRememberMeWrapper adminRememberMeWrapper;
     private UserSignIn userSignIn;
 
     public Admin getAdmin() {
@@ -50,6 +49,7 @@ public class EntitiesFactory {
     }
 
     @Autowired
+    @Qualifier("users")
     public void setUsers(Users users) {
         if (users == null) {
             throw new IllegalArgumentException("users entities cannot be null at EntitiesFactory.class!.");
@@ -62,6 +62,7 @@ public class EntitiesFactory {
     }
 
     @Autowired
+    @Qualifier("student")
     public void setStudent(Student student) {
         if (student == null) {
             throw new IllegalArgumentException("student entities cannot be null at EntitiesFactory.class!.");
@@ -74,6 +75,7 @@ public class EntitiesFactory {
     }
 
     @Autowired
+    @Qualifier("instructor")
     public void setInstructor(Instructor instructor) {
         if (instructor == null) {
             throw new IllegalArgumentException("instructor entities cannot be null at EntitiesFactory.class!.");
@@ -151,18 +153,6 @@ public class EntitiesFactory {
             throw new IllegalArgumentException("cookieLogin entities cannot be null at EntitiesFactory.class!.");
         }
         this.cookieLogin = cookieLogin;
-    }
-
-    public AdminRememberMeWrapper getAdminRememberMeWrapper() {
-        return adminRememberMeWrapper;
-    }
-
-    @Autowired
-    public void setAdminRememberMeWrapper(AdminRememberMeWrapper adminRememberMeWrapper) {
-        if (adminRememberMeWrapper == null) {
-            throw new IllegalArgumentException("adminRememberMeWrapper entities cannot be null at EntitiesFactory.class!.");
-        }
-        this.adminRememberMeWrapper = adminRememberMeWrapper;
     }
 
     public UserSignIn getUserSignIn() {

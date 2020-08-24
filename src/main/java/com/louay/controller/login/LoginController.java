@@ -2,6 +2,7 @@ package com.louay.controller.login;
 
 import com.louay.controller.factory.EntitiesFactory;
 import com.louay.controller.factory.ServicesFactory;
+import com.louay.controller.factory.WrappersFactory;
 import com.louay.model.entity.authentication.CookieLogin;
 import com.louay.model.entity.role.AccountsRoles;
 import com.louay.model.entity.role.UsersRoles;
@@ -28,22 +29,24 @@ import java.security.SecureRandom;
 @CrossOrigin(origins = "https://localhost:8443")
 @RequestMapping(value = "/login")
 public class LoginController implements Serializable {
-    private static final long serialVersionUID = -8497194742910253965L;
+    private static final long serialVersionUID = 7766987398483049143L;
     private final ServicesFactory servicesFactory;
     private final EntitiesFactory entitiesFactory;
+    private final WrappersFactory wrappersFactory;
     private final PasswordEncoder passwordEncoder;
     private String email;
     private AccountsRoles accountsRoles;
 
     @Autowired
     public LoginController(ServicesFactory servicesFactory, EntitiesFactory entitiesFactory,
-                           PasswordEncoder passwordEncoder) {
-        if (servicesFactory == null || entitiesFactory == null || passwordEncoder == null) {
+                           PasswordEncoder passwordEncoder,  WrappersFactory wrappersFactory) {
+        if (servicesFactory == null || entitiesFactory == null || passwordEncoder == null || wrappersFactory == null) {
             throw new IllegalArgumentException("factory cannot be null at LoginController.class");
         }
         this.servicesFactory = servicesFactory;
         this.entitiesFactory = entitiesFactory;
         this.passwordEncoder = passwordEncoder;
+        this.wrappersFactory = wrappersFactory;
     }
 
     @GetMapping
@@ -162,10 +165,10 @@ public class LoginController implements Serializable {
             deleteCookies(request, response);
             return "redirect:/login";
         }
-        if (userAccountStatus.getOnline()) {
+        /*if (userAccountStatus.getOnline()) {
             deleteCookies(request, response);
             return "redirect:/login";
-        }
+        }*/
 
         createSignInDate(adminWrapper);
         updateUserAccountStatusToOnline(adminWrapper);
@@ -181,13 +184,13 @@ public class LoginController implements Serializable {
     @RequestMapping(value = "/redirect_tracer_success_login")
     private String getTracerAccountHomePage() {
         if (Role.STUDENT.compareTo(this.accountsRoles.getRoleName()) == 0) {
-            return String.format("redirect:/student/student_home/%s", this.email);
+            return String.format("redirect:/student/student_home/%s", filterOriginalToEmailUrl());
 
         } else if (Role.INSTRUCTOR.compareTo(accountsRoles.getRoleName()) == 0) {
-            return String.format("redirect:/instructor/instructor_home/%s", this.email);
+            return String.format("redirect:/instructor/instructor_home/%s", filterOriginalToEmailUrl());
 
         } else if (Role.ADMIN.compareTo(accountsRoles.getRoleName()) == 0) {
-            return String.format("redirect:/admin/admin_home/%s", this.email);
+            return String.format("redirect:/admin/admin_home/%s", filterOriginalToEmailUrl());
 
         } else {
             throw new UnsupportedOperationException("No roles had matched!.");
@@ -215,7 +218,7 @@ public class LoginController implements Serializable {
     }
 
     private AdminRememberMeWrapper buildAdminRememberMeWrapper(String email) {
-        AdminRememberMeWrapper adminWrapper = this.entitiesFactory.getAdminRememberMeWrapper();
+        AdminRememberMeWrapper adminWrapper = this.wrappersFactory.getAdminRememberMeWrapper();
         adminWrapper.setAdmin(this.entitiesFactory.getAdmin());
         adminWrapper.getAdmin().setEmail(email);
 
@@ -274,13 +277,13 @@ public class LoginController implements Serializable {
     @RequestMapping(value = "/redirect_success_login")
     private ResponseEntity<String> getAccountHomePage() {
         if (Role.STUDENT.compareTo(this.accountsRoles.getRoleName()) == 0) {
-            return ResponseEntity.ok().body(String.format("/student/student_home/%s", this.email));
+            return ResponseEntity.ok().body(String.format("/student/student_home/%s", filterOriginalToEmailUrl()));
 
         } else if (Role.INSTRUCTOR.compareTo(accountsRoles.getRoleName()) == 0) {
-            return ResponseEntity.ok().body(String.format("/instructor/instructor_home/%s", this.email));
+            return ResponseEntity.ok().body(String.format("/instructor/instructor_home/%s", filterOriginalToEmailUrl()));
 
         } else if (Role.ADMIN.compareTo(accountsRoles.getRoleName()) == 0) {
-            return ResponseEntity.ok().body(String.format("/admin/admin_home/%s", this.email));
+            return ResponseEntity.ok().body(String.format("/admin/admin_home/%s", filterOriginalToEmailUrl()));
 
         } else {
             throw new UnsupportedOperationException("No roles had matched!.");
@@ -460,5 +463,17 @@ public class LoginController implements Serializable {
         HttpSession session = request.getSession(true);
         session.setAttribute("id", adminWrapper.getAdmin().getEmail());
         session.setAttribute("password", adminWrapper.getAdmin().getPassword());
+    }
+
+    private String filterOriginalToEmailUrl(){
+        if (this.email == null ){
+            return "";
+        }
+        int emailLength  = this.email.length();
+        String subEmail = this.email.substring(emailLength-4, emailLength);
+        if (subEmail.equals(".com")){
+            return this.email.substring(0, emailLength-4)+"-com";
+        }
+        return this.email;
     }
 }

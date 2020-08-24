@@ -2,14 +2,15 @@
 /*jshint sub:true*/
 /*Content-Disposition:inline;filename=f.txt*/
 /*content-type:application/javascript*/
-app.config(function($httpProvider) {
+app.config(function ($httpProvider) {
     $httpProvider.defaults.useXDomain = true;
     $httpProvider.defaults.withCredentials = true;
     $httpProvider.defaults.xsrfCookieName = 'XSRF-TOKEN';
     $httpProvider.defaults.xsrfHeaderName = 'X-XSRF-TOKEN';
 }).controller('StudentRegisterController', RegisterCtrl);
-RegisterCtrl.$inject = ['$scope', '$http','RegisterStudentSubmitService', 'CountryStateService'];
-function RegisterCtrl($scope, $http, RegisterStudentSubmitService, CountryStateService) {
+RegisterCtrl.$inject = ['$scope', '$http', '$timeout', 'RegisterStudentSubmitService', 'CountryStateService'];
+
+function RegisterCtrl($scope, $http, $timeout, RegisterStudentSubmitService, CountryStateService) {
     $scope.submitted = false;
     $scope.countryList = CountryStateService.allCountry();
     $scope.stateList = CountryStateService.allState();
@@ -21,7 +22,6 @@ function RegisterCtrl($scope, $http, RegisterStudentSubmitService, CountryStateS
             if ($scope.student.password === $scope.student.rePassword) {
                 RegisterStudentSubmitService.studentSubmitForm($scope.student)
                     .then(function successCallback(response) {
-                        console.log(response.data);
                         $scope.isSuccess = true;
                         $scope.submitSuccessMessage = response.data;
                         $scope.student = null;
@@ -37,7 +37,8 @@ function RegisterCtrl($scope, $http, RegisterStudentSubmitService, CountryStateS
                             $scope.submitErrorMessage = response.data;
                         }
                     });
-            }else {
+            } else {
+                console.log(response.data);
                 $scope.studentForm.password.$invalid = true;
                 $scope.studentForm.rePassword.$invalid = true;
                 $scope.isError = true;

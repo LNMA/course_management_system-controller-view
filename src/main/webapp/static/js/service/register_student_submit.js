@@ -29,10 +29,6 @@ app.service('RegisterStudentSubmitService', ['$http', function ($http) {
                     password: student.password
                 }
             }
-        })/*.then(function successCallback(response) {
-            console.log(response.data);
-        }, function errorCallback(response) {
-            console.log(response);
-        })*/;
+        })
     };
 }]);

@@ -15,7 +15,7 @@ app.service('LoginAccountsSubmitService', ['$http', function ($http) {
             processData: false, //To avoid making query String instead of JSON
             timeout: 4000,
             data: {
-                admin:{
+                admin: {
                     email: account.email,
                     password: account.password
                 },

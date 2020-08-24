@@ -3,10 +3,9 @@
 /*content-type:application/javascript*/
 
 //password modal
-$(document).on('click', '#dropdownProfile', function () {
+/*$(document).on('click', '', function () {
     'use strict';
-    $('#changePasswordModal').empty();
-    $('#changePasswordModal').append(`<div class="modal fade" id="passwordModal">
+    $('#changePasswordModal').empty().append(`<div class="modal fade" id="passwordModal">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -46,7 +45,7 @@ $(document).on('click', '#dropdownProfile', function () {
             </div>
         </div>
     </div>`);
-});
+});*/
 function passwordValidateForm() {
     'use strict';
     let oldPassword = document.forms['passwordForm']['passwordOld'].value;

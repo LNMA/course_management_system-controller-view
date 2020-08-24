@@ -20,15 +20,15 @@ public class SendingVerificationEmail implements Serializable {
         prop.put("mail.smtp.auth", "true");
         prop.put("mail.smtp.starttls.enable", "true");
         prop.put("mail.transport.protocol", "smtp");
-        //prop.put("mail.smtp.host", "smtp.mailtrap.io");
+        prop.put("mail.smtp.ssl.enable", "true");
+        prop.put("mail.smtp.ssl.trust", "smtp.gmail.com");
+        //prop.put("mail.smtp.ssl.trust", "smtp.mailtrap.io");
         prop.put("mail.smtp.host", "smtp.gmail.com");
+        //prop.put("mail.smtp.host", "smtp.mailtrap.io");
         prop.put("mail.smtp.port", "465");
         prop.put("mail.smtp.socketFactory.port", "465");
-        //prop.put("mail.smtp.ssl.trust", "smtp.mailtrap.io");
-        prop.put("mail.smtp.ssl.trust", "smtp.gmail.com");
-        prop.put("mail.smtp.ssl.enable", "true");
         prop.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-        prop.put("mail.smtp.socketFactory.fallback", "false");
+        prop.put("mail.smtp.socketFactory.fallback", "true");
 
 
         return prop;
@@ -47,7 +47,7 @@ public class SendingVerificationEmail implements Serializable {
         try {
             Message message = new MimeMessage(getEmailSession());
             message.setFrom(new InternetAddress("DevelopmentTestLNMA@gmail.com"));
-            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse("a3.juara@gmail.com"));
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(usersAuthentication.getUsers().getEmail()));
             message.setSubject("Course Management System verification");
 
             String msg = getMessageContent(usersAuthentication);
@@ -67,7 +67,7 @@ public class SendingVerificationEmail implements Serializable {
         }
     }
 
-    private String getMessageContent(UsersAuthentication usersAuthentication){
+    private String getMessageContent(UsersAuthentication usersAuthentication) {
         return "<!DOCTYPE html>\n" +
                 "<html lang=\"en\">\n" +
                 "<head>\n" +
@@ -89,11 +89,11 @@ public class SendingVerificationEmail implements Serializable {
                 "        <br>\n" +
                 "        <h2 style=\"color: #3e3c4e;text-transform:capitalize;font-weight:700;\">Welcome</h2>\n" +
                 "        <div style=\"font-size:1.2rem;text-transform:capitalize;color:#3e3c4e;\">\n" +
-                "            <p>"+usersAuthentication.getUsers().getForename()+" "+usersAuthentication.getUsers().getSurname()+"</p>\n" +
+                "            <p>" + usersAuthentication.getUsers().getForename() + " " + usersAuthentication.getUsers().getSurname() + "</p>\n" +
                 "            <p>Thank you for sign up for course management system.</p>\n" +
                 "            <p>Please verify your email address by clicking the button below.</p>\n" +
                 "            <p>\n" +
-                "                <a href=\"https://192.168.1.11:8443/user_verify/perform_verify/"+usersAuthentication.getUsers().getEmail()+"/"+usersAuthentication.getVerificationNumber()+"\">\n" + //TODO : change localhost IP
+                "                <a href=\"https://192.168.1.11:8443/user_verify/perform_verify/" + usersAuthentication.getUsers().getEmail() + "/" + usersAuthentication.getVerificationNumber() + "\">\n" + //TODO : change localhost IP
                 "                    <button type=\"button\" style=\"height: 80px;border-radius: 2.5em;background: linear-gradient(to right,#e759fd,#206490,#88c7f0);color: white;font-weight: bold;font-size: 18px;width:40%;\">\n" +
                 "                        <h5>Confirm my account</h5>\n" +
                 "                    </button>\n" +

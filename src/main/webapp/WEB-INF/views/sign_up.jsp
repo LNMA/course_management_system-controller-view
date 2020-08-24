@@ -6,7 +6,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no"/>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no"/>
     <meta name="apple-mobile-web-app-capable" content="yes"/>
     <style type="text/css">
         @import url(<c:url value="/static/css/background-large_form.css"/>);
@@ -17,6 +18,7 @@
     <script type="application/javascript" src="<c:url value="/static/lib/bootstrap-4.5.1/js/bootstrap.min.js"/>"></script>
     <script type="application/javascript" src="<c:url value="/static/lib/angularJS-1.8.0/angular.min.js"/>"></script>
     <script type="application/javascript" src="<c:url value="/static/lib/angularJS-1.8.0/angular-messages.min.js"/>"></script>
+    <script type="application/javascript" src="<c:url value="/static/lib/angularJS-1.8.0/angular-sanitize.min.js"/>"></script>
     <script type="application/javascript" src="<c:url value="/static/js/app.js"/>"></script>
     <script type="application/javascript" src="<c:url value="/static/js/control/student_sign_up.js"/>"></script>
     <script type="application/javascript" src="<c:url value="/static/js/service/country_state.js"/>"></script>
@@ -40,7 +42,8 @@
             <div class="container" id="message" ng-model="submitSuccessMessage">
                 <div ng-show="isSuccess">
                     <div class="alert alert-success alert-dismissible fade show">
-                        <strong>Success!</strong> {{submitSuccessMessage}}, Go to<a href="https://localhost:8443/login">login</a> page.
+                        <strong>Success!</strong> {{submitSuccessMessage}}, Go to<a href="https://localhost:8443/login">login</a>
+                        page.
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>

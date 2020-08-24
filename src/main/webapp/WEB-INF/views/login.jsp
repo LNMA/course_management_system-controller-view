@@ -19,6 +19,7 @@
     <script type="application/javascript" src="<c:url value="/static/lib/bootstrap-4.5.1/js/bootstrap.min.js"/>"></script>
     <script type="application/javascript" src="<c:url value="/static/lib/angularJS-1.8.0/angular.min.js"/>"></script>
     <script type="application/javascript" src="<c:url value="/static/lib/angularJS-1.8.0/angular-messages.min.js"/>"></script>
+    <script type="application/javascript" src="<c:url value="/static/lib/angularJS-1.8.0/angular-sanitize.min.js"/>"></script>
     <script type="application/javascript" src="<c:url value="/static/js/app.js"/>"></script>
     <script type="application/javascript" src="<c:url value="/static/js/service/login_submit.js"/>"></script>
     <script type="application/javascript" src="<c:url value="/static/js/control/login.js"/>"></script>

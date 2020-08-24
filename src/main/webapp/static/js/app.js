@@ -2,4 +2,4 @@
 /*jshint sub:true*/
 /*Content-Disposition:inline;filename=f.txt*/
 /*content-type:application/javascript*/
-let app = angular.module('app', ['ngMessages']);
+let app = angular.module('app', ['ngMessages', 'ngSanitize']);
