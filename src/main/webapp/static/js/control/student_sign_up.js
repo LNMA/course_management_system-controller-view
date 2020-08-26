@@ -38,7 +38,6 @@ function RegisterCtrl($scope, $http, $timeout, RegisterStudentSubmitService, Cou
                         }
                     });
             } else {
-                console.log(response.data);
                 $scope.studentForm.password.$invalid = true;
                 $scope.studentForm.rePassword.$invalid = true;
                 $scope.isError = true;

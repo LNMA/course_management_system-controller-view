@@ -1,5 +1,3 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,29 +8,28 @@
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no"/>
     <meta name="apple-mobile-web-app-capable" content="yes"/>
     <style type="text/css">
-        @import url(<c:url value="/static/lib/bootstrap-4.5.1/css/bootstrap.min.css"/>);
+        @import url(/static/lib/bootstrap-4.5.1/css/bootstrap.min.css);
     </style>
-    <script type="application/javascript" src="<c:url value="/static/lib/jQuery-3.5.1/jquery-3.5.1.min.js"/>"></script>
-    <script type="application/javascript" src="<c:url value="/static/lib/popper-2.4.3/popper.min.js"/>"></script>
-    <script type="application/javascript"
-            src="<c:url value="/static/lib/bootstrap-4.5.1/js/bootstrap.min.js"/>"></script>
-    <script type="application/javascript" src="<c:url value="/static/lib/angularJS-1.8.0/angular.min.js"/>"></script>
-    <script type="application/javascript"
-            src="<c:url value="/static/lib/angularJS-1.8.0/angular-messages.min.js"/>"></script>
-    <script type="application/javascript"
-            src="<c:url value="/static/lib/angularJS-1.8.0/angular-sanitize.min.js"/>"></script>
-    <script type="application/javascript" src="<c:url value="/static/js/app.js"/>"></script>
-    <script type="application/javascript" src="<c:url value="/static/js/control/student_home.js"/>"></script>
-    <script type="application/javascript" src="<c:url value="/static/js/service/get_student_home_info.js"/>"></script>
-    <script type="application/javascript" src="<c:url value="/static/js/service/country_state.js"/>"></script>
-    <script type="application/javascript" src="<c:url value="/static/js/service/update_user_details.js"/>"></script>
-    <script type="application/javascript" src="<c:url value="/static/js/service/edit_student_interests.js"/>"></script>
-    <script type="application/javascript" src="<c:url value="/static/js/service/edit_password.js"/>"></script>
-    <link href="<c:url value="/static/images/favicon.ico"/>" rel="icon" type="image/x-icon">
+    <script type="application/javascript" src="/static/lib/jQuery-3.5.1/jquery-3.5.1.min.js"></script>
+    <script type="application/javascript" src="/static/lib/popper-2.4.3/popper.min.js"></script>
+    <script type="application/javascript" src="/static/lib/bootstrap-4.5.1/js/bootstrap.min.js"></script>
+    <script type="application/javascript" src="/static/lib/angularJS-1.8.0/angular.min.js"></script>
+    <script type="application/javascript" src="/static/lib/angularJS-1.8.0/angular-messages.min.js"></script>
+    <script type="application/javascript" src="/static/lib/angularJS-1.8.0/angular-sanitize.min.js"></script>
+    <script type="application/javascript" src="/static/js/app.js"></script>
+    <script type="application/javascript" src="/static/js/control/student_home.js"></script>
+    <script type="application/javascript" src="/static/js/control/edit_user_details_modal-controller.js"></script>
+    <script type="application/javascript" src="/static/js/control/edit_password-controller.js"></script>
+    <script type="application/javascript" src="/static/js/service/get_student_home_info.js"></script>
+    <script type="application/javascript" src="/static/js/service/country_state.js"></script>
+    <script type="application/javascript" src="/static/js/service/update_user_details.js"></script>
+    <script type="application/javascript" src="/static/js/service/edit_student_interests.js"></script>
+    <script type="application/javascript" src="/static/js/service/edit_password.js"></script>
+    <link href="/static/images/favicon.ico" rel="icon" type="image/x-icon">
     <title>Student Home `by Louay Amr`</title>
 <body ng-app="app" ng-controller="StudentHomeController">
 <header>
-    <div ng-include="'https://localhost:8443/static/html/student-navbar.html'"></div>
+    <ng-include src="'/static/html/page-include/student-navbar.html'"></ng-include>
 </header>
 <main class="container-fluid">
     <div class="container" id="studentHomeAlert" ng-model="studentHomeErrorMessage">
@@ -119,7 +116,7 @@
                                                 Password:
                                                 <button class="btn" data-toggle="modal" data-dismiss="modal"
                                                         data-target="#passwordModal">
-                                                    <img src="<c:url value="/static/images/edit-black-48dp.svg"/>"
+                                                    <img src="/static/images/edit-black-48dp.svg"
                                                          width="16" height="16" alt="edit">
                                                 </button>
                                             </label>
@@ -135,7 +132,7 @@
                                              width="256" height="256" alt="My Picture">
                                         <button class="btn" data-toggle="modal" data-dismiss="modal"
                                                 data-target="#ImageModal">
-                                            <img src="<c:url value="/static/images/add_photo_alternate-black-48dp.svg"/>"
+                                            <img src="/static/images/add_photo_alternate-black-48dp.svg"
                                                  width="28" height="28" alt="add image">
                                         </button>
                                     </div>
@@ -150,7 +147,7 @@
                                         Forename:
                                         <button class="btn" data-toggle="modal" data-dismiss="modal"
                                                 data-target="#forenameModal">
-                                            <img src="<c:url value="/static/images/edit-black-48dp.svg"/>"
+                                            <img src="/static/images/edit-black-48dp.svg"
                                                  width="16" height="16" alt="edit">
                                         </button>
                                     </label>
@@ -162,7 +159,7 @@
                                         Phone:
                                         <button class="btn" data-toggle="modal" data-dismiss="modal"
                                                 data-target="#telephoneModal">
-                                            <img src="<c:url value="/static/images/edit-black-48dp.svg"/>"
+                                            <img src="/static/images/edit-black-48dp.svg"
                                                  width="16" height="16" alt="edit">
                                         </button>
                                     </label>
@@ -177,7 +174,7 @@
                                         Surname:
                                         <button class="btn" data-toggle="modal" data-dismiss="modal"
                                                 data-target="#surnameModal">
-                                            <img src="<c:url value="/static/images/edit-black-48dp.svg"/>"
+                                            <img src="/static/images/edit-black-48dp.svg"
                                                  width="16" height="16" alt="edit">
                                         </button>
                                     </label>
@@ -189,7 +186,7 @@
                                         Country:
                                         <button class="btn" data-toggle="modal" data-dismiss="modal"
                                                 data-target="#addressModal">
-                                            <img src="<c:url value="/static/images/edit-black-48dp.svg"/>"
+                                            <img src="/static/images/edit-black-48dp.svg"
                                                  width="16" height="16" alt="edit">
                                         </button>
                                     </label>
@@ -203,7 +200,7 @@
                                         Gender:
                                         <button class="btn" data-toggle="modal" data-dismiss="modal"
                                                 data-target="#genderModal">
-                                            <img src="<c:url value="/static/images/edit-black-48dp.svg"/>"
+                                            <img src="/static/images/edit-black-48dp.svg"
                                                  width="16" height="16" alt="edit">
                                         </button>
                                     </label>
@@ -215,7 +212,7 @@
                                         State:
                                         <button class="btn" data-toggle="modal" data-dismiss="modal"
                                                 data-target="#addressModal">
-                                            <img src="<c:url value="/static/images/edit-black-48dp.svg"/>"
+                                            <img src="/static/images/edit-black-48dp.svg"
                                                  width="16" height="16" alt="edit">
                                         </button>
                                     </label>
@@ -229,7 +226,7 @@
                                         BirthDay:
                                         <button class="btn" data-toggle="modal" data-dismiss="modal"
                                                 data-target="#birthdayModal">
-                                            <img src="<c:url value="/static/images/edit-black-48dp.svg"/>"
+                                            <img src="/static/images/edit-black-48dp.svg"
                                                  width="16" height="16" alt="edit">
                                         </button>
                                     </label>
@@ -241,7 +238,7 @@
                                         Address:
                                         <button class="btn" data-toggle="modal" data-dismiss="modal"
                                                 data-target="#addressModal">
-                                            <img src="<c:url value="/static/images/edit-black-48dp.svg"/>"
+                                            <img src="/static/images/edit-black-48dp.svg"
                                                  width="16" height="16" alt="edit">
                                         </button>
                                     </label>
@@ -271,7 +268,7 @@
                                         Headline:
                                         <button class="btn" data-toggle="modal" data-dismiss="modal"
                                                 data-target="#headlineModal">
-                                            <img src="<c:url value="/static/images/edit-black-48dp.svg"/>"
+                                            <img src="/static/images/edit-black-48dp.svg"
                                                  width="16" height="16" alt="edit">
                                         </button>
                                     </label>
@@ -283,7 +280,7 @@
                                         Interests:
                                         <button class="btn" data-toggle="modal" data-dismiss="modal"
                                                 data-target="#interestsModal">
-                                            <img src="<c:url value="/static/images/edit-black-48dp.svg"/>"
+                                            <img src="/static/images/edit-black-48dp.svg"
                                                  width="16" height="16" alt="edit">
                                         </button>
                                     </label>
@@ -304,8 +301,8 @@
                 </div>
             </div>
         </div>
-        <div ng-include="'https://localhost:8443/static/html/edit_password-modal.html'"></div>
-        <div ng-include="'https://localhost:8443/static/html/edit_user_details-modal.html'"></div>
+        <ng-include src="'/static/html/page-include/edit_password-modal.html'" ></ng-include>
+        <ng-include src="'/static/html/page-include/edit_user_details-modal.html'"></ng-include>
 
         <!-- interests Modal -->
         <div class="modal fade" id="interestsModal">
@@ -334,11 +331,11 @@
                             <div class="alert alert-danger alert-dismissible fade show">
                                 <strong>Error!</strong>
                                 <span ng-show="editInterestsForm.interests.$error.required">
-                                            interests Required!
-                                        </span>
+                                    interests Required!
+                                </span>
                                 <span ng-show="editInterestsForm.interests.$invalid">
-                                            interests Invalid!
-                                        </span>
+                                    interests Invalid!
+                                </span>
                                 {{interestsErrorMessage}}
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
@@ -358,9 +355,9 @@
                                                placeholder="type new headline" ng-minlength="2" ng-maxlength="300"
                                                required
                                                ng-class="{'is-invalid': submitted &&
-                                           (editInterestsForm.interests.$error.required ||
-                                           editInterestsForm.interests.$invalid),
-                                           'is-valid': editInterestsForm.interests.$valid}"
+                                                          (editInterestsForm.interests.$error.required ||
+                                                          editInterestsForm.interests.$invalid),
+                                                          'is-valid': editInterestsForm.interests.$valid}"
                                                ng-model="editInterests">
                                     </div>
                                 </div>

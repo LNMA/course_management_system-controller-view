@@ -11,8 +11,6 @@ import com.louay.model.entity.users.Instructor;
 import com.louay.model.entity.users.Student;
 import com.louay.model.entity.users.Users;
 import com.louay.model.entity.users.picute.AccountPicture;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -33,137 +31,101 @@ public class EntitiesFactory {
     private UserSignIn userSignIn;
 
     public Admin getAdmin() {
+        setAdmin();
         return admin;
     }
 
-    @Autowired
-    public void setAdmin(Admin admin) {
-        if (admin == null) {
-            throw new IllegalArgumentException("admin entities cannot be null at EntitiesFactory.class!.");
-        }
-        this.admin = admin;
+    public void setAdmin() {
+        this.admin = new Admin();
     }
 
     public Users getUsers() {
+        setUsers();
         return users;
     }
 
-    @Autowired
-    @Qualifier("users")
-    public void setUsers(Users users) {
-        if (users == null) {
-            throw new IllegalArgumentException("users entities cannot be null at EntitiesFactory.class!.");
-        }
-        this.users = users;
+    public void setUsers() {
+        this.users = new Users();
     }
 
     public Student getStudent() {
+        setStudent();
         return student;
     }
 
-    @Autowired
-    @Qualifier("student")
-    public void setStudent(Student student) {
-        if (student == null) {
-            throw new IllegalArgumentException("student entities cannot be null at EntitiesFactory.class!.");
-        }
-        this.student = student;
+    public void setStudent() {
+        this.student = new Student();
     }
 
     public Instructor getInstructor() {
+        setInstructor();
         return instructor;
     }
 
-    @Autowired
-    @Qualifier("instructor")
-    public void setInstructor(Instructor instructor) {
-        if (instructor == null) {
-            throw new IllegalArgumentException("instructor entities cannot be null at EntitiesFactory.class!.");
-        }
-        this.instructor = instructor;
+    public void setInstructor() {
+        this.instructor = new Instructor();
     }
 
     public AccountsRoles getAccountsRoles() {
+        setAccountsRoles();
         return accountsRoles;
     }
 
-    @Autowired
-    public void setAccountsRoles(AccountsRoles accountsRoles) {
-        if (accountsRoles == null) {
-            throw new IllegalArgumentException("accountsRoles entities cannot be null at EntitiesFactory.class!.");
-        }
-        this.accountsRoles = accountsRoles;
+    public void setAccountsRoles() {
+        this.accountsRoles = new AccountsRoles();
     }
 
     public UsersRoles getUsersRoles() {
+        setUsersRoles();
         return usersRoles;
     }
 
-    @Autowired
-    public void setUsersRoles(UsersRoles usersRoles) {
-        if (usersRoles == null) {
-            throw new IllegalArgumentException("usersRoles entities cannot be null at EntitiesFactory.class!.");
-        }
-        this.usersRoles = usersRoles;
+    public void setUsersRoles() {
+        this.usersRoles = new UsersRoles();
     }
 
     public AccountPicture getAccountPicture() {
+        setAccountPicture();
         return accountPicture;
     }
 
-    @Autowired
-    public void setAccountPicture(AccountPicture accountPicture) {
-        if (accountPicture == null) {
-            throw new IllegalArgumentException("accountPicture entities cannot be null at EntitiesFactory.class!.");
-        }
-        this.accountPicture = accountPicture;
+    public void setAccountPicture() {
+        this.accountPicture = new AccountPicture();
     }
 
     public UserAccountStatus getUserAccountStatus() {
+        setUserAccountStatus();
         return userAccountStatus;
     }
 
-    @Autowired
-    public void setUserAccountStatus(UserAccountStatus userAccountStatus) {
-        if (userAccountStatus == null) {
-            throw new IllegalArgumentException("userAccountStatus entities cannot be null at EntitiesFactory.class!.");
-        }
-        this.userAccountStatus = userAccountStatus;
+    public void setUserAccountStatus() {
+        this.userAccountStatus = new UserAccountStatus();
     }
 
     public UsersAuthentication getUsersAuthentication() {
+        setUsersAuthentication();
         return usersAuthentication;
     }
 
-    @Autowired
-    public void setUsersAuthentication(UsersAuthentication usersAuthentication) {
-        if (usersAuthentication == null) {
-            throw new IllegalArgumentException("usersAuthentication entities cannot be null at EntitiesFactory.class!.");
-        }
-        this.usersAuthentication = usersAuthentication;
+    public void setUsersAuthentication() {
+        this.usersAuthentication = new UsersAuthentication();
     }
 
     public CookieLogin getCookieLogin() {
+        setCookieLogin();
         return cookieLogin;
     }
 
-    @Autowired
-    public void setCookieLogin(CookieLogin cookieLogin) {
-        if (cookieLogin == null) {
-            throw new IllegalArgumentException("cookieLogin entities cannot be null at EntitiesFactory.class!.");
-        }
-        this.cookieLogin = cookieLogin;
+    public void setCookieLogin() {
+        this.cookieLogin = new CookieLogin();
     }
 
     public UserSignIn getUserSignIn() {
+        setUserSignIn();
         return userSignIn;
     }
 
-    @Autowired
-    public void setUserSignIn(UserSignIn userSignIn) {
-        if (userSignIn == null) {
-            throw new IllegalArgumentException("userSignIn entities cannot be null at EntitiesFactory.class!.");
-        }
-        this.userSignIn = userSignIn;
+    public void setUserSignIn() {
+        this.userSignIn = new UserSignIn();
     }
 }

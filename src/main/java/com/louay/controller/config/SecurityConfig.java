@@ -30,7 +30,7 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .rememberMe().key("uniqueAndSecret").tokenValiditySeconds(60 * 60 * 24 * 30)
                 .and()
-                .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).ignoringAntMatchers("/student/student_home/{{email}}/profile_picture-update")
                 .and()
                 .addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class)
                 .exceptionHandling()

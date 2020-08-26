@@ -82,10 +82,9 @@ public class LoginController implements Serializable {
                     .path("/static/lib/popper-2.4.3/popper.min.js")
                     .path("/static/lib/bootstrap-4.5.1/js/bootstrap.min.js")
                     .path("/static/lib/jQuery-3.5.1/jquery-3.5.1.min.js")
-                    .path("/WEB-INF/views/login.jsp")
                     .push();
         }
-        return "/login";
+        return "/static/html/login.html";
     }
 
     @RequestMapping(value = "/perform_session_login")

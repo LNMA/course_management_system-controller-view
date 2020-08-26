@@ -40,10 +40,9 @@ public class VerifyUserController implements Serializable {
                     .path("/static/lib/popper-2.4.3/popper.min.js")
                     .path("/static/lib/bootstrap-4.5.1/js/bootstrap.min.js")
                     .path("/static/lib/jQuery-3.5.1/jquery-3.5.1.min.js")
-                    .path("/WEB-INF/views/verify_done.jsp.jsp")
                     .push();
         }
-        return "/verify_done";
+        return "/static/html/success_verify.html";
     }
 
     @GetMapping(value = "/perform_verify/{userId}/{verifyNumber}")

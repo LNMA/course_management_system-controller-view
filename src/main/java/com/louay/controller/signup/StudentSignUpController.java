@@ -70,10 +70,9 @@ public class StudentSignUpController implements Serializable {
                     .path("/static/lib/popper-2.4.3/popper.min.js")
                     .path("/static/lib/bootstrap-4.5.1/js/bootstrap.min.js")
                     .path("/static/lib/jQuery-3.5.1/jquery-3.5.1.min.js")
-                    .path("/WEB-INF/views/sign_up.jsp")
                     .push();
         }
-        return "/sign_up";
+        return "/static/html/student_register.html";
     }
 
     @RequestMapping(value = "/submit_student_sign_up", method = RequestMethod.POST,

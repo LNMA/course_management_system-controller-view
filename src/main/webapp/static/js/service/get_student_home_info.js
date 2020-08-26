@@ -33,10 +33,14 @@ app.factory('GetStudentHomeInfoService', function () {
                     $scope.userRole = response.data.student.userRole;
                     $scope.age = response.data.student.age;
                     $scope.picture = response.data.pictureBase64;
+                    $scope.submitted = false;
 
                 }, function errorCallback(response) {
-                    response.data;
-                });;
+                    $scope.isStudentHomeError = true;
+                    $scope.studentHomeErrorMessage = response.data;
+                    $scope.submitted = false;
+
+                });
         }
     };
 });
