@@ -1,6 +1,5 @@
 package com.louay.controller.config;
 
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
@@ -14,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfFilter;
+import org.springframework.web.context.WebApplicationContext;
 
 @EnableWebSecurity
 @Configuration
@@ -54,7 +54,7 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+    @Scope(value = WebApplicationContext.SCOPE_APPLICATION)
     public PasswordEncoder passwordEncoder() {
         return new Argon2PasswordEncoder();
     }

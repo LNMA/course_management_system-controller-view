@@ -2,130 +2,95 @@ package com.louay.controller.factory;
 
 import com.louay.model.entity.authentication.CookieLogin;
 import com.louay.model.entity.authentication.UsersAuthentication;
+import com.louay.model.entity.courses.Courses;
+import com.louay.model.entity.courses.members.CourseMembers;
+import com.louay.model.entity.courses.members.UsersAttendance;
+import com.louay.model.entity.material.FileMaterials;
+import com.louay.model.entity.material.TextMaterials;
 import com.louay.model.entity.role.AccountsRoles;
 import com.louay.model.entity.role.UsersRoles;
 import com.louay.model.entity.status.UserAccountStatus;
+import com.louay.model.entity.status.UserAtCourse;
 import com.louay.model.entity.status.UserSignIn;
 import com.louay.model.entity.users.Admin;
 import com.louay.model.entity.users.Instructor;
 import com.louay.model.entity.users.Student;
 import com.louay.model.entity.users.Users;
 import com.louay.model.entity.users.picute.AccountPicture;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.WebApplicationContext;
 
 @Component
-@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+@Scope(value = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class EntitiesFactory {
-    private Admin admin;
-    private Users users;
-    private Student student;
-    private Instructor instructor;
-    private AccountsRoles accountsRoles;
-    private UsersRoles usersRoles;
-    private AccountPicture accountPicture;
-    private UserAccountStatus userAccountStatus;
-    private UsersAuthentication usersAuthentication;
-    private CookieLogin cookieLogin;
-    private UserSignIn userSignIn;
 
     public Admin getAdmin() {
-        setAdmin();
-        return admin;
-    }
-
-    public void setAdmin() {
-        this.admin = new Admin();
+        return new Admin();
     }
 
     public Users getUsers() {
-        setUsers();
-        return users;
-    }
-
-    public void setUsers() {
-        this.users = new Users();
+        return new Users();
     }
 
     public Student getStudent() {
-        setStudent();
-        return student;
-    }
-
-    public void setStudent() {
-        this.student = new Student();
+        return new Student();
     }
 
     public Instructor getInstructor() {
-        setInstructor();
-        return instructor;
-    }
-
-    public void setInstructor() {
-        this.instructor = new Instructor();
+        return new Instructor();
     }
 
     public AccountsRoles getAccountsRoles() {
-        setAccountsRoles();
-        return accountsRoles;
-    }
-
-    public void setAccountsRoles() {
-        this.accountsRoles = new AccountsRoles();
+        return new AccountsRoles();
     }
 
     public UsersRoles getUsersRoles() {
-        setUsersRoles();
-        return usersRoles;
-    }
-
-    public void setUsersRoles() {
-        this.usersRoles = new UsersRoles();
+        return new UsersRoles();
     }
 
     public AccountPicture getAccountPicture() {
-        setAccountPicture();
-        return accountPicture;
-    }
-
-    public void setAccountPicture() {
-        this.accountPicture = new AccountPicture();
+        return new AccountPicture();
     }
 
     public UserAccountStatus getUserAccountStatus() {
-        setUserAccountStatus();
-        return userAccountStatus;
-    }
-
-    public void setUserAccountStatus() {
-        this.userAccountStatus = new UserAccountStatus();
+        return new UserAccountStatus();
     }
 
     public UsersAuthentication getUsersAuthentication() {
-        setUsersAuthentication();
-        return usersAuthentication;
-    }
-
-    public void setUsersAuthentication() {
-        this.usersAuthentication = new UsersAuthentication();
+        return new UsersAuthentication();
     }
 
     public CookieLogin getCookieLogin() {
-        setCookieLogin();
-        return cookieLogin;
-    }
-
-    public void setCookieLogin() {
-        this.cookieLogin = new CookieLogin();
+        return new CookieLogin();
     }
 
     public UserSignIn getUserSignIn() {
-        setUserSignIn();
-        return userSignIn;
+        return new UserSignIn();
     }
 
-    public void setUserSignIn() {
-        this.userSignIn = new UserSignIn();
+    public UsersAttendance getUsersAttendance() {
+        return new UsersAttendance();
+    }
+
+    public UserAtCourse getUserAtCourse() {
+        return new UserAtCourse();
+    }
+
+    public CourseMembers getCourseMembers() {
+        return new CourseMembers();
+    }
+
+    public Courses getCourses() {
+        return new Courses();
+    }
+
+    public FileMaterials getFileMaterials() {
+        return new FileMaterials();
+    }
+
+    public TextMaterials getTextMaterials() {
+        return new TextMaterials();
     }
 }

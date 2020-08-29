@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.PushBuilder;
 import java.io.Serializable;
+
 @Controller
 @CrossOrigin(origins = "https://localhost:8443")
 public class CustomErrorController implements ErrorController, Serializable {

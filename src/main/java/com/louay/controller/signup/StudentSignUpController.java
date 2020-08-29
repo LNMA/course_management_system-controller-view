@@ -34,7 +34,7 @@ public class StudentSignUpController implements Serializable {
     private final FileProcess fileProcess;
     private final SendingVerificationEmail sendingVerificationEmail;
     private final PasswordEncoder passwordEncoder;
-    private static final String SUCCESS_MESSAGE = "Please check your email to verify your account then sign in";
+    private static final String SUCCESS_MESSAGE = ", Please check your email to verify your account then sign in";
     private static final String DUPLICATE_EMAIL_ERROR_MESSAGE = "This email is already Used!.";
 
     @Autowired
@@ -85,9 +85,9 @@ public class StudentSignUpController implements Serializable {
 
         if (student.getEmail() == null || student.getAdmin() == null || student.getAdmin().getEmail() == null ||
                 student.getAdmin().getPassword() == null || student.getEmail().length() < 7 ||
-                student.getAdmin().getPassword().length() < 8 || student.getAdmin().getEmail().length() <7 ||
+                student.getAdmin().getPassword().length() < 8 || student.getAdmin().getEmail().length() < 7 ||
                 student.getForename() == null || student.getForename().length() < 2 || student.getSurname() == null ||
-                student.getSurname().length() < 2){
+                student.getSurname().length() < 2) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("All field must fills!.");
         }
 
@@ -101,13 +101,13 @@ public class StudentSignUpController implements Serializable {
         createUserAccountStatus(student);
         createAccountPicture(student);
         UsersAuthentication usersAuthentication = createUserAuthentication(student);
-       this.sendingVerificationEmail.sendMessage(usersAuthentication);
+        String emailResult = this.sendingVerificationEmail.sendMessage(usersAuthentication);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(StudentSignUpController.SUCCESS_MESSAGE);
+        return ResponseEntity.status(HttpStatus.CREATED).body(emailResult + StudentSignUpController.SUCCESS_MESSAGE);
 
     }
 
-    private void encryptPassword(Student student){
+    private void encryptPassword(Student student) {
         student.getAdmin().setPassword(this.passwordEncoder.encode(student.getAdmin().getPassword()));
     }
 

@@ -4,7 +4,7 @@
     <display-name>course_management_system</display-name>
 
     <resource-ref>
-        <description>Tomcat JDBC 9.0.37 Pool Data Source</description>
+        <description>HikariCP 3.4.5 Pool Data Source</description>
         <res-ref-name>jdbc/course_management_system_datSource</res-ref-name>
         <res-type>javax.sql.DataSource</res-type>
         <res-auth>Container</res-auth>

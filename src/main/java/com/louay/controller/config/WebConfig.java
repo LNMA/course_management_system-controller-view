@@ -69,6 +69,12 @@ public class WebConfig implements WebMvcConfigurer {
         return multipartResolver;
     }
 
+    @Override
+    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+        WebMvcConfigurer.super.configureMessageConverters(converters);
+        converters.add(new MappingJackson2HttpMessageConverter());
+    }
+
     @Bean
     public ConfigurableServletWebServerFactory servletContainer() {
         TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory() {
@@ -84,12 +90,6 @@ public class WebConfig implements WebMvcConfigurer {
         };
         tomcat.addAdditionalTomcatConnectors(getHttpConnector());
         return tomcat;
-    }
-
-    @Override
-    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-        WebMvcConfigurer.super.configureMessageConverters(converters);
-        converters.add(new MappingJackson2HttpMessageConverter());
     }
 
     private Connector getHttpConnector() {

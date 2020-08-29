@@ -8,8 +8,7 @@ app.config(function ($httpProvider) {
     $httpProvider.defaults.xsrfCookieName = 'XSRF-TOKEN';
     $httpProvider.defaults.xsrfHeaderName = 'X-XSRF-TOKEN';
 }).controller('UserDetailModalController', UserDetailModalCtrl);
-UserDetailModalCtrl.$inject = ['$scope', '$http', '$location', 'GetStudentHomeInfoService', 'CountryStateService',
-    'UpdateUserDetailService'];
+UserDetailModalCtrl.$inject = ['$scope', '$http', '$location', 'CountryStateService', 'UpdateUserDetailService'];
 
 function UserDetailModalCtrl($scope, $http, $location, CountryStateService, UpdateUserDetailService) {
     $scope.countryList = CountryStateService.allCountry();

@@ -23,6 +23,7 @@
     <link href="/static/images/favicon.ico" rel="icon" type="image/x-icon">
     <title>Login `by Louay Amr`</title>
 <body>
+<div ng-bind-html="errorRender"></div>
 <header>
     <div class="jumbotron mb-0 h2 text-center">
         Course Management System
@@ -73,6 +74,19 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div ng-show="loading">
+            <div class="modal modal-dialog-centered">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-body text-center">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             </div>
 
             <div class="container">

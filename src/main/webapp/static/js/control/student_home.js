@@ -8,12 +8,14 @@ app.config(function ($httpProvider) {
     $httpProvider.defaults.xsrfCookieName = 'XSRF-TOKEN';
     $httpProvider.defaults.xsrfHeaderName = 'X-XSRF-TOKEN';
 }).controller('StudentHomeController', StudentHomeCtrl);
-StudentHomeCtrl.$inject = ['$scope', '$http', '$location', 'GetStudentHomeInfoService',
-    'UpdateStudentInterestsService'];
+StudentHomeCtrl.$inject = ['$scope', '$http', '$location', '$sce', 'GetStudentHomeInfoService',
+    'UpdateStudentInterestsService', 'GetStudentCourseService'];
 
-function StudentHomeCtrl($scope, $http, $location, GetStudentHomeInfoService, UpdateStudentInterestsService) {
-    GetStudentHomeInfoService.getStudentInfo($http, $location, $scope);
-    $scope.uploadImageUrl = $location.absUrl()+'/profile_picture-update';
+function StudentHomeCtrl($scope, $http, $location, $sce, GetStudentHomeInfoService,
+                         UpdateStudentInterestsService, GetStudentCourseService) {
+    GetStudentHomeInfoService.getStudentInfo($http, $location, $scope, $sce);
+    GetStudentCourseService.getStudentCourse($http, $location, $scope, $sce);
+    $scope.absCurrentUrl = $location.absUrl();
     $scope.submitted = false;
     $scope.updateInterests = function () {
         $scope.submitted = true;

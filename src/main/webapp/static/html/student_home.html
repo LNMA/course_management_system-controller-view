@@ -25,9 +25,11 @@
     <script type="application/javascript" src="/static/js/service/update_user_details.js"></script>
     <script type="application/javascript" src="/static/js/service/edit_student_interests.js"></script>
     <script type="application/javascript" src="/static/js/service/edit_password.js"></script>
+    <script type="application/javascript" src="/static/js/service/get_student_join_course.js"></script>
     <link href="/static/images/favicon.ico" rel="icon" type="image/x-icon">
     <title>Student Home `by Louay Amr`</title>
 <body ng-app="app" ng-controller="StudentHomeController">
+<div ng-bind-html="errorRender"></div>
 <header>
     <ng-include src="'/static/html/page-include/student-navbar.html'"></ng-include>
 </header>
@@ -58,6 +60,30 @@
                 Edit Profile
             </button>
         </aside>
+        <article class="col col-md-10">
+            <div class="container-fluid mt-4">
+                <div class="row row-cols-1 row-cols-md-3">
+                    <div ng-model="courseData" ng-repeat="courseData in courseData">
+                        <div class="col mb-3">
+                            <div class="card h-100">
+                                <img src="data:image/*;base64,{{courseData.coursePictureBase64}}" class="card-img-top"
+                                     alt="course image">
+                                <div class="card-body">
+                                    <div class="card-text">
+                                        {{courseData.courseName}}
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-light col col-md-12">
+                                    <a href="{{absCurrentUrl}}/to_my_course/{{courseData.courseID}}">
+                                        Join to Course
+                                    </a>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </article>
     </div>
 </main>
 <footer>
@@ -258,7 +284,7 @@
                                     <label for="lLogin" class="font-weight-bold">
                                         Last Login:
                                     </label>
-                                    <input class="form-control" id="lLogin" value=""
+                                    <input class="form-control" id="lLogin" value="{{lastSignIn}}"
                                            type="text" readonly disabled>
                                 </div>
                             </div>
@@ -301,7 +327,7 @@
                 </div>
             </div>
         </div>
-        <ng-include src="'/static/html/page-include/edit_password-modal.html'" ></ng-include>
+        <ng-include src="'/static/html/page-include/edit_password-modal.html'"></ng-include>
         <ng-include src="'/static/html/page-include/edit_user_details-modal.html'"></ng-include>
 
         <!-- interests Modal -->
@@ -386,7 +412,7 @@
                             &times;
                         </button>
                     </div>
-                    <form action="{{uploadImageUrl}}" method="post" enctype="multipart/form-data">
+                    <form action="{{absCurrentUrl}}/profile_picture-update" method="post" enctype="multipart/form-data">
                         <div class="modal-body">
                             <div class="container-fluid justify-content-center">
                                 <div class="form-row">

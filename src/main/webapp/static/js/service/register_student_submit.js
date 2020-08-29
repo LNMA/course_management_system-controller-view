@@ -13,7 +13,7 @@ app.service('RegisterStudentSubmitService', ['$http', function ($http) {
             async: false,    //Cross-domain requests and dataType: "jsonp" requests do not support synchronous operation
             cache: false,    //This will force requested pages not to be cached by the browser
             processData: false, //To avoid making query String instead of JSON
-            timeout: 4000,
+            timeout: 10000,
             data: {
                 email: student.email,
                 forename: student.forename,

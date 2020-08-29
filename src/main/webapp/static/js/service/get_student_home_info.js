@@ -4,7 +4,7 @@
 /*content-type:application/javascript*/
 app.factory('GetStudentHomeInfoService', function () {
     return {
-        getStudentInfo: function getStudentInfo($http, $location, $scope) {
+        getStudentInfo: function getStudentInfo($http, $location, $scope, $sce) {
             return $http({
                 method: 'GET',
                 port: 8443,
@@ -12,7 +12,7 @@ app.factory('GetStudentHomeInfoService', function () {
                 headers: {'content-type': 'application/json'},
                 contentType: "application/json; charset=utf-8",
                 async: false,    //Cross-domain requests and dataType: "jsonp" requests do not support synchronous operation
-                cache: false,    //This will force requested pages not to be cached by the browser
+                cache: true,    //This will force requested pages not to be cached by the browser
                 processData: false, //To avoid making query String instead of JSON
                 timeout: 4000
             }).then(
@@ -32,12 +32,18 @@ app.factory('GetStudentHomeInfoService', function () {
                     $scope.interests = response.data.student.interests;
                     $scope.userRole = response.data.student.userRole;
                     $scope.age = response.data.student.age;
+                    $scope.lastSignIn = response.data.lastSignInDate;
                     $scope.picture = response.data.pictureBase64;
                     $scope.submitted = false;
 
                 }, function errorCallback(response) {
                     $scope.isStudentHomeError = true;
-                    $scope.studentHomeErrorMessage = response.data;
+                    let errorData = response.data;
+                    if (errorData.toString().substr(8, 15) === '<!DOCTYPE html>') {
+                        $scope.errorRender = $sce.trustAsHtml(errorData);
+                    } else {
+                        $scope.studentHomeErrorMessage = errorData;
+                    }
                     $scope.submitted = false;
 
                 });
