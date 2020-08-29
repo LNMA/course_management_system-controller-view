@@ -63,7 +63,7 @@ public class StudentSignUpController implements Serializable {
                     .path("/static/images/favicon.ico")
                     .path("/static/js/service/register_student_submit.js")
                     .path("/static/js/service/country_state.js")
-                    .path("/static/js/control/student_sign_up.js")
+                    .path("/static/js/control/student_sign_up-controller.js")
                     .path("/static/js/app.js")
                     .path("/static/lib/angularJS-1.8.0/angular-messages.min.js")
                     .path("/static/lib/angularJS-1.8.0/angular.min.js")

@@ -15,7 +15,8 @@ function StudentHomeCtrl($scope, $http, $location, $sce, GetStudentHomeInfoServi
                          UpdateStudentInterestsService, GetStudentCourseService) {
     GetStudentHomeInfoService.getStudentInfo($http, $location, $scope, $sce);
     GetStudentCourseService.getStudentCourse($http, $location, $scope, $sce);
-    $scope.absCurrentUrl = $location.absUrl();
+    $scope.updatePictureUrl = $location.absUrl()+'/profile_picture-update';
+    $scope.joinToCourseUrl = $location.absUrl()+'/to_my_course/';
     $scope.submitted = false;
     $scope.updateInterests = function () {
         $scope.submitted = true;

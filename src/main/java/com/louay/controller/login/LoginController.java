@@ -78,7 +78,7 @@ public class LoginController implements Serializable {
                     .path("/static/lib/bootstrap-4.5.1/css/bootstrap.min.css")
                     .path("/static/images/favicon.ico")
                     .path("/static/js/service/login_submit.js")
-                    .path("/static/js/control/login.js")
+                    .path("/static/js/control/login-controller.js")
                     .path("/static/js/app.js")
                     .path("/static/lib/angularJS-1.8.0/angular-messages.min.js")
                     .path("/static/lib/angularJS-1.8.0/angular.min.js")

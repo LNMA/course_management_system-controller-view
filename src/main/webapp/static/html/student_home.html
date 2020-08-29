@@ -17,7 +17,7 @@
     <script type="application/javascript" src="/static/lib/angularJS-1.8.0/angular-messages.min.js"></script>
     <script type="application/javascript" src="/static/lib/angularJS-1.8.0/angular-sanitize.min.js"></script>
     <script type="application/javascript" src="/static/js/app.js"></script>
-    <script type="application/javascript" src="/static/js/control/student_home.js"></script>
+    <script type="application/javascript" src="/static/js/control/student_home-controller.js"></script>
     <script type="application/javascript" src="/static/js/control/edit_user_details_modal-controller.js"></script>
     <script type="application/javascript" src="/static/js/control/edit_password-controller.js"></script>
     <script type="application/javascript" src="/static/js/service/get_student_home_info.js"></script>
@@ -74,7 +74,7 @@
                                     </div>
                                 </div>
                                 <button type="button" class="btn btn-light col col-md-12">
-                                    <a href="{{absCurrentUrl}}/to_my_course/{{courseData.courseID}}">
+                                    <a href="{{joinToCourseUrl}}{{courseData.courseID}}">
                                         Join to Course
                                     </a>
                                 </button>
@@ -412,7 +412,7 @@
                             &times;
                         </button>
                     </div>
-                    <form action="{{absCurrentUrl}}/profile_picture-update" method="post" enctype="multipart/form-data">
+                    <form action="{{updatePictureUrl}}" method="post" enctype="multipart/form-data">
                         <div class="modal-body">
                             <div class="container-fluid justify-content-center">
                                 <div class="form-row">
