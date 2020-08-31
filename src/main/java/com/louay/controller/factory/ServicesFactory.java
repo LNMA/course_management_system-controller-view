@@ -3,7 +3,9 @@ package com.louay.controller.factory;
 import com.louay.model.service.account.AccountService;
 import com.louay.model.service.attendance.UsersAttendanceService;
 import com.louay.model.service.authentication.AuthenticationService;
+import com.louay.model.service.comment.CommentService;
 import com.louay.model.service.course.CourseService;
+import com.louay.model.service.feedback.FeedbackService;
 import com.louay.model.service.material.MaterialService;
 import com.louay.model.service.member.CourseMemberService;
 import com.louay.model.service.role.RoleService;
@@ -27,16 +29,21 @@ public class ServicesFactory {
     private final CourseMemberService courseMemberService;
     private final MaterialService materialService;
     private final UsersAttendanceService attendanceService;
+    private final FeedbackService feedbackService;
+    private final CommentService commentService;
+
 
     @Autowired
     public ServicesFactory(AccountService accountService, RoleService roleService,
                            AccountPictureService pictureService, StatusService statusService,
                            AuthenticationService authenticationService, CourseService courseService,
                            CourseMemberService courseMemberService, MaterialService materialService,
-                           UsersAttendanceService attendanceService) {
+                           UsersAttendanceService attendanceService, FeedbackService feedbackService,
+                           CommentService commentService) {
         if (accountService == null || roleService == null || pictureService == null || statusService == null ||
                 authenticationService == null || courseService == null || courseMemberService == null ||
-                materialService == null || attendanceService == null) {
+                materialService == null || attendanceService == null || feedbackService == null ||
+                commentService == null) {
             throw new IllegalArgumentException("Service cannot be null in StudentSignUpServiceWrapper.class!");
         }
         this.accountService = accountService;
@@ -48,6 +55,8 @@ public class ServicesFactory {
         this.courseMemberService = courseMemberService;
         this.materialService = materialService;
         this.attendanceService = attendanceService;
+        this.feedbackService = feedbackService;
+        this.commentService = commentService;
     }
 
     public AccountService getAccountService() {
@@ -84,5 +93,13 @@ public class ServicesFactory {
 
     public UsersAttendanceService getAttendanceService() {
         return attendanceService;
+    }
+
+    public FeedbackService getFeedbackService() {
+        return feedbackService;
+    }
+
+    public CommentService getCommentService() {
+        return commentService;
     }
 }

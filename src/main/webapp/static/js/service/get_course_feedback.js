@@ -2,12 +2,12 @@
 /*jshint sub:true*/
 /*Content-Disposition:inline;filename=f.txt*/
 /*content-type:application/javascript*/
-app.service('GetCourseInfoService', [function () {
-    this.getCourseInfo = function getCourseInfo($http, $location, $scope, $sce, url) {
+app.service('GetFeedbackDataService', [function () {
+    this.getFeedbackData = function getFeedbackData($http, $location, $scope, $sce) {
         return $http({
             method: 'GET',
             port: 8443,
-            url: url + "/course_info",
+            url: $location.absUrl() + "/feedback_data",
             headers: {'content-type': 'application/json'},
             contentType: "application/json; charset=utf-8",
             async: false,    //Cross-domain requests and dataType: "jsonp" requests do not support synchronous operation
@@ -16,22 +16,18 @@ app.service('GetCourseInfoService', [function () {
             timeout: 5000,
         }).then(
             function successCallback(response) {
-                $scope.courseId = response.data.courseID;
-                $scope.coursePicture = response.data.coursePictureBase64;
-                $scope.courseName = response.data.courseName;
-                $scope.startDateString = response.data.startDateString;
-                $scope.endDateString = response.data.endDateString;
-                $scope.nickname = response.data.instructor.nickname;
-                $scope.forename = response.data.instructor.forename;
-                $scope.surname = response.data.instructor.surname;
+                console.log(response.data);
+
+
             }, function errorCallback(response) {
+                console.log(response.data);
                 $scope.submitted = false;
-                $scope.isCourseHomeError = true;
+                $scope.isPageError = true;
                 let errorData = response.data;
                 if (errorData.toString().substr(8, 15) === '<!DOCTYPE html>') {
                     $scope.errorRender = $sce.trustAsHtml(errorData);
                 } else {
-                    $scope.courseHomeErrorMessage = errorData;
+                    $scope.pageErrorMessage = errorData;
                 }
             });
     }

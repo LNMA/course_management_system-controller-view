@@ -235,8 +235,6 @@ public class StudentHomePageController implements Serializable {
     private StudentHomeWrapper buildStudentHomeWrapper(String originalEmail) {
         StudentHomeWrapper studentHomeWrapper = this.wrappersFactory.getStudentHomeWrapper();
         studentHomeWrapper.setStudent(findStudent(originalEmail));
-        AccountPicture accountPicture = findAccountPicture(originalEmail);
-        studentHomeWrapper.setPictureBase64(accountPicture.getBase64());
         if (isUserSignIn(originalEmail)){
             studentHomeWrapper.setLastSignInDate(findUserLastSignIn(originalEmail).getSignInDate());
         }

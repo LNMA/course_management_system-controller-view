@@ -34,10 +34,10 @@
     <ng-include src="'/static/html/page-include/student-navbar.html'"></ng-include>
 </header>
 <main class="container-fluid">
-    <div class="container" id="studentHomeAlert" ng-model="studentHomeErrorMessage">
-        <div ng-show="isStudentHomeError">
+    <div class="container" id="pageAlert" ng-model="pageErrorMessage">
+        <div ng-show="isPageError">
             <div class="alert alert-danger alert-dismissible fade show">
-                <strong>Error!</strong> {{studentHomeErrorMessage}}
+                <strong>Error!</strong> {{pageErrorMessage}}
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -162,6 +162,7 @@
                                                  width="28" height="28" alt="add image">
                                         </button>
                                     </div>
+                                    <div class="small text-muted">{{pictureUploadDate}}</div>
                                 </div>
                             </div>
                         </div>

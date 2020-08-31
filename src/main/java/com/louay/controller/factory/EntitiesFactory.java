@@ -5,6 +5,11 @@ import com.louay.model.entity.authentication.UsersAuthentication;
 import com.louay.model.entity.courses.Courses;
 import com.louay.model.entity.courses.members.CourseMembers;
 import com.louay.model.entity.courses.members.UsersAttendance;
+import com.louay.model.entity.feedback.CourseFeedback;
+import com.louay.model.entity.feedback.FileFeedback;
+import com.louay.model.entity.feedback.FileMessageFeedback;
+import com.louay.model.entity.feedback.MessageFeedback;
+import com.louay.model.entity.feedback.comment.Comment;
 import com.louay.model.entity.material.FileMaterials;
 import com.louay.model.entity.material.TextMaterials;
 import com.louay.model.entity.role.AccountsRoles;
@@ -92,5 +97,25 @@ public class EntitiesFactory {
 
     public TextMaterials getTextMaterials() {
         return new TextMaterials();
+    }
+
+    public CourseFeedback getCourseFeedback() {
+        return new CourseFeedback();
+    }
+
+    public FileFeedback getFileFeedback() {
+        return new FileFeedback();
+    }
+
+    public MessageFeedback getMessageFeedback() {
+        return new MessageFeedback();
+    }
+
+    public FileMessageFeedback getFileMessageFeedback() {
+        return new FileMessageFeedback();
+    }
+
+    public Comment getComment() {
+        return new Comment();
     }
 }

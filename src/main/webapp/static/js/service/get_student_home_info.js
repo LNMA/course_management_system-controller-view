@@ -33,16 +33,17 @@ app.factory('GetStudentHomeInfoService', function () {
                     $scope.userRole = response.data.student.userRole;
                     $scope.age = response.data.student.age;
                     $scope.lastSignIn = response.data.lastSignInDate;
-                    $scope.picture = response.data.pictureBase64;
+                    $scope.picture = response.data.student.accountPicture.profilePictureBase64;
+                    $scope.pictureUploadDate = response.data.student.accountPicture.uploadPicDate;
                     $scope.submitted = false;
 
                 }, function errorCallback(response) {
-                    $scope.isStudentHomeError = true;
+                    $scope.isPageError = true;
                     let errorData = response.data;
                     if (errorData.toString().substr(8, 15) === '<!DOCTYPE html>') {
                         $scope.errorRender = $sce.trustAsHtml(errorData);
                     } else {
-                        $scope.studentHomeErrorMessage = errorData;
+                        $scope.pageErrorMessage = errorData;
                     }
                     $scope.submitted = false;
 

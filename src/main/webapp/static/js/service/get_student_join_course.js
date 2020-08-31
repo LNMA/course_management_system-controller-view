@@ -21,12 +21,12 @@ app.factory('GetStudentCourseService', function () {
                     $scope.submitted = false;
 
                 }, function errorCallback(response) {
-                    $scope.isStudentHomeError = true;
+                    $scope.isPageError = true;
                     let errorData = response.data;
-                    if (errorData.toString().substr(8, 15) === '<!DOCTYPE html>'){
+                    if (errorData.toString().substr(8, 15) === '<!DOCTYPE html>') {
                         $scope.errorRender = $sce.trustAsHtml(errorData);
-                    }else{
-                        $scope.studentHomeErrorMessage = errorData;
+                    } else {
+                        $scope.pageErrorMessage = errorData;
                     }
                     $scope.submitted = false;
 
