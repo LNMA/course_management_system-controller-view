@@ -6,6 +6,7 @@ import com.louay.model.entity.authentication.UsersAuthentication;
 import com.louay.model.entity.status.UserAccountStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.PushBuilder;
@@ -21,9 +22,9 @@ public class VerifyUserController implements Serializable {
 
     @Autowired
     public VerifyUserController(ServicesFactory servicesFactory, EntitiesFactory entitiesFactory) {
-        if (servicesFactory == null || entitiesFactory == null) {
-            throw new IllegalArgumentException("factory cannot be null at VerifyUserController.class");
-        }
+        Assert.notNull(entitiesFactory, "entitiesFactory cannot be null!.");
+        Assert.notNull(servicesFactory, "servicesFactory cannot be null!.");
+
         this.servicesFactory = servicesFactory;
         this.entitiesFactory = entitiesFactory;
     }

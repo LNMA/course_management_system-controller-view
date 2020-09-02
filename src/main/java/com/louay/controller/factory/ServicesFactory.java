@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
+import org.springframework.util.Assert;
 import org.springframework.web.context.WebApplicationContext;
 
 @Component
@@ -40,12 +41,18 @@ public class ServicesFactory {
                            CourseMemberService courseMemberService, MaterialService materialService,
                            UsersAttendanceService attendanceService, FeedbackService feedbackService,
                            CommentService commentService) {
-        if (accountService == null || roleService == null || pictureService == null || statusService == null ||
-                authenticationService == null || courseService == null || courseMemberService == null ||
-                materialService == null || attendanceService == null || feedbackService == null ||
-                commentService == null) {
-            throw new IllegalArgumentException("Service cannot be null in StudentSignUpServiceWrapper.class!");
-        }
+        Assert.notNull(accountService, "accountService cannot be null!");
+        Assert.notNull(roleService, "roleService cannot be null!");
+        Assert.notNull(pictureService, "pictureService cannot be null!");
+        Assert.notNull(statusService, "statusService cannot be null!");
+        Assert.notNull(authenticationService, "authenticationService cannot be null!");
+        Assert.notNull(courseService, "courseService cannot be null!");
+        Assert.notNull(courseMemberService, "courseMemberService cannot be null!");
+        Assert.notNull(materialService, "materialService cannot be null!");
+        Assert.notNull(attendanceService, "attendanceService cannot be null!");
+        Assert.notNull(feedbackService, "feedbackService cannot be null!");
+        Assert.notNull(commentService, "commentService cannot be null!");
+
         this.accountService = accountService;
         this.roleService = roleService;
         this.pictureService = pictureService;

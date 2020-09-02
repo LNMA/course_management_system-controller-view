@@ -16,7 +16,6 @@ app.service('GetMaterialContentService', [function () {
             timeout: 4000,
         }).then(
             function successCallback(response) {
-                console.log(response.data);
                 let materialType = response.data.materialType;
                 if (materialType === 'FILE') {
                     let fileType = response.data.fileType;
@@ -39,12 +38,12 @@ app.service('GetMaterialContentService', [function () {
 
             }, function errorCallback(response) {
                 $scope.submitted = false;
-                $scope.isMaterialHomeError = true;
+                $scope.isPageError = true;
                 let errorData = response.data;
                 if (errorData.toString().substr(8, 15) === '<!DOCTYPE html>') {
                     $scope.errorRender = $sce.trustAsHtml(errorData);
                 } else {
-                    $scope.materialHomeErrorMessage = errorData;
+                    $scope.pageErrorMessage = errorData;
                 }
             });
     }

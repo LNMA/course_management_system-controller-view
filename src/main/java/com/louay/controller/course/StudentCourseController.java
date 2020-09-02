@@ -11,6 +11,7 @@ import com.louay.model.entity.users.Student;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.Serializable;
@@ -28,9 +29,10 @@ public class StudentCourseController implements Serializable {
     @Autowired
     public StudentCourseController(EntitiesFactory entitiesFactory, ServicesFactory servicesFactory,
                                    EmailFilter emailFilter) {
-        if (entitiesFactory == null || servicesFactory == null || emailFilter == null) {
-            throw new IllegalArgumentException("factory cannot be null at StudentCourseController.class");
-        }
+        Assert.notNull(entitiesFactory, "entitiesFactory cannot be null!.");
+        Assert.notNull(servicesFactory, "servicesFactory cannot be null!.");
+        Assert.notNull(emailFilter, "emailFilter cannot be null!.");
+
         this.entitiesFactory = entitiesFactory;
         this.servicesFactory = servicesFactory;
         this.emailFilter = emailFilter;
@@ -40,7 +42,7 @@ public class StudentCourseController implements Serializable {
     public String joinToCourseThenRedirect(@PathVariable(value = "email", required = false) String email,
                                            @PathVariable(value = "courseId", required = false) String courseId) {
         if (email == null || courseId == null) {
-            return "/static/html/login.html";
+            return "redirect:/login";
         }
 
         Long courseIdNumber = Long.valueOf(courseId);
@@ -89,9 +91,7 @@ public class StudentCourseController implements Serializable {
     @GetMapping(value = "/student/student_home/{email}/my_course", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
     Set<Courses> getStudentJoinCourse(@PathVariable(value = "email", required = false) String email) {
-        if (email == null) {
-            return null;
-        }
+        Assert.notNull(email, "email cannot be null");
 
         String originalEmail = this.emailFilter.filterEmailUrlToOriginal(email);
         if (isStudentJoinToAnyCourse(originalEmail)) {

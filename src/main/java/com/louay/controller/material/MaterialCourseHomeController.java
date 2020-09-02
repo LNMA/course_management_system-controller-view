@@ -2,7 +2,6 @@ package com.louay.controller.material;
 
 import com.louay.controller.factory.EntitiesFactory;
 import com.louay.controller.factory.ServicesFactory;
-import com.louay.controller.factory.WrappersFactory;
 import com.louay.model.entity.material.FileMaterials;
 import com.louay.model.entity.material.MaterialContent;
 import com.louay.model.entity.material.TextMaterials;
@@ -12,6 +11,7 @@ import com.louay.model.entity.wrapper.MaterialWithOutContent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.Serializable;
@@ -29,9 +29,9 @@ public class MaterialCourseHomeController implements Serializable {
 
     @Autowired
     public MaterialCourseHomeController(EntitiesFactory entitiesFactory, ServicesFactory servicesFactory) {
-        if (entitiesFactory == null || servicesFactory == null) {
-            throw new IllegalArgumentException("factory cannot be null at MaterialCourseController.class");
-        }
+        Assert.notNull(entitiesFactory, "entitiesFactory cannot be null!.");
+        Assert.notNull(servicesFactory, "servicesFactory cannot be null!.");
+
         this.entitiesFactory = entitiesFactory;
         this.servicesFactory = servicesFactory;
     }
@@ -45,10 +45,8 @@ public class MaterialCourseHomeController implements Serializable {
     @ResponseBody
     public MaterialContent getCourseMaterialWithContent(@PathVariable(name = "materialId") String materialId,
                                                         @PathVariable(name = "materialType") String materialType) {
-        long materialIdNumber = 0L;
-        if (materialId != null) {
-            materialIdNumber = Long.parseLong(materialId);
-        }
+        Assert.notNull(materialId, "materialId cannot be null!.");
+        Long materialIdNumber = Long.valueOf(materialId);
 
         switch (MaterialType.valueOf(materialType)) {
             case FILE:
@@ -80,10 +78,9 @@ public class MaterialCourseHomeController implements Serializable {
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public TreeSet<MaterialWithOutContent> getCourseMaterialWithOutContent(@PathVariable(name = "courseId") String courseId) {
-        long courseIdNumber = 0L;
-        if (courseId != null) {
-            courseIdNumber = Long.parseLong(courseId);
-        }
+        Assert.notNull(courseId, "courseId cannot be null!.");
+        Long courseIdNumber = Long.valueOf(courseId);
+
         return buildMaterialContentTreeSet(courseIdNumber);
     }
 

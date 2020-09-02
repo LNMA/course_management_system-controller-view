@@ -8,10 +8,10 @@ app.config(function ($httpProvider) {
     $httpProvider.defaults.xsrfCookieName = 'XSRF-TOKEN';
     $httpProvider.defaults.xsrfHeaderName = 'X-XSRF-TOKEN';
 }).controller('CourseHomeController', CourseHomeCtrl);
-CourseHomeCtrl.$inject = ['$scope', '$http', '$location', '$sce', 'GetCourseInfoService'];
+CourseHomeCtrl.$inject = ['$scope', '$http', '$location', '$sce', 'GetCourseInfoService', 'GetInstructorCourseInfoService'];
 
-function CourseHomeCtrl($scope, $http, $location, $sce, GetCourseInfoService) {
+function CourseHomeCtrl($scope, $http, $location, $sce, GetCourseInfoService, GetInstructorCourseInfoService) {
     let currentUrl = $scope.homeCourseMateialUrl = $location.absUrl();
     GetCourseInfoService.getCourseInfo($http, $location, $scope, $sce, currentUrl);
-
+    GetInstructorCourseInfoService.getInstructorCourseInfo($http, $location, $scope, $sce, currentUrl);
 }

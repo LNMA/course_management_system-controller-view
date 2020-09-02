@@ -12,7 +12,6 @@ import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
-import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.web.context.WebApplicationContext;
 
 @EnableWebSecurity
@@ -30,9 +29,13 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .rememberMe().key("uniqueAndSecret").tokenValiditySeconds(60 * 60 * 24 * 30)
                 .and()
-                .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).ignoringAntMatchers("/student/student_home/{{email}}/profile_picture-update")
+                .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                .ignoringAntMatchers("/student/student_home/{{email}}/profile_picture-update",
+                        "/course/{courseId}/feedback/add_file_post",
+                        "/course/{courseId}/feedback/add_file-text_post",
+                        "/course/{courseId}/feedback/{feedbackId}/edit-feedback/update_file-text_post",
+                        "/course/{courseId}/feedback/{feedbackId}/edit-feedback/update_file_post")
                 .and()
-                .addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class)
                 .exceptionHandling()
                 .authenticationEntryPoint(new Http403ForbiddenEntryPoint())
                 .and()

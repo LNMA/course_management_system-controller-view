@@ -16,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -42,10 +43,12 @@ public class StudentSignUpController implements Serializable {
                                    EntitiesFactory entitiesFactory, FileProcess fileProcess,
                                    SendingVerificationEmail sendingVerificationEmail,
                                    PasswordEncoder passwordEncoder) {
-        if (servicesFactory == null || entitiesFactory == null || fileProcess == null
-                || sendingVerificationEmail == null || passwordEncoder == null) {
-            throw new IllegalArgumentException("factory cannot be null at StudentSignUpController.class");
-        }
+        Assert.notNull(entitiesFactory, "entitiesFactory cannot be null!.");
+        Assert.notNull(servicesFactory, "servicesFactory cannot be null!.");
+        Assert.notNull(passwordEncoder, "passwordEncoder cannot be null!.");
+        Assert.notNull(fileProcess, "fileProcess cannot be null!.");
+        Assert.notNull(sendingVerificationEmail, "sendingVerificationEmail cannot be null!.");
+
         this.servicesFactory = servicesFactory;
         this.entitiesFactory = entitiesFactory;
         this.fileProcess = fileProcess;

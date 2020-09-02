@@ -21,17 +21,14 @@ app.service('GetCourseInfoService', [function () {
                 $scope.courseName = response.data.courseName;
                 $scope.startDateString = response.data.startDateString;
                 $scope.endDateString = response.data.endDateString;
-                $scope.nickname = response.data.instructor.nickname;
-                $scope.forename = response.data.instructor.forename;
-                $scope.surname = response.data.instructor.surname;
             }, function errorCallback(response) {
                 $scope.submitted = false;
-                $scope.isCourseHomeError = true;
+                $scope.isPageError = true;
                 let errorData = response.data;
                 if (errorData.toString().substr(8, 15) === '<!DOCTYPE html>') {
                     $scope.errorRender = $sce.trustAsHtml(errorData);
                 } else {
-                    $scope.courseHomeErrorMessage = errorData;
+                    $scope.pageErrorMessage = errorData;
                 }
             });
     }

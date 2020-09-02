@@ -19,6 +19,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.*;
@@ -41,10 +42,12 @@ public class LoginController implements Serializable {
     @Autowired
     public LoginController(ServicesFactory servicesFactory, EntitiesFactory entitiesFactory,
                            PasswordEncoder passwordEncoder, WrappersFactory wrappersFactory, EmailFilter emailFilter) {
-        if (servicesFactory == null || entitiesFactory == null || passwordEncoder == null || wrappersFactory == null
-                || emailFilter == null) {
-            throw new IllegalArgumentException("factory cannot be null at LoginController.class");
-        }
+        Assert.notNull(entitiesFactory, "entitiesFactory cannot be null!.");
+        Assert.notNull(servicesFactory, "servicesFactory cannot be null!.");
+        Assert.notNull(passwordEncoder, "passwordEncoder cannot be null!.");
+        Assert.notNull(wrappersFactory, "wrappersFactory cannot be null!.");
+        Assert.notNull(emailFilter, "emailFilter cannot be null!.");
+
         this.servicesFactory = servicesFactory;
         this.entitiesFactory = entitiesFactory;
         this.passwordEncoder = passwordEncoder;

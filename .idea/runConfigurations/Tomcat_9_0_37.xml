@@ -68,7 +68,9 @@
     </ConfigurationWrapper>
     <method v="2">
       <option name="Make" enabled="true" />
-      <option name="BuildArtifacts" enabled="true" />
+      <option name="BuildArtifacts" enabled="true">
+        <artifact name="course_management_system-controller-view:war exploded" />
+      </option>
     </method>
   </configuration>
 </component>

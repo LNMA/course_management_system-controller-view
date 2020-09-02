@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <style type="text/css">
+        @import url(/static/lib/bootstrap-4.5.1/css/bootstrap.min.css);
+    </style>
+    <script type="application/javascript" src="/static/lib/jQuery-3.5.1/jquery-3.5.1.min.js"></script>
+    <script type="application/javascript" src="/static/lib/popper-1.16.1/popper.min.js"></script>
+    <script type="application/javascript" src="/static/lib/bootstrap-4.5.1/js/bootstrap.min.js"></script>
+    <script type="application/javascript" src="/static/lib/angularJS-1.8.0/angular.min.js"></script>
+    <script type="application/javascript" src="/static/lib/angularJS-1.8.0/angular-messages.min.js"></script>
+    <script type="application/javascript" src="/static/lib/angularJS-1.8.0/angular-sanitize.min.js"></script>
+    <script type="application/javascript" src="/static/js/app.js"></script>
+    <script type="application/javascript" src="/static/js/control/edit_feedback-controller.js"></script>
+    <script type="application/javascript" src="/static/js/service/get_course_info.js"></script>
+    <script type="application/javascript" src="/static/js/service/get_course_feedback.js"></script>
+    <script type="application/javascript" src="/static/js/service/edit_feedback.js"></script>
+    <link href="/static/images/favicon.ico" rel="icon" type="image/x-icon">
+    <title>Edit Feedback `by Louay Amr`</title>
+<body ng-app="app" ng-controller="EditFeedbackController" class="bg-secondary">
+<div ng-bind-html="errorRender"></div>
+<header>
+    <ng-include src="'/static/html/page-include/student_course-navbar.html'"></ng-include>
+</header>
+<main class="container-fluid">
+    <div class="row row-cols-1">
+        <div class="container" id="pageAlert" ng-model="pageErrorMessage">
+            <div ng-show="isPageError">
+                <div class="alert alert-danger alert-dismissible fade show">
+                    <strong>Error!</strong> {{pageErrorMessage}}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <article class="col col-md-12 mt-3">
+            <section class="container-fluid">
+                <div class="card">
+                    <div class="card-body" id="addPost">
+                        <div ng-switch="oneFeedback.feedbackType">
+
+                            <div ng-switch-when="MESSAGE">
+                                <div id="errorMessage" class="col col-md-12"
+                                     ng-hide="updateTextFeedbackForm.$valid" role="alert">
+                                    <div ng-messages="updateTextFeedbackForm.textFeedback.$error || updateTextFeedbackForm.textFeedback.$invalid"
+                                         ng-show="submittedTextPost && (updateTextFeedbackForm.textFeedback.$invalid || updateTextFeedbackForm.textFeedback.$error)">
+                                        <div class="alert alert-danger alert-dismissible fade show">
+                                            <strong>Error!</strong>
+                                            <span ng-show="updateTextFeedbackForm.textFeedback.$error.required">
+                                            Text Post Required!
+                                        </span>
+                                            <span ng-show="updateTextFeedbackForm.textFeedback.$invalid">
+                                            Text Post Invalid!
+                                        </span>
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <form ng-submit="updateTextPost()" class="form-group" method="post"
+                                      name="updateTextFeedbackForm" novalidate>
+                                <textarea class="form-control" name="textFeedback" ng-model="textMessageFeedback.feedback"
+                                          ng-value="oneFeedback.feedbackContent.postMessage"
+                                          required ng-minlength="1" ng-maxlength="1000"
+                                          ng-class="{'is-invalid': submittedTextPost &&
+                                                        (updateTextFeedbackForm.textFeedback.$error.required ||
+                                                        updateTextFeedbackForm.textFeedback.$invalid),
+                                                        'is-valid': updateTextFeedbackForm.textFeedback.$valid}"></textarea>
+                                    <button class="btn btn-warning mt-2 col-md-1" type="submit">
+                                        Update
+                                    </button>
+                                </form>
+                                {{textMessageFeedback.feedback}}
+                            </div>
+
+                            <div ng-switch-when="FILE">
+                                <p>
+                                    <img src="data:image/*;base64,{{oneFeedback.feedbackContent.feedbackFileBase64}}"
+                                         class="card-img-top" alt="post picture"/>
+                                </p>
+                                <form class="form-group" action="./edit-feedback/update_file_post" method="post"
+                                      enctype="multipart/form-data" name="updateFilePostForm">
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="inputFile" name="file"
+                                               accept="image/*" required>
+                                        <label class="custom-file-label" for="inputFile">Choose file...</label>
+                                    </div>
+                                    <button class="btn btn-warning mt-2 col-md-1" type="submit" value="post">
+                                        Update
+                                    </button>
+                                </form>
+                                <script>
+                                    // Add the following code if you want the name of the file appear on select
+                                    $(".custom-file-input").on("change", function () {
+                                        let fileName = $(this).val().split("\\").pop();
+                                        $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+                                    });
+                                </script>
+                            </div>
+
+                            <div ng-switch-when="ALL">
+                                <p>
+                                    <img src="data:image/*;base64,{{oneFeedback.feedbackContent.feedbackFileBase64}}"
+                                         class="card-img-top" alt="post picture"/>
+                                </p>
+                                <form class="form-group" action="./edit-feedback/update_file-text_post" method="post"
+                                      enctype="multipart/form-data">
+                                <textarea class="form-control" data-toggle="collapse" name="textFeedback"
+                                          required minlength="1"
+                                          maxlength="1000">
+                                    {{oneFeedback.feedbackContent.postMessage}}
+                                </textarea>
+                                    <br>
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="inputFilePost" name="file"
+                                               accept="image/*" required>
+                                        <label class="custom-file-label" for="inputFile">Choose file...</label>
+                                    </div>
+                                    <button class="btn btn-warning mt-2 col-md-1" type="submit" value="post">
+                                        Update
+                                    </button>
+                                </form>
+                                <script>
+                                    // Add the following code if you want the name of the file appear on select
+                                    $(".custom-file-input").on("change", function () {
+                                        let fileName = $(this).val().split("\\").pop();
+                                        $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+                                    });
+                                </script>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </article>
+    </div>
+</main>
+<footer class="mt-5">
+    <div class="navbar navbar-dark" style="background-color: #d3c7cd; height: 25em; width: 100%">
+        <p>Louay Amr © 2020</p>
+    </div>
+</footer>
+</body>
+</html>

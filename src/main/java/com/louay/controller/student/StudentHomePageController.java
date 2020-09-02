@@ -16,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,6 +25,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 @Controller
 @CrossOrigin(origins = "https://localhost:8443")
@@ -40,10 +42,12 @@ public class StudentHomePageController implements Serializable {
     public StudentHomePageController(EntitiesFactory entitiesFactory, ServicesFactory servicesFactory,
                                      WrappersFactory wrappersFactory, PasswordEncoder passwordEncoder,
                                      EmailFilter emailFilter) {
-        if (entitiesFactory == null || servicesFactory == null || wrappersFactory == null || passwordEncoder == null
-                || emailFilter == null) {
-            throw new IllegalArgumentException("factory cannot be null at StudentHomePageController.class");
-        }
+        Assert.notNull(entitiesFactory, "entitiesFactory cannot be null!.");
+        Assert.notNull(servicesFactory, "servicesFactory cannot be null!.");
+        Assert.notNull(passwordEncoder, "passwordEncoder cannot be null!.");
+        Assert.notNull(wrappersFactory, "wrappersFactory cannot be null!.");
+        Assert.notNull(emailFilter, "emailFilter cannot be null!.");
+
         this.entitiesFactory = entitiesFactory;
         this.servicesFactory = servicesFactory;
         this.wrappersFactory = wrappersFactory;
@@ -71,6 +75,12 @@ public class StudentHomePageController implements Serializable {
     @PostMapping(value = "/profile_picture-update", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public String updateStudentPicture(@RequestParam("file") MultipartFile file,
                                        @PathVariable(value = "email") String email) {
+        Assert.notNull(email, "email cannot be null!.");
+        if (file.isEmpty() || file.getSize() > (1024 * 1024 * 4) ||
+                !Objects.requireNonNull(file.getContentType()).contains("image")) {
+            throw new IllegalStateException("It's seem there something wrong in while process this operation !.");
+        }
+
         byte[] newImage = null;
         try {
             newImage = file.getBytes();
@@ -235,23 +245,23 @@ public class StudentHomePageController implements Serializable {
     private StudentHomeWrapper buildStudentHomeWrapper(String originalEmail) {
         StudentHomeWrapper studentHomeWrapper = this.wrappersFactory.getStudentHomeWrapper();
         studentHomeWrapper.setStudent(findStudent(originalEmail));
-        if (isUserSignIn(originalEmail)){
+        if (isUserSignIn(originalEmail)) {
             studentHomeWrapper.setLastSignInDate(findUserLastSignIn(originalEmail).getSignInDate());
         }
 
         return studentHomeWrapper;
     }
 
-    private UserSignIn findUserLastSignIn(String originalEmail){
+    private UserSignIn findUserLastSignIn(String originalEmail) {
         return this.servicesFactory.getStatusService().findUserSignInByUserId(buildUserSignIn(originalEmail))
                 .get(0);
     }
 
-    private Boolean isUserSignIn(String originalEmail){
+    private Boolean isUserSignIn(String originalEmail) {
         return this.servicesFactory.getStatusService().isUserSignInExist(buildUserSignIn(originalEmail));
     }
 
-    private UserSignIn buildUserSignIn(String originalEmail){
+    private UserSignIn buildUserSignIn(String originalEmail) {
         UserSignIn userSignIn = this.entitiesFactory.getUserSignIn();
         userSignIn.setUsers(this.entitiesFactory.getUsers());
         userSignIn.getUsers().setEmail(originalEmail);

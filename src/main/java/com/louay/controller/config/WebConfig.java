@@ -51,22 +51,10 @@ public class WebConfig implements WebMvcConfigurer {
     public ResourceUrlEncodingFilter resourceUrlEncodingFilter() {
         return new ResourceUrlEncodingFilter();
     }
-/*
-    @Override
-    public void configureViewResolvers(ViewResolverRegistry registry) {
-        //registry.jsp("/WEB-INF/views", ".jsp");
-        registry.viewResolver(viewResolver());
-    }
-
- */
 
     @Bean
     public ViewResolver viewResolver() {
-        InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
-        //viewResolver.setViewClass(JstlView.class);
-        // viewResolver.setPrefix("/WEB-INF/views");
-        //iewResolver.setSuffix(".jsp");
-        return viewResolver;
+        return new InternalResourceViewResolver();
     }
 
     @Bean(name = "multipartResolver")
