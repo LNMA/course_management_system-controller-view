@@ -7,16 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.Serializable;
 
 @Controller
 @CrossOrigin(origins = "https://localhost:8443")
 public class CommentController implements Serializable {
-    private static final long serialVersionUID = -4393511517072335131L;
+    private static final long serialVersionUID = 2658313554463206998L;
     private final EntitiesFactory entitiesFactory;
     private final ServicesFactory servicesFactory;
 
@@ -29,8 +27,53 @@ public class CommentController implements Serializable {
         this.servicesFactory = servicesFactory;
     }
 
-    @PostMapping(value = "/course/{courseId}/feedback/add_comment", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public String createComment(@RequestBody Comment comment){
-        return null;
+    @PostMapping(value = "/course/{courseId}/feedback/comment/remove_comment", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public String removeComment(@RequestBody Comment comment,
+                                @PathVariable(value = "courseId") String courseId) {
+
+        Assert.notNull(comment.getCommentID(), "commentId cannot be null!.");
+
+        deleteComment(comment);
+
+        return String.format("redirect:/course/%s/feedback", courseId);
+    }
+
+    private Comment deleteComment(Comment comment){
+        return this.servicesFactory.getCommentService().deleteCommentByCommentId(comment);
+    }
+
+
+    @PostMapping(value = "/course/{courseId}/feedback/comment/add_comment", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public String addComment(@RequestBody Comment comment,
+                                @SessionAttribute(value = "id", required = false) String email,
+                                @PathVariable(value = "courseId") String courseId) {
+        if (email == null) {
+            return "redirect:/login";
+        }
+        Assert.notNull(comment.getCommentMessage(), "commentText cannot be null!.");
+        Assert.notNull(comment.getCourseFeedback().getFeedbackID(), "feedbackId cannot be null!.");
+
+        String commentText = comment.getCommentMessage();
+        Long feedbackId = comment.getCourseFeedback().getFeedbackID();
+
+        Comment commentPersist = buildComment(email, feedbackId);
+        commentPersist.setCommentMessage(commentText);
+        createComment(commentPersist);
+
+        return String.format("redirect:/course/%s/feedback", courseId);
+    }
+
+    private Comment createComment(Comment comment) {
+        return this.servicesFactory.getCommentService().createComment(comment);
+    }
+
+    private Comment buildComment(String email, Long feedbackId) {
+        Comment comment = this.entitiesFactory.getComment();
+        comment.setCourseFeedback(this.entitiesFactory.getCourseFeedback());
+        comment.getCourseFeedback().setFeedbackID(feedbackId);
+        comment.setUser(this.entitiesFactory.getUsers());
+        comment.getUser().setEmail(email);
+
+        return comment;
     }
 }

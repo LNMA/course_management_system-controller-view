@@ -15,7 +15,7 @@ app.service('CreateFeedbackService', [function () {
             processData: false, //To avoid making query String instead of JSON
             timeout: 4000,
             data: {
-                postMessage : $scope.textMessageFeedback,
+                postMessage: $scope.textMessageFeedback,
             }
         }).then(
             function successCallback(response) {
@@ -35,11 +35,11 @@ app.service('CreateFeedbackService', [function () {
             });
     }
 
-    this.createComment = function createComment($http, $location, $scope, $window, $sce) {
+    this.createComment = function createComment($http, $location, $scope, $window, $sce, feedbackId) {
         return $http({
             method: 'POST',
             port: 8443,
-            url: $location.absUrl() + "/add_comment",
+            url: $location.absUrl() + "/comment/add_comment",
             headers: {'content-type': 'application/json'},
             contentType: "application/json; charset=utf-8",
             async: false,    //Cross-domain requests and dataType: "jsonp" requests do not support synchronous operation
@@ -47,12 +47,15 @@ app.service('CreateFeedbackService', [function () {
             processData: false, //To avoid making query String instead of JSON
             timeout: 4000,
             data: {
-                postMessage : $scope.textMessageFeedback,
+                courseFeedback: {
+                    feedbackID: feedbackId,
+                },
+                commentMessage: $scope.comment.text,
             }
         }).then(
             function successCallback(response) {
                 $scope.submittedTextPost = false;
-                $scope.createtextFeedbackForm = null;
+                $scope.comment = null;
                 $window.location.href = $location.absUrl();
 
             }, function errorCallback(response) {

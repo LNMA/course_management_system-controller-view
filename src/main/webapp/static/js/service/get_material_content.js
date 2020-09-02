@@ -32,7 +32,7 @@ app.service('GetMaterialContentService', [function () {
                 if (materialType === 'TEXT') {
                     $scope.viewContent = $sce.trustAsHtml(`
                         <div class="embed-responsive embed-responsive-16by9">
-                            <iframe class="embed-responsive-item" allowfullscreen src="data:application/pdf;base64,` + response.data.text + `"></iframe>
+                            <iframe class="embed-responsive-item" src="` + response.data.text + `"></iframe>
                         </div>`)
                 }
 

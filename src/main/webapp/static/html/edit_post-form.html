@@ -68,7 +68,8 @@
                                 </div>
                                 <form ng-submit="updateTextPost()" class="form-group" method="post"
                                       name="updateTextFeedbackForm" novalidate>
-                                <textarea class="form-control" name="textFeedback" ng-model="textMessageFeedback.feedback"
+                                <textarea class="form-control" name="textFeedback"
+                                          ng-model="textMessageFeedback.feedback"
                                           ng-value="oneFeedback.feedbackContent.postMessage"
                                           required ng-minlength="1" ng-maxlength="1000"
                                           ng-class="{'is-invalid': submittedTextPost &&
@@ -79,7 +80,6 @@
                                         Update
                                     </button>
                                 </form>
-                                {{textMessageFeedback.feedback}}
                             </div>
 
                             <div ng-switch-when="FILE">
@@ -145,7 +145,7 @@
         </article>
     </div>
 </main>
-<footer class="mt-5">
+<footer style="margin-top: 30em;">
     <div class="navbar navbar-dark" style="background-color: #d3c7cd; height: 25em; width: 100%">
         <p>Louay Amr © 2020</p>
     </div>

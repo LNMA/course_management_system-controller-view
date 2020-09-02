@@ -237,7 +237,7 @@
                                                             </label>
                                                         </div>
                                                         <div class="col col-md-1">
-                                                            <button class="btn">
+                                                            <button class="btn" ng-click="deleteComment(commentList.commentID)">
                                                                 <img src="/static/images/delete_forever-black-48dp.svg"
                                                                      height="22" width="22" alt="delete">
                                                             </button>
@@ -271,14 +271,13 @@
                             </div>
                         </div>
                         <div class="card-footer">
-                            <form method="post">
-                                <input type="text" name="userReplay" value="{{sessionId}}" readonly hidden>
+                            <form ng-submit="addComment(feedbackList.feedbackID)" method="post" name="commentForm">
                                 <div class="input-group button">
                                     <input type="text" class="form-control" placeholder="Type a replay"
-                                           aria-describedby="sendMessage" name="message">
+                                           aria-describedby="sendMessage" name="message" ng-model="comment.text">
                                     <div class="input-group-append">
                                         <button class="btn btn-dark" type="submit" id="sendMessage">
-                                            Send
+                                            Add
                                         </button>
                                     </div>
                                 </div>
@@ -290,8 +289,8 @@
         </article>
     </div>
 </main>
-<footer class="mt-5">
-    <div class="navbar navbar-dark" style="background-color: #d3c7cd; height: 25em; width: 100%">
+<footer style="margin-top: 30em;">
+    <div class="navbar navbar-dark" style="background-color: #d3c7cd; height: 10em; width: 100%">
         <p>Louay Amr © 2020</p>
     </div>
 </footer>

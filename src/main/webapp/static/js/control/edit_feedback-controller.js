@@ -21,7 +21,7 @@ function EditFeedbackCtrl($scope, $http, $location, $sce, $window, GetCourseInfo
     GetCourseInfoService.getCourseInfo($http, $location, $scope, $sce, courseUrl);
     GetFeedbackDataService.getOneFeedback($http, $location, $scope, $sce, currentFeedbackUrl);
 
-    $scope.textMessageFeedback = {feedback: ''}
+    $scope.textMessageFeedback = {feedback: ''};
     $scope.updateTextPost = function () {
         $scope.submittedTextPost = true;
         if ($scope.textMessageFeedback.feedback !== '' && $scope.textMessageFeedback.feedback !== null) {

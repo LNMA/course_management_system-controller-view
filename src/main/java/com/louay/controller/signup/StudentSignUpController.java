@@ -159,7 +159,7 @@ public class StudentSignUpController implements Serializable {
         accountPicture.setUsers(student);
         try {
             //TODO: change image path
-            accountPicture.setPicture(this.fileProcess.readFile("C:\\Users\\Oday Amr\\Documents\\IdeaProjects\\" +
+            accountPicture.setPicture(this.fileProcess.readFile("C:\\Users\\Ryzen 5\\Documents\\IdeaProjects\\" +
                     "course_management_system-controller-view\\src\\main\\webapp\\static\\images\\person_black.png"));
         } catch (IOException e) {
             System.out.println(e.getMessage());

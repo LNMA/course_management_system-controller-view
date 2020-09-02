@@ -60,7 +60,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Bean(name = "multipartResolver")
     public CommonsMultipartResolver multipartResolver() {
         CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
-        multipartResolver.setMaxUploadSize(100000);
+        multipartResolver.setMaxUploadSize(1024 * 1024 * 20);
         return multipartResolver;
     }
 
@@ -77,7 +77,7 @@ public class WebConfig implements WebMvcConfigurer {
         Hibernate5Module hibernate5Module = new Hibernate5Module();
         hibernate5Module.enable(Hibernate5Module.Feature.SERIALIZE_IDENTIFIER_FOR_LAZY_NOT_LOADED_OBJECTS);
         mapper.registerModule(hibernate5Module);
-        mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+        mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss"));
         return converter;
     }
 

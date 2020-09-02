@@ -64,4 +64,15 @@ function FeedbackHomeCtrl($scope, $http, $location, $sce, $window, GetCourseInfo
     $scope.EditPost = function (feedbackId) {
         $window.location.href = $location.absUrl() + '/' + feedbackId + '/edit-feedback';
     }
+
+    $scope.comment = {text: ''};
+    $scope.addComment = function (feedbackId) {
+        if ($scope.comment.text !== null && $scope.comment.text !== '') {
+            CreateFeedbackService.createComment($http, $location, $scope, $window, $sce, feedbackId);
+        }
+    }
+
+    $scope.deleteComment = function (commentId){
+        EditFeedbackService.deleteComment($http, $location, $scope, $window, $sce, commentId);
+    }
 }

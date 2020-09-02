@@ -27,7 +27,7 @@
 <header>
     <ng-include src="'/static/html/page-include/student_course-navbar.html'"></ng-include>
     <nav class="nav container-fluid" style="z-index: 1">
-        <div class="navbar navbar-dark navbar-expand-md bg-danger row row-cols-1">
+        <div class="navbar navbar-dark navbar-expand-md row row-cols-1" style="background-color: #a2a2b5;">
             <button class="navbar-toggler nav-item" type="button" data-toggle="collapse"
                     data-target="#navbarCourseSub" aria-controls="navbarCourseSub" aria-expanded="false"
                     aria-label="Toggle navigation">
@@ -61,15 +61,20 @@
             </div>
         </div>
     </div>
-    <div class="row row-cols-1">
-        <aside class="col col-md-2 mt-3 justify-content-center pb-4">
-            <img src="data:image/*;base64,{{coursePicture}}"
-                 class="rounded-circle" width="182" height="182" alt="course picture"/>
-            <p class="mt-5 text-center font-weight-bold h5">
-                {{courseName}}
-            </p>
-        </aside>
-        <article class="col col-md-10 text-center">
+    <div class="row row-cols-1 mt-4">
+        <article class="col col-md-12 text-center">
+            <div class="justify-content-center container-fluid">
+                <div class="row justify-content-center">
+                    <img src="data:image/*;base64,{{coursePicture}}"
+                         class="card-img-top" width="500" height="500" alt="course picture"/>
+                </div>
+                <br>
+                <div class="row justify-content-center align-self-center">
+                    <p class="text-center font-weight-bold h5">
+                        {{courseName}}
+                    </p>
+                </div>
+            </div>
             <div class="container-fluid mt-4">
                 <p class="font-weight-bold">
                     Start date: {{startDateString}}
@@ -78,19 +83,25 @@
                     End date: {{endDateString}}
                 </p>
                 <div class="font-weight-bold">
-                    Instructor:
+                    <p class="mb-5">
+                        Instructor:
+                    </p>
                     <div ng-if="instructorProfileVisibility === 'PUBLIC'">
                         <a href="{{instructorEmail}}" class="font-weight-bold text-dark">
                             <img src="data:image/*;base64,{{instructorPicture}}"
-                                 class="rounded-circle" width="182" height="182" alt="instructor picture"/>
-                            <span class="text-muted">{{instructorNickname}}</span> {{instructorForename}} {{instructorSurname}}
+                                 class="img-thumbnail" width="300" height="300" alt="instructor picture"/>
+                            <p>
+                                <span class="text-muted">{{instructorNickname}}</span> {{instructorForename}} {{instructorSurname}}
+                            </p>
                         </a>
                     </div>
                     <div ng-if="instructorProfileVisibility === 'PRIVATE'">
                     <span class="font-weight-bold">
                         <img src="data:image/*;base64,{{instructorPicture}}"
-                             class="rounded-circle" width="182" height="182" alt="instructor picture"/>
-                        <span class="text-muted">{{instructorNickname}}</span> {{instructorForename}} {{instructorSurname}}
+                             class="img-thumbnail" width="300" height="300" alt="instructor picture"/>
+                        <p>
+                            <span class="text-muted">{{instructorNickname}}</span> {{instructorForename}} {{instructorSurname}}
+                        </p>
                     </span>
                     </div>
                 </div>
@@ -98,7 +109,7 @@
         </article>
     </div>
 </main>
-<footer>
+<footer style="margin-top: 30em;">
     <nav class="navbar navbar-dark position-relative mt-3" style="background-color: #d3c7cd; height: 16em; width: 100%">
         <p>Louay Amr © 2020</p>
     </nav>
