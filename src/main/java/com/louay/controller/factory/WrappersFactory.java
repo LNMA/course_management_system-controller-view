@@ -2,41 +2,23 @@ package com.louay.controller.factory;
 
 import com.louay.model.entity.wrapper.AdminRememberMeWrapper;
 import com.louay.model.entity.wrapper.StudentHomeWrapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.WebApplicationContext;
 
 import java.io.Serializable;
 
 @Component
-@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+@Scope(value = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class WrappersFactory implements Serializable {
-    private static final long serialVersionUID = 4949350062048623251L;
-    private StudentHomeWrapper studentHomeWrapper;
-    private AdminRememberMeWrapper adminRememberMeWrapper;
+    private static final long serialVersionUID = 5768762391541951182L;
 
     public StudentHomeWrapper getStudentHomeWrapper() {
-        return studentHomeWrapper;
-    }
-
-    @Autowired
-    public void setStudentHomeWrapper(StudentHomeWrapper studentHomeWrapper) {
-        if (studentHomeWrapper == null) {
-            throw new IllegalArgumentException("studentHomeWrapper entities cannot be null at WrappersFactory.class!.");
-        }
-        this.studentHomeWrapper = studentHomeWrapper;
+        return new StudentHomeWrapper();
     }
 
     public AdminRememberMeWrapper getAdminRememberMeWrapper() {
-        return adminRememberMeWrapper;
-    }
-
-    @Autowired
-    public void setAdminRememberMeWrapper(AdminRememberMeWrapper adminRememberMeWrapper) {
-        if (adminRememberMeWrapper == null) {
-            throw new IllegalArgumentException("adminRememberMeWrapper entities cannot be null at WrappersFactory.class!.");
-        }
-        this.adminRememberMeWrapper = adminRememberMeWrapper;
+        return new AdminRememberMeWrapper();
     }
 }

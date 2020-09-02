@@ -1,9 +1,10 @@
 package com.louay.controller.verification;
 
 import com.louay.model.entity.authentication.UsersAuthentication;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.WebApplicationContext;
 
 import javax.mail.*;
 import javax.mail.internet.*;
@@ -11,9 +12,9 @@ import java.io.Serializable;
 import java.util.Properties;
 
 @Component
-@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+@Scope(value = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class SendingVerificationEmail implements Serializable {
-    private static final long serialVersionUID = 8148994125182002481L;
+    private static final long serialVersionUID = -2607639254182683227L;
 
     private Properties getEmailProperties() {
         Properties prop = new Properties();
@@ -43,7 +44,7 @@ public class SendingVerificationEmail implements Serializable {
         });
     }
 
-    public void sendMessage(UsersAuthentication usersAuthentication) {
+    public String sendMessage(UsersAuthentication usersAuthentication) {
         try {
             Message message = new MimeMessage(getEmailSession());
             message.setFrom(new InternetAddress("DevelopmentTestLNMA@gmail.com"));
@@ -62,9 +63,11 @@ public class SendingVerificationEmail implements Serializable {
             message.setContent(multipart);
 
             Transport.send(message);
+
         } catch (MessagingException e) {
             System.out.println(e.getMessage());
         }
+        return "Email sent to " + usersAuthentication.getUsers().getEmail();
     }
 
     private String getMessageContent(UsersAuthentication usersAuthentication) {

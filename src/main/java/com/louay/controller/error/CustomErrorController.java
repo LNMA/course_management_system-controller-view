@@ -31,8 +31,9 @@ public class CustomErrorController implements ErrorController, Serializable {
                     .path("/WEB-INF/views/error.jsp")
                     .push();
         }
-        return "/error";
+        return "/WEB-INF/views/error.jsp";
     }
 
 }
+
 

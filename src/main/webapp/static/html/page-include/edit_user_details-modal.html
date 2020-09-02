@@ -1,0 +1,545 @@
+<div ng-controller="UserDetailModalController">
+    <!-- forename Modal -->
+    <div class="modal fade" id="forenameModal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Change Forename</h4>
+                    <button type="button" class="close" data-dismiss="modal">
+                        &times;
+                    </button>
+                </div>
+                <div class="container" id="editForenameSuccessAlert" ng-model="forenameSuccessMessage"
+                     ng-show="isEditForenameSuccess" role="alert">
+                    <div class="alert alert-success alert-dismissible fade show">
+                        <strong>Success!</strong>
+                        {{forenameSuccessMessage}}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="container" id="editForenameErrorAlert" ng-model="forenameErrorMessage"
+                     ng-hide="editForenameForm.$valid" role="alert">
+                    <div ng-messages="editForenameForm.$error || editForenameForm.$invalid"
+                         ng-show="submitted && (editForenameForm.$invalid || editForenameForm.$error)">
+                        <div class="alert alert-danger alert-dismissible fade show">
+                            <strong>Error!</strong>
+                            <span ng-show="editForenameForm.forename.$error.required">
+                                            forename Required!
+                                        </span>
+                            <span ng-show="editForenameForm.forename.$invalid">
+                                            forename Invalid!
+                                        </span>
+                            {{forenameErrorMessage}}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <form ng-submit="updateForename()" name="editForenameForm" method="post" novalidate>
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <div class="form-row">
+                                <div class="form-group col col-md-9">
+                                    <label class="font-weight-bold" for="inputForename">
+                                        Forename:
+                                    </label>
+                                    <input id="inputForename" name="forename" type="text" class="form-control"
+                                           placeholder="type new forename" ng-minlength="2" ng-maxlength="50"
+                                           required ng-class="{'is-invalid': submitted &&
+                                           (editForenameForm.forename.$error.required ||
+                                           editForenameForm.forename.$invalid),
+                                           'is-valid': editForenameForm.forename.$valid}"
+                                           ng-model="editForename">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">
+                            Save
+                        </button>
+                        <button type="button" class="btn btn-danger"
+                                data-dismiss="modal">Close
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- surname Modal -->
+    <div class="modal fade" id="surnameModal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Change Surname</h4>
+                    <button type="button" class="close" data-dismiss="modal">
+                        &times;
+                    </button>
+                </div>
+                <div class="container" id="editSurnameSuccessAlert" ng-model="surnameSuccessMessage"
+                     ng-show="isEditSurnameSuccess" role="alert">
+                    <div class="alert alert-success alert-dismissible fade show">
+                        <strong>Success!</strong>
+                        {{surnameSuccessMessage}}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="container" id="editSurnameErrorAlert" ng-model="surnameErrorMessage"
+                     ng-hide="editSurnameForm.$valid" role="alert">
+                    <div ng-messages="editSurnameForm.$error || editSurnameForm.$invalid"
+                         ng-show="submitted && (editSurnameForm.$invalid || editSurnameForm.$error)">
+                        <div class="alert alert-danger alert-dismissible fade show">
+                            <strong>Error!</strong>
+                            <span ng-show="editSurnameForm.surename.$error.required">
+                                            surname Required!
+                                        </span>
+                            <span ng-show="editSurnameForm.surename.$invalid">
+                                            surname Invalid!
+                                        </span>
+                            {{surnameErrorMessage}}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <form ng-submit="updateSurname()" name="editSurnameForm" method="post" novalidate>
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <div class="form-row">
+                                <div class="form-group col col-md-9">
+                                    <label class="font-weight-bold" for="inputSurname">
+                                        Surname:
+                                    </label>
+                                    <input id="inputSurname" name="surename" type="text" class="form-control"
+                                           placeholder="type new last name" ng-minlength="2" ng-maxlength="50" required
+                                           ng-class="{'is-invalid': submitted &&
+                                           (editSurnameForm.surename.$error.required ||
+                                           editSurnameForm.surename.$invalid),
+                                           'is-valid': editSurnameForm.surename.$valid}"
+                                           ng-model="editSurname">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">
+                            Save
+                        </button>
+                        <button type="button" class="btn btn-danger"
+                                data-dismiss="modal">Close
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- gender Modal -->
+    <div class="modal fade" id="genderModal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Change Gender</h4>
+                    <button type="button" class="close" data-dismiss="modal">
+                        &times;
+                    </button>
+                </div>
+                <div class="container" id="editGenderSuccessAlert" ng-model="genderSuccessMessage"
+                     ng-show="isEditGenderSuccess" role="alert">
+                    <div class="alert alert-success alert-dismissible fade show">
+                        <strong>Success!</strong>
+                        {{genderSuccessMessage}}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="container" id="editgenderErrorAlert" ng-model="genderErrorMessage"
+                     ng-hide="editGenderForm.$valid" role="alert">
+                    <div ng-messages="editGenderForm.$error || editSurnameForm.$invalid"
+                         ng-show="submitted && (editGenderForm.$invalid || editGenderForm.$error)">
+                        <div class="alert alert-danger alert-dismissible fade show">
+                            <strong>Error!</strong>
+                            <span ng-show="editGenderForm.gender.$error.required">
+                                            gender Required!
+                                        </span>
+                            <span ng-show="editGenderForm.gender.$invalid">
+                                            gender Invalid!
+                                        </span>
+                            {{genderErrorMessage}}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <form ng-submit="updateGender()" name="editGenderForm" method="post" novalidate>
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <div class="form-row">
+                                <div class="form-group col col-md-9">
+                                    <label class="font-weight-bold" for="inputGender">
+                                        Gender:
+                                    </label>
+                                    <select class="custom-select w-75" name="gender" id="inputGender" required
+                                            ng-class="{'is-invalid': submitted &&
+                                           (editGenderForm.gender.$error.required ||
+                                           editGenderForm.gender.$invalid),
+                                           'is-valid': editGenderForm.gender.$valid}"
+                                            ng-model="editGender">
+                                        <option selected disabled value="">Choose...</option>
+                                        <option value="MALE">Male</option>
+                                        <option value="FEMALE">Female</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <br>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">
+                            Save
+                        </button>
+                        <button type="button" class="btn btn-danger"
+                                data-dismiss="modal">Close
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- birthday Modal -->
+    <div class="modal fade" id="birthdayModal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Change Birthday</h4>
+                    <button type="button" class="close" data-dismiss="modal">
+                        &times;
+                    </button>
+                </div>
+                <div class="container" id="editBirthdaySuccessAlert" ng-model="birthdaySuccessMessage"
+                     ng-show="isEditBirthdaySuccess" role="alert">
+                    <div class="alert alert-success alert-dismissible fade show">
+                        <strong>Success!</strong>
+                        {{birthdaySuccessMessage}}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="container" id="editBirthdayErrorAlert" ng-model="birthdayErrorMessage"
+                     ng-hide="editBirthdayForm.$valid" role="alert">
+                    <div ng-messages="editBirthdayForm.$error || editBirthdayForm.$invalid"
+                         ng-show="submitted && (editBirthdayForm.$invalid || editBirthdayForm.$error.required)">
+                        <div class="alert alert-danger alert-dismissible fade show">
+                            <strong>Error!</strong>
+                            <span ng-show="editBirthdayForm.birthday.$error.required">
+                                            birthday Required!
+                                        </span>
+                            <span ng-show="editBirthdayForm.birthday.$invalid">
+                                            birthday Invalid!
+                                        </span>
+                            {{birthdayErrorMessage}}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <form ng-submit="updateBirthday()" name="editBirthdayForm" method="post" novalidate>
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <div class="form-row">
+                                <div class="form-group col col-md-9">
+                                    <label class="font-weight-bold" for="inputBirthday">
+                                        Birthday:
+                                    </label>
+                                    <input class="form-control" type="date" name="birthday" id="inputBirthday" required
+                                           ng-class="{'is-invalid': submitted &&
+                                           (editBirthdayForm.birthday.$error.required ||
+                                           editBirthdayForm.birthday.$invalid),
+                                           'is-valid': editBirthdayForm.birthday.$valid}"
+                                           ng-model="editBirthday"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">
+                            Save
+                        </button>
+                        <button type="button" class="btn btn-danger"
+                                data-dismiss="modal">Close
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Phone Modal -->
+    <div class="modal fade" id="telephoneModal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Change Phone</h4>
+                    <button type="button" class="close" data-dismiss="modal">
+                        &times;
+                    </button>
+                </div>
+                <div class="container" id="editPhoneSuccessAlert" ng-model="phoneSuccessMessage"
+                     ng-show="isEditPhoneSuccess" role="alert">
+                    <div class="alert alert-success alert-dismissible fade show">
+                        <strong>Success!</strong>
+                        {{phoneSuccessMessage}}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="container" id="editPhoneErrorAlert" ng-model="phoneErrorMessage"
+                     ng-hide="editPhoneForm.$valid" role="alert">
+                    <div ng-messages="editPhoneForm.$error || editPhoneForm.$invalid"
+                         ng-show="submitted && (editPhoneForm.$invalid || editPhoneForm.$error)">
+                        <div class="alert alert-danger alert-dismissible fade show">
+                            <strong>Error!</strong>
+                            <span ng-show="editPhoneForm.phone.$error.required">
+                                            phone Required!
+                                        </span>
+                            <span ng-show="editPhoneForm.phone.$invalid">
+                                            phone Invalid!
+                                        </span>
+                            {{phoneErrorMessage}}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <form ng-submit="updatePhone()" name="editPhoneForm" method="post" novalidate>
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <div class="form-row">
+                                <div class="form-group col col-md-9">
+                                    <label class="font-weight-bold" for="inputTelephone">
+                                        Phone:
+                                    </label>
+                                    <input class="form-control w-75" type="text" name="phone" id="inputTelephone"
+                                           placeholder="Type your phone number" ng-minlength="10" ng-maxlength="20"
+                                           required ng-pattern="/^\d+$/" ng-class="{'is-invalid': submitted &&
+                                           (editPhoneForm.phone.$error.required ||
+                                           editPhoneForm.phone.$invalid),
+                                           'is-valid': editPhoneForm.phone.$valid}"
+                                           ng-model="editPhone"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">
+                            Save
+                        </button>
+                        <button type="button" class="btn btn-danger"
+                                data-dismiss="modal">Close
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- country + state + address Modal -->
+    <div class="modal fade" id="addressModal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Change Address</h4>
+                    <button type="button" class="close" data-dismiss="modal">
+                        &times;
+                    </button>
+                </div>
+                <div class="container" id="editFullAddressSuccessAlert" ng-model="fullAddressSuccessMessage"
+                     ng-show="isEditFullAddressSuccess" role="alert">
+                    <div class="alert alert-success alert-dismissible fade show">
+                        <strong>Success!</strong>
+                        {{fullAddressSuccessMessage}}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="container" id="editFullAddressErrorAlert" ng-model="fullAddressErrorMessage"
+                     ng-hide="editAddressForm.$valid" role="alert">
+                    <div ng-messages="editAddressForm.$error || editAddressForm.$invalid"
+                         ng-show="submitted && (editAddressForm.$invalid || editAddressForm.$error)">
+                        <div class="alert alert-danger alert-dismissible fade show">
+                            <strong>Error!</strong>
+                            <span ng-show="editAddressForm.country.$error.required">
+                                            country Required!
+                                        </span>
+                            <span ng-show="editAddressForm.country.$invalid">
+                                            country Invalid!
+                                        </span>
+                            <span ng-show="editAddressForm.state.$error.required">
+                                            state Required!
+                                        </span>
+                            <span ng-show="editAddressForm.state.$invalid">
+                                            state Invalid!
+                                        </span>
+                            <span ng-show="editAddressForm.address.$error.required">
+                                            address Required!
+                                        </span>
+                            <span ng-show="editAddressForm.address.$invalid">
+                                            address Invalid!
+                                        </span>
+                            {{fullAddressErrorMessage}}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <form ng-submit="updateFullAddress()" name="editAddressForm" method="post" novalidate>
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <div class="form-row">
+                                <div class="form-group col col-md-9">
+                                    <label class="font-weight-bold" for="inputCountry">
+                                        Country:
+                                    </label>
+                                    <br>
+                                    <select class="custom-select" id="inputCountry"
+                                            name="country" ng-model="editfullAddress.country" required
+                                            ng-class="{'is-invalid': submitted &&
+                                        (editAddressForm.country.$error.required ||
+                                        editAddressForm.country.$invalid),
+                                        'is-valid': editAddressForm.country.$valid}">
+                                        <option selected disabled value="">Select Country...</option>
+                                        <option ng-repeat="countries in countryList" value="{{countries.name}}">
+                                            {{countries.name}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col col-md-9">
+                                    <label class="font-weight-bold" for="inputState">
+                                        State:
+                                    </label>
+                                    <br>
+                                    <select class="custom-select" id="inputState" name="state"
+                                            ng-model="editfullAddress.state" required
+                                            ng-class="{'is-invalid': submitted &&
+                                        (editAddressForm.state.$error.required ||
+                                        editAddressForm.state.$invalid),
+                                        'is-valid': editAddressForm.state.$valid}">
+                                        <option selected disabled value="">Select State...</option>
+                                        <option ng-repeat="states in stateList[editfullAddress.country]"
+                                                value='{{states.name}}'>
+                                            {{states.name}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col col-md-9">
+                                    <label class="font-weight-bold" for="inputAddress">
+                                        Address:
+                                    </label>
+                                    <input class="form-control" type="text" name="address"
+                                           id="inputAddress" placeholder="Type your Address"
+                                           ng-model="editfullAddress.address" ng-minlength="2" ng-maxlength="200"
+                                           required ng-class="{'is-invalid': submitted &&
+                                       (editAddressForm.address.$error.required || editAddressForm.address.$invalid),
+                                       'is-valid': editAddressForm.address.$valid}"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">
+                            Save
+                        </button>
+                        <button type="button" class="btn btn-danger"
+                                data-dismiss="modal">Close
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- headline Modal -->
+    <div class="modal fade" id="headlineModal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Change Headline</h4>
+                    <button type="button" class="close" data-dismiss="modal">
+                        &times;
+                    </button>
+                </div>
+                <div class="container" id="editHeadlineSuccessAlert" ng-model="headlineSuccessMessage"
+                     ng-show="isEditHeadlineSuccess" role="alert">
+                    <div class="alert alert-success alert-dismissible fade show">
+                        <strong>Success!</strong>
+                        {{headlineSuccessMessage}}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="container" id="editHeadlineErrorAlert" ng-model="headlineErrorMessage"
+                     ng-hide="editHeadlineForm.$valid" role="alert">
+                    <div ng-messages="editHeadlineForm.$error || editHeadlineForm.$invalid"
+                         ng-show="submitted && (editHeadlineForm.$invalid || editHeadlineForm.$error)">
+                        <div class="alert alert-danger alert-dismissible fade show">
+                            <strong>Error!</strong>
+                            <span ng-show="editHeadlineForm.headline.$error.required">
+                                            headline Required!
+                                        </span>
+                            <span ng-show="editHeadlineForm.headline.$invalid">
+                                            headline Invalid!
+                                        </span>
+                            {{headlineErrorMessage}}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <form ng-submit="updateHeadline()" name="editHeadlineForm" method="post" novalidate>
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <div class="form-row">
+                                <div class="form-group col col-md-9">
+                                    <label class="font-weight-bold" for="inputHeadline">
+                                        Headline:
+                                    </label>
+                                    <input id="inputHeadline" name="headline" type="text" class="form-control"
+                                           placeholder="type new headline" ng-minlength="2" ng-maxlength="300" required
+                                           ng-class="{'is-invalid': submitted &&
+                                           (editHeadlineForm.headline.$error.required ||
+                                           editHeadlineForm.headline.$invalid),
+                                           'is-valid': editHeadlineForm.headline.$valid}"
+                                           ng-model="editHeadline">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">
+                            Save
+                        </button>
+                        <button type="button" class="btn btn-danger"
+                                data-dismiss="modal">Close
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

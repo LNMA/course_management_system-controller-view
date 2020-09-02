@@ -3,6 +3,7 @@ package com.louay.controller.login;
 import com.louay.controller.factory.EntitiesFactory;
 import com.louay.controller.factory.ServicesFactory;
 import com.louay.controller.factory.WrappersFactory;
+import com.louay.controller.util.filter.EmailFilter;
 import com.louay.model.entity.authentication.CookieLogin;
 import com.louay.model.entity.role.AccountsRoles;
 import com.louay.model.entity.role.UsersRoles;
@@ -18,10 +19,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.*;
-import java.io.IOException;
 import java.io.Serializable;
 import java.security.SecureRandom;
 
@@ -29,24 +30,29 @@ import java.security.SecureRandom;
 @CrossOrigin(origins = "https://localhost:8443")
 @RequestMapping(value = "/login")
 public class LoginController implements Serializable {
-    private static final long serialVersionUID = 7766987398483049143L;
+    private static final long serialVersionUID = -4335506227802340794L;
     private final ServicesFactory servicesFactory;
     private final EntitiesFactory entitiesFactory;
     private final WrappersFactory wrappersFactory;
     private final PasswordEncoder passwordEncoder;
-    private String email;
+    private final EmailFilter emailFilter;
+    private String urlEmail;
     private AccountsRoles accountsRoles;
 
     @Autowired
     public LoginController(ServicesFactory servicesFactory, EntitiesFactory entitiesFactory,
-                           PasswordEncoder passwordEncoder,  WrappersFactory wrappersFactory) {
-        if (servicesFactory == null || entitiesFactory == null || passwordEncoder == null || wrappersFactory == null) {
-            throw new IllegalArgumentException("factory cannot be null at LoginController.class");
-        }
+                           PasswordEncoder passwordEncoder, WrappersFactory wrappersFactory, EmailFilter emailFilter) {
+        Assert.notNull(entitiesFactory, "entitiesFactory cannot be null!.");
+        Assert.notNull(servicesFactory, "servicesFactory cannot be null!.");
+        Assert.notNull(passwordEncoder, "passwordEncoder cannot be null!.");
+        Assert.notNull(wrappersFactory, "wrappersFactory cannot be null!.");
+        Assert.notNull(emailFilter, "emailFilter cannot be null!.");
+
         this.servicesFactory = servicesFactory;
         this.entitiesFactory = entitiesFactory;
         this.passwordEncoder = passwordEncoder;
         this.wrappersFactory = wrappersFactory;
+        this.emailFilter = emailFilter;
     }
 
     @GetMapping
@@ -75,17 +81,16 @@ public class LoginController implements Serializable {
                     .path("/static/lib/bootstrap-4.5.1/css/bootstrap.min.css")
                     .path("/static/images/favicon.ico")
                     .path("/static/js/service/login_submit.js")
-                    .path("/static/js/control/login.js")
+                    .path("/static/js/control/login-controller.js")
                     .path("/static/js/app.js")
                     .path("/static/lib/angularJS-1.8.0/angular-messages.min.js")
                     .path("/static/lib/angularJS-1.8.0/angular.min.js")
                     .path("/static/lib/popper-2.4.3/popper.min.js")
                     .path("/static/lib/bootstrap-4.5.1/js/bootstrap.min.js")
                     .path("/static/lib/jQuery-3.5.1/jquery-3.5.1.min.js")
-                    .path("/WEB-INF/views/login.jsp")
                     .push();
         }
-        return "/login";
+        return "/static/html/login.html";
     }
 
     @RequestMapping(value = "/perform_session_login")
@@ -94,7 +99,6 @@ public class LoginController implements Serializable {
                                       HttpServletRequest request) {
 
         if (sessionEmail == null || sessionPassword == null) {
-            deleteSessionLogin(request);
             return "redirect:/login";
         }
         AdminRememberMeWrapper adminWrapper = buildAdminRememberMeWrapper(sessionEmail);
@@ -120,13 +124,12 @@ public class LoginController implements Serializable {
         createNewSessionForSessionLogin(request, adminWrapper);
 
         this.accountsRoles = findAccountRoles(adminWrapper);
-        this.email = adminWrapper.getAdmin().getEmail();
+        this.urlEmail = this.emailFilter.filterOriginalToEmailUrl(adminWrapper.getAdmin().getEmail());
         return "redirect:/login/redirect_tracer_success_login";
     }
 
     private Boolean isEmailAndPasswordSessionMatched(AdminRememberMeWrapper adminWrapper) {
-        Admin admin = this.entitiesFactory.getAdmin();
-        admin.setEmail(admin.getEmail());
+        Admin admin = findAdminByEmail(adminWrapper);
 
         return admin.getEmail().equalsIgnoreCase(adminWrapper.getAdmin().getEmail()) &&
                 admin.getPassword().equals(adminWrapper.getAdmin().getPassword());
@@ -140,12 +143,11 @@ public class LoginController implements Serializable {
         session.removeAttribute("password");
     }
 
-    @RequestMapping(value = "/perform_cookie_login", method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = "/perform_cookie_login")
     public String loginCookieProcess(@CookieValue(value = "id", required = false) String cookieEmail,
                                      @CookieValue(value = "secureNumber", required = false) String cookieSecureNumber,
                                      HttpServletRequest request, HttpServletResponse response) {
         if (cookieEmail == null || cookieSecureNumber == null) {
-            deleteCookies(request, response);
             return "redirect:/login";
         }
         Integer secureNumber = Integer.parseInt(cookieSecureNumber);
@@ -165,7 +167,8 @@ public class LoginController implements Serializable {
             deleteCookies(request, response);
             return "redirect:/login";
         }
-        /*if (userAccountStatus.getOnline()) {
+        /*
+        if (userAccountStatus.getOnline()) {
             deleteCookies(request, response);
             return "redirect:/login";
         }*/
@@ -176,7 +179,7 @@ public class LoginController implements Serializable {
         createNewSessionCookieLogin(request, adminWrapper);
 
         this.accountsRoles = findAccountRoles(adminWrapper);
-        this.email = adminWrapper.getAdmin().getEmail();
+        this.urlEmail = this.emailFilter.filterOriginalToEmailUrl(adminWrapper.getAdmin().getEmail());
 
         return "redirect:/login/redirect_tracer_success_login";
     }
@@ -184,13 +187,13 @@ public class LoginController implements Serializable {
     @RequestMapping(value = "/redirect_tracer_success_login")
     private String getTracerAccountHomePage() {
         if (Role.STUDENT.compareTo(this.accountsRoles.getRoleName()) == 0) {
-            return String.format("redirect:/student/student_home/%s", filterOriginalToEmailUrl());
+            return String.format("redirect:/student/student_home/%s", this.urlEmail);
 
         } else if (Role.INSTRUCTOR.compareTo(accountsRoles.getRoleName()) == 0) {
-            return String.format("redirect:/instructor/instructor_home/%s", filterOriginalToEmailUrl());
+            return String.format("redirect:/instructor/instructor_home/%s", this.urlEmail);
 
         } else if (Role.ADMIN.compareTo(accountsRoles.getRoleName()) == 0) {
-            return String.format("redirect:/admin/admin_home/%s", filterOriginalToEmailUrl());
+            return String.format("redirect:/admin/admin_home/%s", this.urlEmail);
 
         } else {
             throw new UnsupportedOperationException("No roles had matched!.");
@@ -237,7 +240,7 @@ public class LoginController implements Serializable {
 
     @PostMapping(value = "/perform_login", consumes = MediaType.APPLICATION_JSON_VALUE)
     public String loginProcess(@RequestBody AdminRememberMeWrapper adminWrapper, HttpServletResponse response,
-                               HttpServletRequest request) throws IOException {
+                               HttpServletRequest request) {
         if (adminWrapper.getAdmin().getEmail() == null || adminWrapper.getAdmin().getPassword() == null) {
             throw new IllegalArgumentException("email and password cannot be null!.");
         }
@@ -269,7 +272,7 @@ public class LoginController implements Serializable {
         createNewSession(request, adminWrapper);
 
         this.accountsRoles = findAccountRoles(adminWrapper);
-        this.email = adminWrapper.getAdmin().getEmail();
+        this.urlEmail = this.emailFilter.filterOriginalToEmailUrl(adminWrapper.getAdmin().getEmail());
 
         return "forward:/login/redirect_success_login";
     }
@@ -277,13 +280,13 @@ public class LoginController implements Serializable {
     @RequestMapping(value = "/redirect_success_login")
     private ResponseEntity<String> getAccountHomePage() {
         if (Role.STUDENT.compareTo(this.accountsRoles.getRoleName()) == 0) {
-            return ResponseEntity.ok().body(String.format("/student/student_home/%s", filterOriginalToEmailUrl()));
+            return ResponseEntity.ok().body(String.format("/student/student_home/%s", this.urlEmail));
 
         } else if (Role.INSTRUCTOR.compareTo(accountsRoles.getRoleName()) == 0) {
-            return ResponseEntity.ok().body(String.format("/instructor/instructor_home/%s", filterOriginalToEmailUrl()));
+            return ResponseEntity.ok().body(String.format("/instructor/instructor_home/%s", this.urlEmail));
 
         } else if (Role.ADMIN.compareTo(accountsRoles.getRoleName()) == 0) {
-            return ResponseEntity.ok().body(String.format("/admin/admin_home/%s", filterOriginalToEmailUrl()));
+            return ResponseEntity.ok().body(String.format("/admin/admin_home/%s", this.urlEmail));
 
         } else {
             throw new UnsupportedOperationException("No roles had matched!.");
@@ -463,17 +466,5 @@ public class LoginController implements Serializable {
         HttpSession session = request.getSession(true);
         session.setAttribute("id", adminWrapper.getAdmin().getEmail());
         session.setAttribute("password", adminWrapper.getAdmin().getPassword());
-    }
-
-    private String filterOriginalToEmailUrl(){
-        if (this.email == null ){
-            return "";
-        }
-        int emailLength  = this.email.length();
-        String subEmail = this.email.substring(emailLength-4, emailLength);
-        if (subEmail.equals(".com")){
-            return this.email.substring(0, emailLength-4)+"-com";
-        }
-        return this.email;
     }
 }

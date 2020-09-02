@@ -3,7 +3,7 @@
 /*content-type:application/javascript*/
 
 //password modal
-/*$(document).on('click', '', function () {
+$(document).on('click', '', function () {
     'use strict';
     $('#changePasswordModal').empty().append(`<div class="modal fade" id="passwordModal">
         <div class="modal-dialog modal-lg">
@@ -45,7 +45,7 @@
             </div>
         </div>
     </div>`);
-});*/
+});
 function passwordValidateForm() {
     'use strict';
     let oldPassword = document.forms['passwordForm']['passwordOld'].value;

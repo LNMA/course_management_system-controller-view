@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <style type="text/css">
+        @import url(/static/lib/bootstrap-4.5.1/css/bootstrap.min.css);
+    </style>
+    <script type="application/javascript" src="/static/lib/jQuery-3.5.1/jquery-3.5.1.min.js"></script>
+    <script type="application/javascript" src="/static/lib/popper-1.16.1/popper.min.js"></script>
+    <script type="application/javascript" src="/static/lib/bootstrap-4.5.1/js/bootstrap.min.js"></script>
+    <script type="application/javascript" src="/static/lib/angularJS-1.8.0/angular.min.js"></script>
+    <script type="application/javascript" src="/static/lib/angularJS-1.8.0/angular-messages.min.js"></script>
+    <script type="application/javascript" src="/static/lib/angularJS-1.8.0/angular-sanitize.min.js"></script>
+    <script type="application/javascript" src="/static/js/app.js"></script>
+    <script type="application/javascript" src="/static/js/control/course_home-controller.js"></script>
+    <script type="application/javascript" src="/static/js/service/get_course_info.js"></script>
+    <script type="application/javascript" src="/static/js/service/get_course_instructor_info.js"></script>
+    <link href="/static/images/favicon.ico" rel="icon" type="image/x-icon">
+    <title>Course Home `by Louay Amr`</title>
+<body ng-app="app" ng-controller="CourseHomeController">
+<div ng-bind-html="errorRender"></div>
+<header>
+    <ng-include src="'/static/html/page-include/student_course-navbar.html'"></ng-include>
+    <nav class="nav container-fluid" style="z-index: 1">
+        <div class="navbar navbar-dark navbar-expand-md row row-cols-1" style="background-color: #a2a2b5;">
+            <button class="navbar-toggler nav-item" type="button" data-toggle="collapse"
+                    data-target="#navbarCourseSub" aria-controls="navbarCourseSub" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCourseSub">
+                <ul class="nav-item navbar-nav container-fluid">
+                    <li class="nav-item col col-md-6">
+                        <a href="{{homeCourseMateialUrl}}/material">
+                            <button class="btn btn-outline-dark w-100" type="button">Materials</button>
+                        </a>
+                    </li>
+                    <li class="nav-item col col-md-6">
+                        <a href="{{homeCourseMateialUrl}}/feedback">
+                            <button class="btn btn-outline-dark w-100" type="button">General Discussion</button>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+<main class="container-fluid">
+    <div class="container" id="pageAlert" ng-model="pageErrorMessage">
+        <div ng-show="isPageError">
+            <div class="alert alert-danger alert-dismissible fade show">
+                <strong>Error!</strong> {{pageErrorMessage}}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="row row-cols-1 mt-4">
+        <article class="col col-md-12 text-center">
+            <div class="justify-content-center container-fluid">
+                <div class="row justify-content-center">
+                    <img src="data:image/*;base64,{{coursePicture}}"
+                         class="card-img-top" width="500" height="500" alt="course picture"/>
+                </div>
+                <br>
+                <div class="row justify-content-center align-self-center">
+                    <p class="text-center font-weight-bold h5">
+                        {{courseName}}
+                    </p>
+                </div>
+            </div>
+            <div class="container-fluid mt-4">
+                <p class="font-weight-bold">
+                    Start date: {{startDateString}}
+                </p>
+                <p class="font-weight-bold">
+                    End date: {{endDateString}}
+                </p>
+                <div class="font-weight-bold">
+                    <p class="mb-5">
+                        Instructor:
+                    </p>
+                    <div ng-if="instructorProfileVisibility === 'PUBLIC'">
+                        <a href="{{instructorEmail}}" class="font-weight-bold text-dark">
+                            <img src="data:image/*;base64,{{instructorPicture}}"
+                                 class="img-thumbnail" width="300" height="300" alt="instructor picture"/>
+                            <p>
+                                <span class="text-muted">{{instructorNickname}}</span> {{instructorForename}} {{instructorSurname}}
+                            </p>
+                        </a>
+                    </div>
+                    <div ng-if="instructorProfileVisibility === 'PRIVATE'">
+                    <span class="font-weight-bold">
+                        <img src="data:image/*;base64,{{instructorPicture}}"
+                             class="img-thumbnail" width="300" height="300" alt="instructor picture"/>
+                        <p>
+                            <span class="text-muted">{{instructorNickname}}</span> {{instructorForename}} {{instructorSurname}}
+                        </p>
+                    </span>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </div>
+</main>
+<footer style="margin-top: 30em;">
+    <nav class="navbar navbar-dark position-relative mt-3" style="background-color: #d3c7cd; height: 16em; width: 100%">
+        <p>Louay Amr © 2020</p>
+    </nav>
+</footer>
+</body>
+</html>
+

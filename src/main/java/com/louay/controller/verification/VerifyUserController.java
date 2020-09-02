@@ -6,6 +6,7 @@ import com.louay.model.entity.authentication.UsersAuthentication;
 import com.louay.model.entity.status.UserAccountStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.PushBuilder;
@@ -21,9 +22,9 @@ public class VerifyUserController implements Serializable {
 
     @Autowired
     public VerifyUserController(ServicesFactory servicesFactory, EntitiesFactory entitiesFactory) {
-        if (servicesFactory == null || entitiesFactory == null) {
-            throw new IllegalArgumentException("factory cannot be null at VerifyUserController.class");
-        }
+        Assert.notNull(entitiesFactory, "entitiesFactory cannot be null!.");
+        Assert.notNull(servicesFactory, "servicesFactory cannot be null!.");
+
         this.servicesFactory = servicesFactory;
         this.entitiesFactory = entitiesFactory;
     }
@@ -40,10 +41,9 @@ public class VerifyUserController implements Serializable {
                     .path("/static/lib/popper-2.4.3/popper.min.js")
                     .path("/static/lib/bootstrap-4.5.1/js/bootstrap.min.js")
                     .path("/static/lib/jQuery-3.5.1/jquery-3.5.1.min.js")
-                    .path("/WEB-INF/views/verify_done.jsp.jsp")
                     .push();
         }
-        return "/verify_done";
+        return "/static/html/success_verify.html";
     }
 
     @GetMapping(value = "/perform_verify/{userId}/{verifyNumber}")

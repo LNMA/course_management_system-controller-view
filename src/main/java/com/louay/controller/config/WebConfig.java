@@ -1,10 +1,14 @@
 package com.louay.controller.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
 import org.apache.catalina.Context;
 import org.apache.catalina.connector.Connector;
 import org.apache.coyote.http2.Http2Protocol;
 import org.apache.tomcat.util.descriptor.web.SecurityCollection;
 import org.apache.tomcat.util.descriptor.web.SecurityConstraint;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
@@ -13,14 +17,15 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.CacheControl;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.resource.CssLinkResourceTransformer;
 import org.springframework.web.servlet.resource.ResourceUrlEncodingFilter;
 import org.springframework.web.servlet.resource.VersionResourceResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
-import org.springframework.web.servlet.view.JstlView;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -28,6 +33,9 @@ import java.util.concurrent.TimeUnit;
 @EnableWebMvc
 @ComponentScan(basePackages = {"com.louay.controller"})
 public class WebConfig implements WebMvcConfigurer {
+    @Autowired
+    @Qualifier("mappingJackson")
+    MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter;
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -44,19 +52,33 @@ public class WebConfig implements WebMvcConfigurer {
         return new ResourceUrlEncodingFilter();
     }
 
-    @Override
-    public void configureViewResolvers(ViewResolverRegistry registry) {
-        registry.jsp("/WEB-INF/views", ".jsp");
-        registry.viewResolver(viewResolver());
-    }
-
     @Bean
     public ViewResolver viewResolver() {
-        InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
-        viewResolver.setViewClass(JstlView.class);
-        viewResolver.setPrefix("/WEB-INF/views");
-        viewResolver.setSuffix(".jsp");
-        return viewResolver;
+        return new InternalResourceViewResolver();
+    }
+
+    @Bean(name = "multipartResolver")
+    public CommonsMultipartResolver multipartResolver() {
+        CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
+        multipartResolver.setMaxUploadSize(1024 * 1024 * 20);
+        return multipartResolver;
+    }
+
+    @Override
+    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+        WebMvcConfigurer.super.configureMessageConverters(converters);
+        converters.add(this.mappingJackson2HttpMessageConverter);
+    }
+
+    @Bean("mappingJackson")
+    public MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter() {
+        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
+        ObjectMapper mapper = converter.getObjectMapper();
+        Hibernate5Module hibernate5Module = new Hibernate5Module();
+        hibernate5Module.enable(Hibernate5Module.Feature.SERIALIZE_IDENTIFIER_FOR_LAZY_NOT_LOADED_OBJECTS);
+        mapper.registerModule(hibernate5Module);
+        mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss"));
+        return converter;
     }
 
     @Bean
@@ -74,12 +96,6 @@ public class WebConfig implements WebMvcConfigurer {
         };
         tomcat.addAdditionalTomcatConnectors(getHttpConnector());
         return tomcat;
-    }
-
-    @Override
-    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-        WebMvcConfigurer.super.configureMessageConverters(converters);
-        converters.add(new MappingJackson2HttpMessageConverter());
     }
 
     private Connector getHttpConnector() {

@@ -16,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -34,7 +35,7 @@ public class StudentSignUpController implements Serializable {
     private final FileProcess fileProcess;
     private final SendingVerificationEmail sendingVerificationEmail;
     private final PasswordEncoder passwordEncoder;
-    private static final String SUCCESS_MESSAGE = "Please check your email to verify your account then sign in";
+    private static final String SUCCESS_MESSAGE = ", Please check your email to verify your account then sign in";
     private static final String DUPLICATE_EMAIL_ERROR_MESSAGE = "This email is already Used!.";
 
     @Autowired
@@ -42,10 +43,12 @@ public class StudentSignUpController implements Serializable {
                                    EntitiesFactory entitiesFactory, FileProcess fileProcess,
                                    SendingVerificationEmail sendingVerificationEmail,
                                    PasswordEncoder passwordEncoder) {
-        if (servicesFactory == null || entitiesFactory == null || fileProcess == null
-                || sendingVerificationEmail == null || passwordEncoder == null) {
-            throw new IllegalArgumentException("factory cannot be null at StudentSignUpController.class");
-        }
+        Assert.notNull(entitiesFactory, "entitiesFactory cannot be null!.");
+        Assert.notNull(servicesFactory, "servicesFactory cannot be null!.");
+        Assert.notNull(passwordEncoder, "passwordEncoder cannot be null!.");
+        Assert.notNull(fileProcess, "fileProcess cannot be null!.");
+        Assert.notNull(sendingVerificationEmail, "sendingVerificationEmail cannot be null!.");
+
         this.servicesFactory = servicesFactory;
         this.entitiesFactory = entitiesFactory;
         this.fileProcess = fileProcess;
@@ -63,17 +66,16 @@ public class StudentSignUpController implements Serializable {
                     .path("/static/images/favicon.ico")
                     .path("/static/js/service/register_student_submit.js")
                     .path("/static/js/service/country_state.js")
-                    .path("/static/js/control/student_sign_up.js")
+                    .path("/static/js/control/student_sign_up-controller.js")
                     .path("/static/js/app.js")
                     .path("/static/lib/angularJS-1.8.0/angular-messages.min.js")
                     .path("/static/lib/angularJS-1.8.0/angular.min.js")
                     .path("/static/lib/popper-2.4.3/popper.min.js")
                     .path("/static/lib/bootstrap-4.5.1/js/bootstrap.min.js")
                     .path("/static/lib/jQuery-3.5.1/jquery-3.5.1.min.js")
-                    .path("/WEB-INF/views/sign_up.jsp")
                     .push();
         }
-        return "/sign_up";
+        return "/static/html/student_register.html";
     }
 
     @RequestMapping(value = "/submit_student_sign_up", method = RequestMethod.POST,
@@ -86,9 +88,9 @@ public class StudentSignUpController implements Serializable {
 
         if (student.getEmail() == null || student.getAdmin() == null || student.getAdmin().getEmail() == null ||
                 student.getAdmin().getPassword() == null || student.getEmail().length() < 7 ||
-                student.getAdmin().getPassword().length() < 8 || student.getAdmin().getEmail().length() <7 ||
+                student.getAdmin().getPassword().length() < 8 || student.getAdmin().getEmail().length() < 7 ||
                 student.getForename() == null || student.getForename().length() < 2 || student.getSurname() == null ||
-                student.getSurname().length() < 2){
+                student.getSurname().length() < 2) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("All field must fills!.");
         }
 
@@ -102,13 +104,13 @@ public class StudentSignUpController implements Serializable {
         createUserAccountStatus(student);
         createAccountPicture(student);
         UsersAuthentication usersAuthentication = createUserAuthentication(student);
-       this.sendingVerificationEmail.sendMessage(usersAuthentication);
+        String emailResult = this.sendingVerificationEmail.sendMessage(usersAuthentication);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(StudentSignUpController.SUCCESS_MESSAGE);
+        return ResponseEntity.status(HttpStatus.CREATED).body(emailResult + StudentSignUpController.SUCCESS_MESSAGE);
 
     }
 
-    private void encryptPassword(Student student){
+    private void encryptPassword(Student student) {
         student.getAdmin().setPassword(this.passwordEncoder.encode(student.getAdmin().getPassword()));
     }
 

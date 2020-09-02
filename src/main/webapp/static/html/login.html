@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <style type="text/css">
+        @import url(/static/css/small_form.css);
+        @import url(/static/css/background-large_form.css);
+        @import url(/static/lib/bootstrap-4.5.1/css/bootstrap.min.css);
+    </style>
+    <script type="application/javascript" src="/static/lib/jQuery-3.5.1/jquery-3.5.1.min.js"></script>
+    <script type="application/javascript" src="/static/lib/popper-1.16.1/popper.min.js"></script>
+    <script type="application/javascript" src="/static/lib/bootstrap-4.5.1/js/bootstrap.min.js"></script>
+    <script type="application/javascript" src="/static/lib/angularJS-1.8.0/angular.min.js"></script>
+    <script type="application/javascript" src="/static/lib/angularJS-1.8.0/angular-messages.min.js"></script>
+    <script type="application/javascript" src="/static/lib/angularJS-1.8.0/angular-sanitize.min.js"></script>
+    <script type="application/javascript" src="/static/js/app.js"></script>
+    <script type="application/javascript" src="/static/js/service/login_submit.js"></script>
+    <script type="application/javascript" src="/static/js/control/login-controller.js"></script>
+    <link href="/static/images/favicon.ico" rel="icon" type="image/x-icon">
+    <title>Login `by Louay Amr`</title>
+<body>
+<div ng-bind-html="errorRender"></div>
+<header>
+    <div class="jumbotron mb-0 h2 text-center">
+        Course Management System
+    </div>
+    <nav class="navbar navbar-expand-md navbar-dark" style="background-color: #3e3c4e;">
+        <p class="text-light text-capitalize h3">Login</p>
+    </nav>
+</header>
+<main>
+    <div ng-app="app" ng-controller="LoginController">
+        <div class="mainBody">
+
+            <div class="container">
+                <div class="row row-cols-1">
+                    <div class="col col-md-12" id="passwordErrormessage" ng-model="submitErrorMessage">
+                        <div ng-show="isError">
+                            <div class="alert alert-danger alert-dismissible fade show">
+                                <strong>Error!</strong> {{submitErrorMessage}}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="errorMessage" ng-model="errorMessage" class="col col-md-12" ng-hide="loginForm.$valid"
+                         role="alert">
+                        <div ng-messages="loginForm.$error || loginForm.$invalid"
+                             ng-show="submitted && (loginForm.$invalid || loginForm.$error)">
+                            <div class="alert alert-danger alert-dismissible fade show">
+                                <strong>Error!</strong>
+                                <span ng-show="loginForm.email.$error.required">
+                                 Email Required!
+                                </span>
+                                <span ng-show="loginForm.email.$invalid">
+                                Email Invalid!
+                                </span>
+                                <span ng-show="loginForm.password.$error.required">
+                                Password Required!
+                                </span>
+                                <span ng-show="loginForm.password.$invalid">
+                                Password Invalid!
+                                </span>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div ng-show="loading">
+            <div class="modal modal-dialog-centered">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-body text-center">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+
+            <div class="container">
+                <div class="row row-cols-1 justify-content-center align-content-center">
+                    <div class="col col-md-6">
+                        <div class="formSignIn pb-4">
+
+                            <form ng-submit="loginAccountsSubmit()" name="loginForm" method="post" novalidate>
+                                <div class="ml-5">
+
+                                    <div class="form-group">
+                                        <label class="mb-0 text-left formHead" style="margin-top: 5%">
+                                            Sign in to course ms
+                                        </label>
+                                        <small class="form-text text-muted text-left">all field required</small>
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="email">Email</label>
+                                                <input class="form-control w-75" type="email" ng-model="account.email"
+                                                       ng-minlength="5" ng-maxlength="200" name="email"
+                                                       ng-class="{'is-invalid': submitted &&
+                                                        (loginForm.email.$error.required || loginForm.email.$invalid),
+                                                        'is-valid': loginForm.email.$valid}"
+                                                       id="email" placeholder="Type your email" required/>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="form-group col-md-12">
+                                            <label for="inputPassword">*Password</label>
+                                            <input class="form-control w-75" type="password" ng-model="account.password"
+                                                   ng-minlength="8" ng-maxlength="100" required name="password"
+                                                   id="inputPassword" placeholder="Type your password"
+                                                   ng-class="{'is-invalid': submitted &&
+                                                   (loginForm.password.$error.required || loginForm.password.$invalid),
+                                                    'is-valid': loginForm.password.$valid}"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="col col-md-6">
+                                            <div class="form-group">
+                                                <div class="custom-control custom-checkbox mt-1">
+                                                    <input type="checkbox" class="custom-control-input"
+                                                           id="inputRemember"
+                                                           ng-model="account.rememberMe" name="rememberMe"
+                                                           value="remember">
+                                                    <label class="custom-control-label" for="inputRemember">Remember
+                                                        Me</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="col col-md-6">
+                                            <input type="submit" class="btn btn-primary" style="margin-left: 30%"
+                                                   value="Sign in"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            <hr class="mx-4">
+                            <div class="ml-5">
+                                <p>If this is first time <a href="https://localhost:8443/student_sign_up">Sign
+                                    Up</a></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<footer>
+    <nav class="navbar navbar-dark position-relative mt-0" style="background-color: #d3c7cd; height: 16em; width: 100%">
+        <p>Louay Amr © 2020</p>
+    </nav>
+</footer>
+</body>
+</html>
