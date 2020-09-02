@@ -96,7 +96,7 @@ public class SendingVerificationEmail implements Serializable {
                 "            <p>Thank you for sign up for course management system.</p>\n" +
                 "            <p>Please verify your email address by clicking the button below.</p>\n" +
                 "            <p>\n" +
-                "                <a href=\"https://192.168.1.9:8443/user_verify/perform_verify/" + usersAuthentication.getUsers().getEmail() + "/" + usersAuthentication.getVerificationNumber() + "\">\n" + //TODO : change localhost IP
+                "                <a href=\"https://192.168.1.11:8443/user_verify/perform_verify/" + usersAuthentication.getUsers().getEmail() + "/" + usersAuthentication.getVerificationNumber() + "\">\n" + //TODO : change localhost IP
                 "                    <button type=\"button\" style=\"height: 80px;border-radius: 2.5em;background: linear-gradient(to right,#e759fd,#206490,#88c7f0);color: white;font-weight: bold;font-size: 18px;width:40%;\">\n" +
                 "                        <h5>Confirm my account</h5>\n" +
                 "                    </button>\n" +
