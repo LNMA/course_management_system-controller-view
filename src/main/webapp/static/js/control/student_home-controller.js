@@ -8,15 +8,15 @@ app.config(function ($httpProvider) {
     $httpProvider.defaults.xsrfCookieName = 'XSRF-TOKEN';
     $httpProvider.defaults.xsrfHeaderName = 'X-XSRF-TOKEN';
 }).controller('StudentHomeController', StudentHomeCtrl);
-StudentHomeCtrl.$inject = ['$scope', '$http', '$location', '$sce', 'GetStudentHomeInfoService',
+StudentHomeCtrl.$inject = ['$scope', '$http', '$location', '$sce', '$window', 'GetStudentHomeInfoService',
     'UpdateStudentInterestsService', 'GetStudentCourseService'];
 
-function StudentHomeCtrl($scope, $http, $location, $sce, GetStudentHomeInfoService,
+function StudentHomeCtrl($scope, $http, $location, $sce, $window, GetStudentHomeInfoService,
                          UpdateStudentInterestsService, GetStudentCourseService) {
     GetStudentHomeInfoService.getStudentInfo($http, $location, $scope, $sce);
     GetStudentCourseService.getStudentCourse($http, $location, $scope, $sce);
-    $scope.updatePictureUrl = $location.absUrl()+'/profile_picture-update';
-    $scope.joinToCourseUrl = $location.absUrl()+'/to_my_course/';
+    $scope.updatePictureUrl = $location.absUrl() + '/profile_picture-update';
+    $scope.joinToCourseUrl = $location.absUrl() + '/to_my_course/';
     $scope.submitted = false;
     $scope.updateInterests = function () {
         $scope.submitted = true;
@@ -24,5 +24,7 @@ function StudentHomeCtrl($scope, $http, $location, $sce, GetStudentHomeInfoServi
             UpdateStudentInterestsService.updateInterestsService($http, $location, $scope);
         }
     };
+
+
 }
 

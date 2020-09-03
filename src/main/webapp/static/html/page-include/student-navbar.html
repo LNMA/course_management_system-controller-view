@@ -25,16 +25,18 @@
                         </a>
                     </li>
                     <li class="col col-md-7">
-                        <div class="">
-                            <form action="" method="get">
+                        <div>
+                            <div ng-controller="SearchNavController">
                                 <div class="input-group">
-                                    <input class="form-control border border-warning badge-pill" type="search"
-                                           placeholder="Search" name="keySearch">
+                                    <input class="form-control border border-warning badge-pill" type="text"
+                                           placeholder="Search" name="key" ng-model="keySearch">
                                     <div class="input-group-append">
-                                        <button class="btn btn-warning badge-pill" type="submit">&telrec;</button>
+                                        <button class="btn btn-warning badge-pill" type="button" ng-click="searchNow()">
+                                            &telrec;
+                                        </button>
                                     </div>
                                 </div>
-                            </form>
+                            </div>
                         </div>
                     </li>
                     <li class="col col-md-1">

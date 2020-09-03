@@ -30,6 +30,7 @@ app.service('CourseSearchService', [function () {
                 }
             });
     }
+
     this.showCourses = function showCourses($http, $location, $scope, $sce, pageNumber) {
         $http({
             method: 'GET',
