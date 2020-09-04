@@ -13,4 +13,8 @@ GeneralSearchCtrl.$inject = ['$scope', '$http', '$window', '$location', '$sce', 
 function GeneralSearchCtrl($scope, $http, $window, $location, $sce, GeneralSearchService) {
     GeneralSearchService.getPageNumber($http, $location, $scope, $sce);
 
+    $scope.showPage = function (pageNumber){
+        GeneralSearchService.showResult($http, $location, $scope, $sce, pageNumber);
+
+    }
 }

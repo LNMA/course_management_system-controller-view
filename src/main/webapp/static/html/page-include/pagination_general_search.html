@@ -1,10 +1,212 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<div ng-controller="GeneralSearchController" class="col col-md-12">
+    <div class="container-fluid mt-4">
+        <div class="row row-cols-1 row-cols-md-3">
+            <div ng-model="searchResult" ng-repeat="searchResult in searchResult">
+                <div ng-switch="searchResult.className">
 
-</body>
-</html>
+                    <div ng-switch-when="ACCOUNTS">
+                        <div class="col mb-3">
+                            <div class="card h-100">
+                                <a href="{{searchResult.email}}">
+                                    <button type="button" class="btn btn-outline-info col col-md-12">
+                                        <img src="data:image/*;base64,{{searchResult.accountPicture.profilePictureBase64}}"
+                                             class="card-img-top" alt="account image">
+                                        <div class="card-body">
+                                            <div class="card-text font-weight-bold">
+                                                {{searchResult.forename}} {{searchResult.surname}}
+                                            </div>
+                                        </div>
+                                    </button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div ng-switch-when="COURSE_FEEDBACK">
+                        <div ng-switch="searchResult.feedbackType">
+
+                            <div ng-switch-when="FILE">
+                                <div class="col mb-3">
+                                    <div class="card h-100">
+                                        <a href="{{searchResult.feedbackID}}">
+                                            <button type="button" class="btn btn-outline-info col col-md-12">
+                                                <img src="data:image/*;base64,{{searchResult.feedbackContent.feedbackFileBase64}}"
+                                                     class="card-img-top" alt="feedback image">
+                                                <div class="card-body">
+                                                    <div class="card-text small">
+                                                        <img src="data:image/*;base64,{{searchResult.user.accountPicture.profilePictureBase64}}"
+                                                             class="rounded-circle" width="30" height="30"
+                                                             alt="account image">
+                                                        By : {{searchResult.user.forename}} {{searchResult.user.surname}}
+                                                        At: {{searchResult.feedbackDateString}},
+                                                        Course ID : {{searchResult.course.courseID}}
+                                                    </div>
+                                                </div>
+                                            </button>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div ng-switch-when="MESSAGE">
+                                <div class="col mb-3">
+                                    <div class="card h-100">
+                                        <a href="{{searchResult.feedbackID}}">
+                                            <button type="button" class="btn btn-outline-info col col-md-12">
+                                                <div class="card-text h6">
+                                                    {{searchResult.feedbackContent.postMessage}}
+                                                </div>
+                                                <div class="card-body">
+                                                    <div class="card-text small">
+                                                        <img src="data:image/*;base64,{{searchResult.user.accountPicture.profilePictureBase64}}"
+                                                             class="rounded-circle" width="30" height="30"
+                                                             alt="account image">
+                                                        By : {{searchResult.user.forename}} {{searchResult.user.surname}}
+                                                        At: {{searchResult.feedbackDateString}},
+                                                        Course ID : {{searchResult.course.courseID}}
+                                                    </div>
+                                                </div>
+                                            </button>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div ng-switch-when="ALL">
+                                <div class="col mb-3">
+                                    <div class="card h-100">
+                                        <a href="{{searchResult.feedbackID}}">
+                                            <button type="button" class="btn btn-outline-info col col-md-12">
+                                                <img src="data:image/*;base64,{{searchResult.feedbackContent.feedbackFileBase64}}"
+                                                     class="card-img-top" alt="feedback image">
+                                                <div class="card-text h6">
+                                                    {{searchResult.feedbackContent.postMessage}}
+                                                </div>
+                                                <div class="card-body">
+                                                    <div class="card-text small">
+                                                        <img src="data:image/*;base64,{{searchResult.user.accountPicture.profilePictureBase64}}"
+                                                             class="rounded-circle" width="30" height="30"
+                                                             alt="account image">
+                                                        By : {{searchResult.user.forename}} {{searchResult.user.surname}}
+                                                        At: {{searchResult.feedbackDateString}},
+                                                        Course ID : {{searchResult.course.courseID}}
+                                                    </div>
+                                                </div>
+                                            </button>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div ng-switch-when="COURSES">
+                        <div class="col mb-3">
+                            <div class="card h-100">
+                                <a href="{{searchResult.courseID}}">
+                                    <button type="button" class="btn btn-outline-primary col col-md-12">
+                                        <img src="data:image/*;base64,{{searchResult.coursePictureBase64}}"
+                                             class="card-img-top"
+                                             alt="course image">
+                                        <div class="card-body">
+                                            <div class="card-text h6">
+                                                {{searchResult.courseName}}
+                                            </div>
+                                        </div>
+                                    </button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div ng-switch-when="COURSE_MATERIAL">
+                        <div ng-switch="searchResult.materialType">
+
+                            <div ng-switch-when="TEXT">
+                                <div class="col mb-3">
+                                    <div class="card h-100">
+                                        <a href="{{searchResult.materialID}}">
+                                            <button type="button" class="btn btn-outline-primary col col-md-12">
+                                                {{searchResult.text}}
+                                                <div class="card-body">
+                                                    <div class="card-text small">
+                                                        {{searchResult.materialName}}
+                                                        <p>
+                                                            <div class="card-text small">
+                                                        <p>
+                                                            <img src="data:image/*;base64,{{searchResult.course.coursePictureBase64}}"
+                                                                 class="rounded-circle" width="30" height="30"
+                                                                 alt="course image">
+                                                            upload at: {{searchResult.materialDateString}},
+                                                            In Course: {{searchResult.course.courseName}}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </button>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div ng-switch-when="FILE">
+
+                                <div ng-if="searchResult.fileType === 'PDF'">
+                                    <div class="col mb-3">
+                                        <div class="card h-100">
+                                            <a href="{{searchResult.materialID}}">
+                                                <button type="button" class="btn btn-outline-primary col col-md-12">
+
+                                                    <div class="card-body">
+                                                        <div class="card-text small">
+                                                            {{searchResult.materialName}}
+                                                            <p>
+                                                                <img src="data:image/*;base64,{{searchResult.course.coursePictureBase64}}"
+                                                                     class="rounded-circle" width="30" height="30"
+                                                                     alt="course image">
+                                                                upload at: {{searchResult.materialDateString}},
+                                                                In Course: {{searchResult.course.courseName}}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </button>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div ng-if="searchResult.fileType === 'IMAGE'">
+                                    <div class="col mb-3">
+                                        <div class="card h-100">
+                                            <a href="{{searchResult.materialID}}">
+                                                <button type="button" class="btn btn-outline-primary col col-md-12">
+                                                    <img src="data:image/*;base64,{{searchResult.base64}}"
+                                                         class="card-img" alt="material image">
+                                                    <div class="card-body">
+                                                        <div class="card-text small">
+                                                            {{searchResult.materialName}}
+                                                            <p>
+                                                                <img src="data:image/*;base64,{{searchResult.course.coursePictureBase64}}"
+                                                                     class="rounded-circle" width="30" height="30"
+                                                                     alt="course image">
+                                                                upload at: {{searchResult.materialDateString}},
+                                                                In Course: {{searchResult.course.courseName}}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </button>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

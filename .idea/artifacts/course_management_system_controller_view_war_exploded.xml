@@ -1,10 +1,10 @@
 <component name="ArtifactManager">
-  <artifact type="exploded-war" name="course_management_system-view:war exploded">
-    <output-path>$PROJECT_DIR$/out/artifacts/course_management_system_view_war_exploded</output-path>
+  <artifact type="exploded-war" name="course_management_system-controller-view:war exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/course_management_system_controller_view_war_exploded</output-path>
     <root id="root">
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
-          <element id="module-output" name="course_management_system-view" />
+          <element id="module-output" name="course_management_system-controller-view" />
         </element>
         <element id="directory" name="lib">
           <element id="library" level="project" name="Maven: com.louay.model:course_management_system-model:1.0-SNAPSHOT" />
@@ -94,7 +94,7 @@
           <element id="library" level="project" name="Maven: org.springframework:spring-jcl:5.2.8.RELEASE" />
         </element>
       </element>
-      <element id="javaee-facet-resources" facet="course_management_system-view/web/Web" />
+      <element id="javaee-facet-resources" facet="course_management_system-controller-view/web/Web" />
     </root>
   </artifact>
 </component>

@@ -100,24 +100,24 @@
          configuration is used below.
     -->
 
-	<Connector port="8443" protocol="org.apache.coyote.http11.Http11Nio2Protocol"
-               maxThreads="150" scheme="https" secure="true" SSLEnabled="true"
-               keystoreFile="C:/Users/Ryzen 5/Documents/IdeaProjects/course_management_system-controller-view/.keystore.jks" keystorePass="123456789@tomcat"
-               SSLProtocol="TLSv1+TLSv1.1+TLSv1.2++TLSv1.3" SSLVerifyClient="optional"
-               SSLCertificateFile="C:/Users/Ryzen 5/Documents/IdeaProjects/course_management_system-controller-view/tomcat.crt" 
-               SSLCertificateKeyFile="C:/Users/Ryzen 5/Documents/IdeaProjects/course_management_system-controller-view/server.csr"
-               certificateVerification="require" certificateVerificationDepth="3"		 
-               sslImplementationName="org.apache.tomcat.util.net.jsse.JSSEImplementation">
-        <UpgradeProtocol className="org.apache.coyote.http2.Http2Protocol" readTimeout="20000"/>
-        <SSLHostConfig ciphers="ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384"
-                       disableSessionTickets="true"
-                       honorCipherOrder="false"
-                       protocols="TLSv1.2, TLSv1.3">
-            <Certificate certificateKeyFile="C:/Users/Ryzen 5/Documents/IdeaProjects/course_management_system-controller-view/server.csr"
-                         certificateFile="C:/Users/Ryzen 5/Documents/IdeaProjects/course_management_system-controller-view/tomcat.crt"
-                         type="RSA" />
-        </SSLHostConfig>
-    </Connector>
+    <!--<Connector port="8443" protocol="org.apache.coyote.http11.Http11Nio2Protocol"
+                   maxThreads="150" scheme="https" secure="true" SSLEnabled="true"
+                   keystoreFile="C:/Users/Ryzen 5/Documents/IdeaProjects/course_management_system-controller-view/.keystore.jks" keystorePass="123456789@tomcat"
+                   SSLProtocol="TLSv1+TLSv1.1+TLSv1.2++TLSv1.3" SSLVerifyClient="optional"
+                   SSLCertificateFile="C:/Users/Ryzen 5/Documents/IdeaProjects/course_management_system-controller-view/tomcat.crt"
+                   SSLCertificateKeyFile="C:/Users/Ryzen 5/Documents/IdeaProjects/course_management_system-controller-view/server.csr"
+                   certificateVerification="require" certificateVerificationDepth="3"
+                   sslImplementationName="org.apache.tomcat.util.net.jsse.JSSEImplementation">
+            <UpgradeProtocol className="org.apache.coyote.http2.Http2Protocol" readTimeout="20000"/>
+            <SSLHostConfig ciphers="ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384"
+                           disableSessionTickets="true"
+                           honorCipherOrder="false"
+                           protocols="TLSv1.2, TLSv1.3">
+                <Certificate certificateKeyFile="C:/Users/Ryzen 5/Documents/IdeaProjects/course_management_system-controller-view/server.csr"
+                             certificateFile="C:/Users/Ryzen 5/Documents/IdeaProjects/course_management_system-controller-view/tomcat.crt"
+                             type="RSA" />
+            </SSLHostConfig>
+        </Connector>-->
 
     <!--
     <Connector port="8443" protocol="org.apache.coyote.http11.Http11AprProtocol"

@@ -39,7 +39,6 @@ public class GeneralSearchController implements Serializable {
         this.wrappersFactory = wrappersFactory;
     }
 
-
     @GetMapping
     public String viewsSearchPage(){
         return "/static/html/general_search.html";
@@ -53,7 +52,7 @@ public class GeneralSearchController implements Serializable {
         Assert.notNull(pageNumber, "pageNumber key cannot be null!.");
 
         int pageNumberParse = Integer.parseInt(pageNumber);
-        int pageSize = 9;
+        int pageSize = 3;
 
         return assemblySetResult(buildGeneralSearch(key, pageNumberParse, pageSize));
     }
@@ -65,8 +64,8 @@ public class GeneralSearchController implements Serializable {
         Set<Courses>  coursesSet = this.servicesFactory.getCourseService()
                 .findCourseLikeForSearch(generalSearch);
 
-        Set<CourseFeedback> courseFeedbacks = this.servicesFactory
-                .getFeedbackService().findCourseFeedbackLikeForSearch(generalSearch);
+        Set<CourseFeedback> courseFeedbacks = this.servicesFactory.getFeedbackService()
+                .findCourseFeedbackLikeForSearch(generalSearch);
 
         Set<CourseMaterials> courseMaterialsSet = this.servicesFactory.getMaterialService()
                 .findCourseMaterialsLikeForSearch(generalSearch);

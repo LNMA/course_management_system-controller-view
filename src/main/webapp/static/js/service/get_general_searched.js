@@ -32,11 +32,11 @@ app.service('GeneralSearchService', [function () {
             });
     }
 
-    this.showCourses = function showCourses($http, $location, $scope, $sce, pageNumber) {
+    this.showResult = function showResult($http, $location, $scope, $sce, pageNumber) {
         $http({
             method: 'GET',
             port: 8443,
-            url: $location.absUrl() + '/'+pageNumber+'/get_courses',
+            url: $location.absUrl() + '/'+pageNumber+'/get_result',
             headers: {'content-type': 'application/json'},
             contentType: "application/json; charset=utf-8",
             async: false,    //Cross-domain requests and dataType: "jsonp" requests do not support synchronous operation
@@ -45,7 +45,8 @@ app.service('GeneralSearchService', [function () {
             timeout: 5000,
         }).then(
             function successCallback(response) {
-                $scope.courseData = response.data;
+                console.log(response.data);
+                $scope.searchResult = response.data;
             }, function errorCallback(response) {
                 $scope.submitted = false;
                 $scope.isPageError = true;
