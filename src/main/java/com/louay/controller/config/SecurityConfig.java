@@ -10,8 +10,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.session.SimpleRedirectSessionInformationExpiredStrategy;
 import org.springframework.web.context.WebApplicationContext;
 
 @EnableWebSecurity
@@ -23,11 +23,19 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.requiresChannel().anyRequest().requiresSecure()
                 .and()
                 .authorizeRequests()
-                .antMatchers("/student_sign_up").permitAll()
+                .antMatchers("/student/**", "/course/**", "/course_search/**", "/search/**",
+                        "/logout/**", "/session_id", "/user_verify/**").anonymous()
+                .antMatchers("/student_sign_up", "/login").permitAll()
+                .mvcMatchers("/course/**", "/course_search/**", "/search/**",
+                        "/logout/**", "/session_id", "/user_verify/**", "/student/**" ).authenticated()
                 .and()
-                .formLogin().loginPage("/login").loginProcessingUrl("/perform_login")
+                .formLogin().loginPage("/login").permitAll()
+                .loginProcessingUrl("/login/perform_login").defaultSuccessUrl("/login/redirect_success_login")
+                .loginProcessingUrl("/login/perform_session_login").defaultSuccessUrl("/login/redirect_tracer_success_login")
+                .loginProcessingUrl("/login/perform_cookie_login").defaultSuccessUrl("/login/redirect_tracer_success_login")
                 .and()
-                .rememberMe().key("uniqueAndSecret").tokenValiditySeconds(60 * 60 * 24 * 30)
+                .logout().logoutUrl("/logout/logout-account/{email}").clearAuthentication(true)
+                .logoutSuccessUrl("/login")
                 .and()
                 .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                 .ignoringAntMatchers("/student/student_home/{{email}}/profile_picture-update",
@@ -36,10 +44,9 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/course/{courseId}/feedback/{feedbackId}/edit-feedback/update_file-text_post",
                         "/course/{courseId}/feedback/{feedbackId}/edit-feedback/update_file_post")
                 .and()
-                .exceptionHandling()
-                .authenticationEntryPoint(new Http403ForbiddenEntryPoint())
-                .and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED).maximumSessions(1);
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED).maximumSessions(1)
+                .maxSessionsPreventsLogin(true)
+                .expiredSessionStrategy(new SimpleRedirectSessionInformationExpiredStrategy("/login"));
     }
 
     @Override

@@ -150,54 +150,57 @@
                             </div>
 
                             <div ng-switch-when="FILE">
+                                <div ng-switch="searchResult.fileType">
 
-                                <div ng-if="searchResult.fileType === 'PDF'">
-                                    <div class="col mb-3">
-                                        <div class="card h-100">
-                                            <a href="{{searchResult.materialID}}">
-                                                <button type="button" class="btn btn-outline-primary col col-md-12">
+                                    <div ng-switch-when="PDF">
+                                        <div class="col mb-3">
+                                            <div class="card h-100">
+                                                <a href="{{searchResult.materialID}}">
+                                                    <button type="button" class="btn btn-outline-primary col col-md-12">
 
-                                                    <div class="card-body">
-                                                        <div class="card-text small">
-                                                            {{searchResult.materialName}}
-                                                            <p>
-                                                                <img src="data:image/*;base64,{{searchResult.course.coursePictureBase64}}"
-                                                                     class="rounded-circle" width="30" height="30"
-                                                                     alt="course image">
-                                                                upload at: {{searchResult.materialDateString}},
-                                                                In Course: {{searchResult.course.courseName}}
-                                                            </p>
+                                                        <div class="card-body">
+                                                            <div class="card-text small">
+                                                                {{searchResult.materialName}}
+                                                                <p>
+                                                                    <img src="data:image/*;base64,{{searchResult.course.coursePictureBase64}}"
+                                                                         class="rounded-circle" width="30" height="30"
+                                                                         alt="course image">
+                                                                    upload at: {{searchResult.materialDateString}},
+                                                                    In Course: {{searchResult.course.courseName}}
+                                                                </p>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                </button>
-                                            </a>
+                                                    </button>
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                <div ng-if="searchResult.fileType === 'IMAGE'">
-                                    <div class="col mb-3">
-                                        <div class="card h-100">
-                                            <a href="{{searchResult.materialID}}">
-                                                <button type="button" class="btn btn-outline-primary col col-md-12">
-                                                    <img src="data:image/*;base64,{{searchResult.base64}}"
-                                                         class="card-img" alt="material image">
-                                                    <div class="card-body">
-                                                        <div class="card-text small">
-                                                            {{searchResult.materialName}}
-                                                            <p>
-                                                                <img src="data:image/*;base64,{{searchResult.course.coursePictureBase64}}"
-                                                                     class="rounded-circle" width="30" height="30"
-                                                                     alt="course image">
-                                                                upload at: {{searchResult.materialDateString}},
-                                                                In Course: {{searchResult.course.courseName}}
-                                                            </p>
+                                    <div ng-switch-when="IMAGE">
+                                        <div class="col mb-3">
+                                            <div class="card h-100">
+                                                <a href="{{searchResult.materialID}}">
+                                                    <button type="button" class="btn btn-outline-primary col col-md-12">
+                                                        <img src="data:image/*;base64,{{searchResult.base64}}"
+                                                             class="card-img" alt="material image">
+                                                        <div class="card-body">
+                                                            <div class="card-text small">
+                                                                {{searchResult.materialName}}
+                                                                <p>
+                                                                    <img src="data:image/*;base64,{{searchResult.course.coursePictureBase64}}"
+                                                                         class="rounded-circle" width="30" height="30"
+                                                                         alt="course image">
+                                                                    upload at: {{searchResult.materialDateString}},
+                                                                    In Course: {{searchResult.course.courseName}}
+                                                                </p>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                </button>
-                                            </a>
+                                                    </button>
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
+
                                 </div>
 
                             </div>

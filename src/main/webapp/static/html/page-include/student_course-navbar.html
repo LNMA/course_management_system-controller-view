@@ -4,7 +4,7 @@
         <div class="row row-cols-1">
             <div class="col col-md-1 align-self-center">
                 <a class="navbar navbar-brand font-weight-bolder h4"
-                   ng-href="https://localhost:8443/course/{{courseId}}">
+                   ng-href="https://localhost:8443/course/{{courseId}}"><!--FIXME: PATH CHANGE-->
                     Course ms
                 </a>
             </div>
@@ -16,7 +16,7 @@
             <div class="collapse navbar-collapse col col-md-9" id="navbarStudentCourse">
                 <ul class="nav-item navbar-nav container-fluid justify-content-center">
                     <li class="col col-md-2">
-                        <a class="nav-link" href="https://localhost:8443/course/{{courseId}}">
+                        <a class="nav-link" href="https://localhost:8443/course/{{courseId}}"><!--FIXME: PATH CHANGE-->
                             <span class="font-weight-bold">Home</span>
                         </a>
                     </li>
@@ -41,7 +41,7 @@
                              class="rounded-circle" width="50" height="50" alt="My Picture"/>
                     </a>
                     <div class="dropdown-menu" aria-labelledby="courseDropdown">
-                        <a class="dropdown-item" href="">Exit Course</a>
+                        <a class="dropdown-item" href="https://localhost:8443/logout/exit-course/{{courseId}}">Exit Course</a> <!--FIXME: PATH CHANGE-->
                     </div>
                 </div>
             </div>

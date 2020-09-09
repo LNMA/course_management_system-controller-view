@@ -78,11 +78,13 @@
                         <img src="data:image/*;base64,{{picture}}"
                              class="rounded-circle" width="50" height="50" alt="My Picture"/>
                     </a>
-                    <div class="dropdown-menu" aria-labelledby="accountUserDropdown">
+                    <div class="dropdown-menu" aria-labelledby="accountUserDropdown" ng-controller="LogoutController">
                         <button class="dropdown-item dropdownProfile" id="dropdownProfile" data-toggle="modal"
                                 data-target="#profileModal">Profile
                         </button>
-                        <a class="dropdown-item" href="">Logout</a>
+                        <form ng-submit="logout(urlEmail)">
+                            <button class="dropdown-item" type="submit">Logout</button>
+                        </form>
                     </div>
                 </div>
             </div>

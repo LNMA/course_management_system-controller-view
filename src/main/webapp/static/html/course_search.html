@@ -27,7 +27,7 @@
     <nav class="navbar navbar-expand-md navbar-dark" style="background-color: #3e3c4e;">
         <p class="text-light text-capitalize h3">Course Search</p>
     </nav>
-    <nav class="row justify-content-center">
+    <nav class="row justify-content-center mt-3">
         <ul class="pagination">
             <div ng-repeat="pageNumber in [].constructor(pageNumber) track by $index">
                 <li class="page-item">
@@ -51,7 +51,7 @@
     <div class="row row-cols-1 mt-4">
         <div class="col col-md-12">
             <div class="container-fluid mt-4">
-                    <ng-include src="'/static/html/page-include/pagination_course.html'"></ng-include>
+                <ng-include src="'/static/html/page-include/pagination_course.html'"></ng-include>
             </div>
         </div>
     </div>

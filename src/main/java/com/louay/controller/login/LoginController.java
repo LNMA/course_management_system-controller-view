@@ -11,7 +11,6 @@ import com.louay.model.entity.status.UserAccountStatus;
 import com.louay.model.entity.status.UserSignIn;
 import com.louay.model.entity.users.Admin;
 import com.louay.model.entity.users.Users;
-import com.louay.model.entity.users.constant.Role;
 import com.louay.model.entity.wrapper.AdminRememberMeWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -58,8 +57,8 @@ public class LoginController implements Serializable {
     @GetMapping
     public String viewLoginPage(@SessionAttribute(value = "id", required = false) String sessionEmail,
                                 @SessionAttribute(value = "password", required = false) String sessionPassword,
-                                @CookieValue(value = "id", required = false) String cookieEmail,
-                                @CookieValue(value = "secureNumber", required = false) String cookieSecureNumber,
+                                @CookieValue(value = "ID-LOGIN", required = false) String cookieEmail,
+                                @CookieValue(value = "SECURE_NUMBER-LOGIN", required = false) String cookieSecureNumber,
                                 PushBuilder pushBuilder) {
         if (sessionEmail != null && sessionPassword != null) {
             if (sessionEmail.length() > 7 && sessionPassword.length() > 7) {
@@ -97,7 +96,6 @@ public class LoginController implements Serializable {
     public String loginSessionProcess(@SessionAttribute(value = "id", required = false) String sessionEmail,
                                       @SessionAttribute(value = "password", required = false) String sessionPassword,
                                       HttpServletRequest request) {
-
         if (sessionEmail == null || sessionPassword == null) {
             return "redirect:/login";
         }
@@ -112,7 +110,6 @@ public class LoginController implements Serializable {
             deleteSessionLogin(request);
             return "redirect:/login";
         }
-
         UserAccountStatus userAccountStatus = findUserAccountStatus(adminWrapper);
         if (!userAccountStatus.getValid()) {
             deleteSessionLogin(request);
@@ -144,8 +141,8 @@ public class LoginController implements Serializable {
     }
 
     @RequestMapping(value = "/perform_cookie_login")
-    public String loginCookieProcess(@CookieValue(value = "id", required = false) String cookieEmail,
-                                     @CookieValue(value = "secureNumber", required = false) String cookieSecureNumber,
+    public String loginCookieProcess(@CookieValue(value = "ID-LOGIN", required = false) String cookieEmail,
+                                     @CookieValue(value = "SECURE_NUMBER-LOGIN", required = false) String cookieSecureNumber,
                                      HttpServletRequest request, HttpServletResponse response) {
         if (cookieEmail == null || cookieSecureNumber == null) {
             return "redirect:/login";
@@ -186,17 +183,15 @@ public class LoginController implements Serializable {
 
     @RequestMapping(value = "/redirect_tracer_success_login")
     private String getTracerAccountHomePage() {
-        if (Role.STUDENT.compareTo(this.accountsRoles.getRoleName()) == 0) {
-            return String.format("redirect:/student/student_home/%s", this.urlEmail);
-
-        } else if (Role.INSTRUCTOR.compareTo(accountsRoles.getRoleName()) == 0) {
-            return String.format("redirect:/instructor/instructor_home/%s", this.urlEmail);
-
-        } else if (Role.ADMIN.compareTo(accountsRoles.getRoleName()) == 0) {
-            return String.format("redirect:/admin/admin_home/%s", this.urlEmail);
-
-        } else {
-            throw new UnsupportedOperationException("No roles had matched!.");
+        switch (this.accountsRoles.getRoleName()) {
+            case STUDENT:
+                return String.format("redirect:/student/student_home/%s", this.urlEmail);
+            case INSTRUCTOR:
+                return String.format("redirect:/instructor/instructor_home/%s", this.urlEmail);
+            case ADMIN:
+                return String.format("redirect:/admin/admin_home/%s", this.urlEmail);
+            default:
+                throw new UnsupportedOperationException("No roles had matched!.");
         }
     }
 
@@ -205,15 +200,14 @@ public class LoginController implements Serializable {
         if (cookies != null) {
             for (Cookie c : cookies) {
                 if (c.getName() != null) {
-                    if ("id".equals(c.getName())) {
-                        c.setMaxAge(0);
-                        c.setValue(null);
-                        response.addCookie(c);
-                    }
-                    if ("secureNumber".equals(c.getName())) {
-                        c.setMaxAge(0);
-                        c.setValue(null);
-                        response.addCookie(c);
+                    switch (c.getName()) {
+                        case "ID-LOGIN":
+                        case "SECURE_NUMBER-LOGIN":
+                            c.setValue(null);
+                            c.setMaxAge(0);
+                            c.setPath("/");
+                            response.addCookie(c);
+                            break;
                     }
                 }
             }
@@ -279,17 +273,15 @@ public class LoginController implements Serializable {
 
     @RequestMapping(value = "/redirect_success_login")
     private ResponseEntity<String> getAccountHomePage() {
-        if (Role.STUDENT.compareTo(this.accountsRoles.getRoleName()) == 0) {
-            return ResponseEntity.ok().body(String.format("/student/student_home/%s", this.urlEmail));
-
-        } else if (Role.INSTRUCTOR.compareTo(accountsRoles.getRoleName()) == 0) {
-            return ResponseEntity.ok().body(String.format("/instructor/instructor_home/%s", this.urlEmail));
-
-        } else if (Role.ADMIN.compareTo(accountsRoles.getRoleName()) == 0) {
-            return ResponseEntity.ok().body(String.format("/admin/admin_home/%s", this.urlEmail));
-
-        } else {
-            throw new UnsupportedOperationException("No roles had matched!.");
+        switch (this.accountsRoles.getRoleName()) {
+            case STUDENT:
+                return ResponseEntity.ok().body(String.format("/student/student_home/%s", this.urlEmail));
+            case INSTRUCTOR:
+                return ResponseEntity.ok().body(String.format("/instructor/instructor_home/%s", this.urlEmail));
+            case ADMIN:
+                return ResponseEntity.ok().body(String.format("/admin/admin_home/%s", this.urlEmail));
+            default:
+                throw new UnsupportedOperationException("No roles had matched!.");
         }
     }
 
@@ -386,11 +378,11 @@ public class LoginController implements Serializable {
 
     private Cookie buildSecureNumberCookie(AdminRememberMeWrapper adminRememberMeWrapper) {
         CookieLogin cookieLogin = createCookieLogin(adminRememberMeWrapper);
-        Cookie secureNumberCookie = new Cookie("secureNumber", cookieLogin.getSecureCode().toString());
+        Cookie secureNumberCookie = new Cookie("SECURE_NUMBER-LOGIN", cookieLogin.getSecureCode().toString());
         secureNumberCookie.setMaxAge(60 * 60 * 24 * 30);
         secureNumberCookie.setSecure(true);
         secureNumberCookie.setHttpOnly(true);
-        secureNumberCookie.setPath("https://localhost:8443/login");
+        secureNumberCookie.setPath("/"); //FIXME: change domain
 
         return secureNumberCookie;
     }
@@ -425,11 +417,11 @@ public class LoginController implements Serializable {
     }
 
     private Cookie buildEmailCookie(AdminRememberMeWrapper adminRememberMeWrapper) {
-        Cookie emailCookie = new Cookie("id", adminRememberMeWrapper.getAdmin().getEmail());
+        Cookie emailCookie = new Cookie("ID-LOGIN", adminRememberMeWrapper.getAdmin().getEmail());
         emailCookie.setMaxAge(60 * 60 * 24 * 30);
         emailCookie.setSecure(true);
         emailCookie.setHttpOnly(true);
-        emailCookie.setPath("https://localhost:8443/login");
+        emailCookie.setPath("/"); //FIXME: change domain
 
         return emailCookie;
     }
@@ -452,7 +444,8 @@ public class LoginController implements Serializable {
     private void createNewSession(HttpServletRequest request, AdminRememberMeWrapper adminWrapper) {
         HttpSession session = request.getSession(true);
         session.setAttribute("id", adminWrapper.getAdmin().getEmail());
-        session.setAttribute("password", this.passwordEncoder.encode(adminWrapper.getAdmin().getPassword()));
+        Admin admin = findAdminByEmail(adminWrapper);
+        session.setAttribute("password", admin.getPassword());
     }
 
     private void createNewSessionCookieLogin(HttpServletRequest request, AdminRememberMeWrapper adminWrapper) {
