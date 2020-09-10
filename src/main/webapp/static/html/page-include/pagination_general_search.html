@@ -7,7 +7,8 @@
                     <div ng-switch-when="ACCOUNTS">
                         <div class="col mb-3">
                             <div class="card h-100">
-                                <a href="{{searchResult.email}}">
+                                <a ng-href="https://localhost:8443/review/account/{{searchResult.email}}">
+                                    <!--FIXME:PATH CHANGE-->
                                     <button type="button" class="btn btn-outline-info col col-md-12">
                                         <img src="data:image/*;base64,{{searchResult.accountPicture.profilePictureBase64}}"
                                              class="card-img-top" alt="account image">

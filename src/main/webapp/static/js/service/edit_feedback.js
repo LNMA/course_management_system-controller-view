@@ -7,7 +7,7 @@ app.service('EditFeedbackService', [function () {
         return $http({
             method: 'POST',
             port: 8443,
-            url: $location.absUrl() + "/delete_post",
+            url: $location.absUrl() + "/delete_post", //FIXME: https://localhost:8443/course/{courseId}/feedback
             headers: {'content-type': 'application/json'},
             contentType: "application/json; charset=utf-8",
             async: false,    //Cross-domain requests and dataType: "jsonp" requests do not support synchronous operation
@@ -19,7 +19,7 @@ app.service('EditFeedbackService', [function () {
             }
         }).then(
             function successCallback() {
-                $window.location.href = $location.absUrl();
+                $window.location.href = $location.absUrl(); //FIXME: https://localhost:8443/course/{courseId}/feedback
 
             }, function errorCallback(response) {
                 $scope.isPageError = true;
@@ -36,7 +36,7 @@ app.service('EditFeedbackService', [function () {
         return $http({
             method: 'POST',
             port: 8443,
-            url: $location.absUrl() + "/update_text_post",//https://localhost:8443/course/{courseId}/feedback/edit-feedback/{feedbackId}/update_text_post
+            url: $location.absUrl() + "/update_text_post",//FIXME: https://localhost:8443/course/{courseId}/feedback/edit-feedback/{feedbackId}/update_text_post
             headers: {'content-type': 'application/json'},
             contentType: "application/json; charset=utf-8",
             async: false,    //Cross-domain requests and dataType: "jsonp" requests do not support synchronous operation
@@ -65,7 +65,7 @@ app.service('EditFeedbackService', [function () {
         return $http({
             method: 'POST',
             port: 8443,
-            url: $location.absUrl() + "/comment/remove_comment",
+            url: $location.absUrl() + "/comment/remove_comment", //FIXME: https://localhost:8443/course/{courseId}/feedback
             headers: {'content-type': 'application/json'},
             contentType: "application/json; charset=utf-8",
             async: false,    //Cross-domain requests and dataType: "jsonp" requests do not support synchronous operation

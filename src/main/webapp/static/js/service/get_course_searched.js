@@ -7,7 +7,7 @@ app.service('CourseSearchService', [function () {
         $http({
             method: 'GET',
             port: 8443,
-            url: $location.absUrl() + '/get_courses_row',
+            url: $location.absUrl() + '/get_courses_row', //FIXME: https://localhost:8443/course_search
             headers: {'content-type': 'application/json'},
             contentType: "application/json; charset=utf-8",
             async: false,    //Cross-domain requests and dataType: "jsonp" requests do not support synchronous operation
@@ -35,7 +35,7 @@ app.service('CourseSearchService', [function () {
         $http({
             method: 'GET',
             port: 8443,
-            url: $location.absUrl() + '/'+pageNumber+'/get_courses',
+            url: $location.absUrl() + '/'+pageNumber+'/get_courses', //FIXME: https://localhost:8443/course_search
             headers: {'content-type': 'application/json'},
             contentType: "application/json; charset=utf-8",
             async: false,    //Cross-domain requests and dataType: "jsonp" requests do not support synchronous operation

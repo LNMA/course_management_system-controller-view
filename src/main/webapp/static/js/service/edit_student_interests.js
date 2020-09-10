@@ -3,11 +3,11 @@
 /*Content-Disposition:inline;filename=f.txt*/
 /*content-type:application/javascript*/
 app.service('UpdateStudentInterestsService', [function () {
-    this.updateInterestsService = function updateInterestsService($http, $location, $scope) {
+    this.updateInterestsService = function updateInterestsService($http, $location, $scope, emailUri) {
         return $http({
             method: 'POST',
             port: 8443,
-            url: $location.absUrl() + "/interests-update",
+            url: 'https://localhost:8443/student/student_home/' + emailUri + '/interests-update', //FIXME
             headers: {'content-type': 'application/json'},
             contentType: "application/json; charset=utf-8",
             async: false,    //Cross-domain requests and dataType: "jsonp" requests do not support synchronous operation

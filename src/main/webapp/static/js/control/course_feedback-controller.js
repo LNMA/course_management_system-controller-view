@@ -13,7 +13,7 @@ FeedbackHomeCtrl.$inject = ['$scope', '$http', '$location', '$sce', '$window', '
 
 function FeedbackHomeCtrl($scope, $http, $location, $sce, $window, GetCourseInfoService, GetFeedbackDataService,
                           GetSessionIdService, CreateFeedbackService, EditFeedbackService) {
-    let currentFeedbackUrl = $scope.homeCourseFeedbackUrl = $location.absUrl();
+    let currentFeedbackUrl = $scope.homeCourseFeedbackUrl = $location.absUrl();//https://localhost:8443/course/{courseId}/feedback
     let courseId = currentFeedbackUrl.toString().split("/")[4];
     let courseUrl = 'https://localhost:8443/course/' + courseId;
 

@@ -7,7 +7,7 @@ app.service('GeneralSearchService', [function () {
         $http({
             method: 'GET',
             port: 8443,
-            url: $location.absUrl() + '/get_record_number',
+            url: $location.absUrl() + '/get_record_number', //FIXME: https://localhost:8443/search/{KEY}
             headers: {'content-type': 'application/json'},
             contentType: "application/json; charset=utf-8",
             async: false,    //Cross-domain requests and dataType: "jsonp" requests do not support synchronous operation
@@ -19,7 +19,7 @@ app.service('GeneralSearchService', [function () {
                 console.log(response.data);
                 let rowCount = Number.parseInt(response.data);
                 let pageSize = 9;
-                $scope.pageNumber = parseInt(rowCount/pageSize) + 1;
+                $scope.pageNumber = parseInt(rowCount / pageSize) + 1;
             }, function errorCallback(response) {
                 $scope.submitted = false;
                 $scope.isPageError = true;
@@ -36,7 +36,7 @@ app.service('GeneralSearchService', [function () {
         $http({
             method: 'GET',
             port: 8443,
-            url: $location.absUrl() + '/'+pageNumber+'/get_result',
+            url: $location.absUrl() + '/' + pageNumber + '/get_result', //FIXME: https://localhost:8443/search/{KEY}
             headers: {'content-type': 'application/json'},
             contentType: "application/json; charset=utf-8",
             async: false,    //Cross-domain requests and dataType: "jsonp" requests do not support synchronous operation

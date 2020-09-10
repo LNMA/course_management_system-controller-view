@@ -40,7 +40,7 @@ public class LogoutController implements Serializable {
         this.emailFilter = emailFilter;
     }
 
-    @RequestMapping(value = "/logout-account/{email}")
+    @RequestMapping(value = "/logout-account/{email:.+}")
     public ResponseEntity<String> logoutUser(@PathVariable(value = "email", required = false) String email,
                                      HttpServletRequest request, HttpServletResponse response) {
         if (email == null) {

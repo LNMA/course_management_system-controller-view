@@ -14,7 +14,7 @@ function SearchNavCtrl($scope, $http, $window) {
     $scope.searchNow = function () {
         let key = $scope.keySearch;
         if (key !== null && key !== '' && key !== undefined) {
-            $window.location.href = 'https://localhost:8443/search/' + key;
+            $window.location.href = 'https://localhost:8443/search/' + key;//FIXME
         }
     }
 }

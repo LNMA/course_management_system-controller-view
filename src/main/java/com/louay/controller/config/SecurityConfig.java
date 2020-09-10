@@ -24,10 +24,10 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/student/**", "/course/**", "/course_search/**", "/search/**",
-                        "/logout/**", "/session_id", "/user_verify/**").anonymous()
+                        "/logout/**", "/session_id", "/user_verify/**", "/review/**").anonymous()
                 .antMatchers("/student_sign_up", "/login").permitAll()
                 .mvcMatchers("/course/**", "/course_search/**", "/search/**",
-                        "/logout/**", "/session_id", "/user_verify/**", "/student/**" ).authenticated()
+                        "/logout/**", "/session_id", "/user_verify/**", "/student/**", "/review/**" ).authenticated()
                 .and()
                 .formLogin().loginPage("/login").permitAll()
                 .loginProcessingUrl("/login/perform_login").defaultSuccessUrl("/login/redirect_success_login")

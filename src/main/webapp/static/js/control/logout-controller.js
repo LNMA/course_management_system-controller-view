@@ -15,7 +15,7 @@ function LogoutCtrl($scope, $http, $window, $sce) {
         $http({
             method: 'GET',
             port: 8443,
-            url: 'https://localhost:8443/logout/logout-account/' + email, //FIXME : change domain.
+            url: 'https://localhost:8443/logout/logout-account/' + email, //FIXME
             headers: {'content-type': 'application/json'},
             contentType: "application/json; charset=utf-8",
             async: false,    //Cross-domain requests and dataType: "jsonp" requests do not support synchronous operation
