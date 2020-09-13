@@ -18,7 +18,7 @@ app.factory('GetStudentHomeInfoService', function () {
             }).then(
                 function successCallback(response) {
                     $scope.email = response.data.student.email;
-                    $scope.password = response.data.student.admin.password;
+                    $scope.password = 'response.data.student.admin.password';
                     $scope.joinDate = response.data.timeJoinDate;
                     $scope.forename = response.data.student.forename;
                     $scope.surname = response.data.student.surname;

@@ -8,6 +8,7 @@ import org.apache.coyote.http2.Http2Protocol;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
+import org.springframework.boot.web.server.Http2;
 import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -23,6 +24,7 @@ import org.springframework.web.servlet.resource.CssLinkResourceTransformer;
 import org.springframework.web.servlet.resource.ResourceUrlEncodingFilter;
 import org.springframework.web.servlet.resource.VersionResourceResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import org.springframework.web.servlet.view.JstlView;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -54,7 +56,9 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Bean
     public ViewResolver viewResolver() {
-        return new InternalResourceViewResolver();
+        InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
+        viewResolver.setViewClass(JstlView.class);
+        return viewResolver;
     }
 
     @Bean(name = "multipartResolver")
@@ -85,6 +89,7 @@ public class WebConfig implements WebMvcConfigurer {
     public ConfigurableServletWebServerFactory servletContainer() {
         TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory();
         tomcat.setProtocol("org.apache.coyote.http11.Http11Nio2Protocol");
+        tomcat.setHttp2(new Http2());
         tomcat.addAdditionalTomcatConnectors(getHttpConnector());
         return tomcat;
     }
@@ -94,8 +99,10 @@ public class WebConfig implements WebMvcConfigurer {
         Http11Nio2Protocol protocol = (Http11Nio2Protocol) connector.getProtocolHandler();
 
         ClassPathResource keystoreResource = new ClassPathResource("keystore.jks");
+        ClassPathResource cerResource = new ClassPathResource("tomcat.cer");
         File keystore = new File(keystoreResource.getPath());
         File truststore = new File(keystoreResource.getPath());
+        File cer = new File(cerResource.getPath());
         connector.setScheme("https");
         connector.setSecure(true);
         connector.setPort(8443);
@@ -109,6 +116,7 @@ public class WebConfig implements WebMvcConfigurer {
         protocol.setTruststorePass("123456789@tomcat");
         protocol.setKeyAlias("tomcat");
         protocol.setSslProtocol("TLS");
+        protocol.setSSLCertificateFile(cer.getAbsolutePath());
         return connector;
     }
 }

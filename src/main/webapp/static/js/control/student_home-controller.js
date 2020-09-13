@@ -25,6 +25,6 @@ function StudentHomeCtrl($scope, $http, $location, $sce, $window, GetStudentHome
         }
     };
 
-    $scope.urlEmail = $location.absUrl().toString().split('/')[5];
+    $scope.sessionId = $location.absUrl().toString().split('/')[5];
 }
 

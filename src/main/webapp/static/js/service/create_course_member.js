@@ -2,12 +2,12 @@
 /*jshint sub:true*/
 /*Content-Disposition:inline;filename=f.txt*/
 /*content-type:application/javascript*/
-app.service('GetSessionIdService', [function () {
-    this.getSessionId = function getSessionId($http, $scope, $sce) {
+app.service('CreateCourseMemberService', [function () {
+    this.beAMember = function beAMember($http, $scope, $sce, email, courseId) {
         return $http({
-            method: 'GET',
+            method: 'POST',
             port: 8443,
-            url: "https://localhost:8443/session_id", //FIXME
+            url: 'https://localhost:8443/member/' + email + '/' + courseId + "/be_a_member", //FIXME
             headers: {'content-type': 'application/json'},
             contentType: "application/json; charset=utf-8",
             async: false,    //Cross-domain requests and dataType: "jsonp" requests do not support synchronous operation
@@ -16,7 +16,9 @@ app.service('GetSessionIdService', [function () {
             timeout: 5000,
         }).then(
             function successCallback(response) {
-                $scope.sessionId = response.data;
+                $scope.pageSuccessMessage = response.data;
+                $scope.isSuccess = true;
+                $scope.isStudentJoinToThisCourse = true;
             }, function errorCallback(response) {
                 $scope.submitted = false;
                 $scope.isPageError = true;
@@ -27,5 +29,5 @@ app.service('GetSessionIdService', [function () {
                     $scope.pageErrorMessage = errorData;
                 }
             });
-    };
+    }
 }]);

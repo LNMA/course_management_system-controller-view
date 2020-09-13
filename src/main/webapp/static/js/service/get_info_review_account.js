@@ -3,11 +3,11 @@
 /*Content-Disposition:inline;filename=f.txt*/
 /*content-type:application/javascript*/
 app.service('GetReviewAccountService', [function () {
-    this.getReviewAccountInfo = function getReviewAccountInfo($http, $scope, $sce, emailUri) {
+    this.getReviewAccountInfo = function getReviewAccountInfo($http, $scope, $sce, sessionEmail, emailUri) {
         return $http({
             method: 'GET',
             port: 8443,
-            url: 'https://localhost:8443/review/account/' + emailUri + '/user_info', //FIXME
+            url: 'https://localhost:8443/review/account/' + sessionEmail + '/' + emailUri + '/user_info', //FIXME
             headers: {'content-type': 'application/json'},
             contentType: "application/json; charset=utf-8",
             async: false,    //Cross-domain requests and dataType: "jsonp" requests do not support synchronous operation
@@ -16,7 +16,6 @@ app.service('GetReviewAccountService', [function () {
             timeout: 5000,
         }).then(
             function successCallback(response) {
-                console.log(response.data);
                 $scope.infoList = response.data;
             }, function errorCallback(response) {
                 $scope.submitted = false;

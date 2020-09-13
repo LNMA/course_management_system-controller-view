@@ -29,7 +29,7 @@ import java.util.Objects;
 
 @Controller
 @CrossOrigin(origins = "https://localhost:8443")
-@RequestMapping(value = "/student/student_home/{email}")
+@RequestMapping(value = "/student/student_home/{email:.+}")
 public class StudentHomePageController implements Serializable {
     private static final long serialVersionUID = -5181010821357568897L;
     private final EntitiesFactory entitiesFactory;

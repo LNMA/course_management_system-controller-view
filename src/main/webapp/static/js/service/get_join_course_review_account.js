@@ -2,12 +2,12 @@
 /*jshint sub:true*/
 /*Content-Disposition:inline;filename=f.txt*/
 /*content-type:application/javascript*/
-app.service('GeneralSearchService', [function () {
-    this.getPageNumber = function getPageNumber($http, $location, $scope, $sce) {
-        $http({
+app.service('GetJoinCourseReviewAccountService', [function () {
+    this.getStudentJoinCourse = function getStudentJoinCourse($http, $scope, $sce, sessionEmail, emailUri) {
+        return $http({
             method: 'GET',
             port: 8443,
-            url: $location.absUrl() + '/get_record_number', //FIXME: https://localhost:8443/search/{KEY}
+            url: 'https://localhost:8443/review/account/' + sessionEmail + '/' + emailUri + '/user_course_join', //FIXME
             headers: {'content-type': 'application/json'},
             contentType: "application/json; charset=utf-8",
             async: false,    //Cross-domain requests and dataType: "jsonp" requests do not support synchronous operation
@@ -16,9 +16,7 @@ app.service('GeneralSearchService', [function () {
             timeout: 5000,
         }).then(
             function successCallback(response) {
-                let rowCount = Number.parseInt(response.data);
-                let pageSize = 9;
-                $scope.pageNumber = parseInt(rowCount / pageSize) + 1;
+                $scope.courseList = response.data;
             }, function errorCallback(response) {
                 $scope.submitted = false;
                 $scope.isPageError = true;
@@ -31,11 +29,11 @@ app.service('GeneralSearchService', [function () {
             });
     }
 
-    this.showResult = function showResult($http, $location, $scope, $sce, pageNumber) {
-        $http({
+    this.getInstructorTechCourses = function getInstructorTechCourses($http, $scope, $sce, sessionEmail, emailUri) {
+        return $http({
             method: 'GET',
             port: 8443,
-            url: $location.absUrl() + '/' + pageNumber + '/get_result', //FIXME: https://localhost:8443/search/{KEY}
+            url: 'https://localhost:8443/review/account/' + sessionEmail + '/' + emailUri + '/instructor_course_teach', //FIXME
             headers: {'content-type': 'application/json'},
             contentType: "application/json; charset=utf-8",
             async: false,    //Cross-domain requests and dataType: "jsonp" requests do not support synchronous operation
@@ -44,7 +42,7 @@ app.service('GeneralSearchService', [function () {
             timeout: 5000,
         }).then(
             function successCallback(response) {
-                $scope.searchResult = response.data;
+                $scope.courseTeachingList = response.data;
             }, function errorCallback(response) {
                 $scope.submitted = false;
                 $scope.isPageError = true;

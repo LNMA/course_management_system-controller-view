@@ -29,6 +29,9 @@
     <script type="application/javascript" src="/static/js/service/edit_student_interests.js"></script>
     <script type="application/javascript" src="/static/js/service/edit_password.js"></script>
     <script type="application/javascript" src="/static/js/service/get_info_review_account.js"></script>
+    <script type="application/javascript" src="/static/js/service/get_user_status.js"></script>
+    <script type="application/javascript" src="/static/js/service/get_join_course_review_account.js"></script>
+    <script type="application/javascript" src="/static/js/service/get_session_id.js"></script>
     <link href="/static/images/favicon.ico" rel="icon" type="image/x-icon">
     <title>Review Account `by Louay Amr`</title>
 <body ng-app="app" ng-controller="ReviewAccountStudentController">
@@ -48,73 +51,244 @@
         </div>
     </div>
 
-    <div class="row justify-content-center">
-        <div class="card bg-light mt-3 w-75">
-            <div class="card-body">
-                <div class="container-fluid">
-                    <div class="row row-cols-1 row-cols-md-1">
-                        <div class="col col-md-3 align-self-center">
-                            <img src="data:image/*;base64,{{infoList.accountPicture.profilePictureBase64}}"
-                                 class="rounded-circle" width="164" height="164"/>
+    <div ng-switch="infoList.userRole">
+
+        <div ng-switch-when="STUDENT">
+            <div class="row justify-content-center">
+                <div class="card bg-light mt-3 w-75">
+                    <div class="card-body">
+                        <div class="container-fluid">
+                            <div class="row row-cols-1 row-cols-md-1">
+                                <div class="col col-md-3 align-self-center">
+                                    <img src="data:image/*;base64,{{infoList.accountPicture.profilePictureBase64}}"
+                                         class="rounded-circle" width="164" height="164"/>
+                                </div>
+                                <div class="col col-md-4 align-self-center row justify-content-start font-weight-bold">
+                                    {{infoList.forename}} {{infoList.surname}}
+                                </div>
+                                <div class="col col-md-1 align-self-center">
+                                    <div ng-if="isUserOnline === true">
+                                <span class="badge badge-pill badge-success text-success" data-toggle="tooltip"
+                                      data-placement="top" title="online">.</span>
+                                        <script>
+                                            $(function () {
+                                                $('[data-toggle="tooltip"]').tooltip()
+                                            })
+                                        </script>
+                                    </div>
+                                    <div ng-if="isUserOnline === false">
+                                <span class="badge badge-pill badge-secondary text-secondary" data-toggle="tooltip"
+                                      data-placement="top" title="offline">.</span>
+                                    </div>
+                                </div>
+                                <div class="col col-md-1 align-self-center">
+                                    <div ng-if="isUserAtCourse === true">
+                                <span class="badge badge-pill badge-info text-info" data-toggle="tooltip"
+                                      data-placement="top" title="at course">.</span>
+                                    </div>
+                                    <div ng-if="isUserAtCourse === false">
+                                <span class="badge badge-pill badge-dark text-dark" data-toggle="tooltip"
+                                      data-placement="top" title="free">.</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col col-md-4 align-self-center row justify-content-start font-weight-bold">
-                            {{infoList.forename}} {{infoList.surname}}
+                    </div>
+                </div>
+
+                <div class="card bg-light mt-3 w-75">
+                    <div class="card-header">
+                        <div class="card-title font-weight-bold row align-self-center justify-content-center"
+                             style="font-size: larger;">
+                            Information
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <ul>
+                            <li>
+                                Role: {{infoList.userRole}}
+                            </li>
+                            <li>
+                                E-mail: {{infoList.email}}
+                            </li>
+                            <li>
+                                Gender: {{infoList.gender}}
+                            </li>
+                            <li>
+                                Phone: {{infoList.phone}}
+                            </li>
+                            <li>
+                                Birthday: {{infoList.birthday}}
+                            </li>
+                            <li>
+                                Country: {{infoList.country}}
+                            </li>
+                            <li>
+                                State: {{infoList.state}}
+                            </li>
+                            <li>
+                                Address: {{infoList.address}}
+                            </li>
+                            <li>
+                                Headline: {{infoList.headline}}
+                            </li>
+                            <li>
+                                Interests: {{infoList.interests}}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card bg-light mt-3 w-75">
+                    <div class="card-header">
+                        <div class="card-title font-weight-bold row align-self-center justify-content-center"
+                             style="font-size: larger;">
+                            Courses
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row row-cols-1 row-cols-md-3">
+                            <div ng-model="courseData" ng-repeat="courseList in courseList">
+                                <div class="col mb-3">
+                                    <div class="card h-100">
+                                        <img src="data:image/*;base64,{{courseList.coursePictureBase64}}"
+                                             class="card-img-top"
+                                             alt="course image">
+                                        <div class="card-body">
+                                            <div class="card-text">
+                                                {{courseList.courseName}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="card bg-light mt-3 w-75">
-            <div class="card-header">
-                <div class="card-title font-weight-bold row align-self-center justify-content-center" style="font-size: larger;">
-                    Information
+        <div ng-switch-when="INSTRUCTOR">
+            <div class="row justify-content-center">
+                <div class="card bg-light mt-3 w-75">
+                    <div class="card-body">
+                        <div class="container-fluid">
+                            <div class="row row-cols-1 row-cols-md-1">
+                                <div class="col col-md-3 align-self-center">
+                                    <img src="data:image/*;base64,{{infoList.accountPicture.profilePictureBase64}}"
+                                         class="rounded-circle" width="164" height="164"/>
+                                </div>
+                                <div class="col col-md-4 align-self-center row justify-content-start font-weight-bold">
+                                    {{infoList.nickname}} {{infoList.forename}} {{infoList.surname}}
+                                </div>
+                                <div class="col col-md-1 align-self-center">
+                                    <script>
+                                        $(function () {
+                                            $('[data-toggle="tooltip"]').tooltip()
+                                        })
+                                    </script>
+                                    <div ng-if="isUserOnline === true">
+                                <span class="badge badge-pill badge-success text-success" data-toggle="tooltip"
+                                      data-placement="top" title="online">.</span>
+                                    </div>
+                                    <div ng-if="isUserOnline === false">
+                                <span class="badge badge-pill badge-secondary text-secondary" data-toggle="tooltip"
+                                      data-placement="top" title="offline">.</span>
+                                    </div>
+                                </div>
+                                <div class="col col-md-1 align-self-center">
+                                    <div ng-if="isUserAtCourse === true">
+                                <span class="badge badge-pill badge-info text-info" data-toggle="tooltip"
+                                      data-placement="top" title="at course">.</span>
+                                    </div>
+                                    <div ng-if="isUserAtCourse === false">
+                                <span class="badge badge-pill badge-dark text-dark" data-toggle="tooltip"
+                                      data-placement="top" title="free">.</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="card-body">
-                <ul>
-                    <li>
-                        Role: {{infoList.userRole}}
-                    </li>
-                    <li>
-                        E-mail: {{infoList.email}}
-                    </li>
-                    <li>
-                        Gender: {{infoList.gender}}
-                    </li>
-                    <li>
-                        Phone: {{infoList.phone}}
-                    </li>
-                    <li>
-                        Birthday: {{infoList.birthday}}
-                    </li>
-                    <li>
-                        Country: {{infoList.country}}
-                    </li>
-                    <li>
-                        State: {{infoList.state}}
-                    </li>
-                    <li>
-                        Address: {{infoList.address}}
-                    </li>
-                </ul>
+
+
+            <div ng-if="infoList.profileVisibility === 'PUBLIC'" class="row justify-content-center">
+                <div class="card bg-light mt-3 w-75">
+                    <div class="card-header">
+                        <div class="card-title font-weight-bold row align-self-center justify-content-center"
+                             style="font-size: larger;">
+                            Information
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <ul>
+                            <li>
+                                Role: {{infoList.userRole}}
+                            </li>
+                            <li>
+                                E-mail: {{infoList.email}}
+                            </li>
+                            <li>
+                                Gender: {{infoList.gender}}
+                            </li>
+                            <li>
+                                Phone: {{infoList.phone}}
+                            </li>
+                            <li>
+                                Birthday: {{infoList.birthday}}
+                            </li>
+                            <li>
+                                Country: {{infoList.country}}
+                            </li>
+                            <li>
+                                State: {{infoList.state}}
+                            </li>
+                            <li>
+                                Address: {{infoList.address}}
+                            </li>
+                            <li>
+                                Headline: {{infoList.headline}}
+                            </li>
+                            <li>
+                                Specialty: {{infoList.specialty}}
+                            </li>
+                            <li>
+                                Portfolio: {{infoList.portfolio}}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card bg-light mt-3 w-75">
+                    <div class="card-header">
+                        <div class="card-title font-weight-bold row align-self-center justify-content-center"
+                             style="font-size: larger;">
+                            Courses Teaching
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row row-cols-1 row-cols-md-3">
+                            <div ng-model="courseData" ng-repeat="courseTeachingList in courseTeachingList">
+                                <div class="col mb-3">
+                                    <div class="card h-100">
+                                        <img src="data:image/*;base64,{{courseTeachingList.coursePictureBase64}}"
+                                             class="card-img-top"
+                                             alt="course image">
+                                        <div class="card-body">
+                                            <div class="card-text">
+                                                {{courseTeachingList.courseName}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="card bg-light mt-3 w-75">
-            <div class="card-header">
-                <div class="card-title font-weight-bold row align-self-center justify-content-center" style="font-size: larger;">
-                    Courses
-                </div>
-            </div>
-            <div class="card-body">
-                <ul>
-                    <li>
-                        {{courseName}}
-                    </li>
-                </ul>
-            </div>
-        </div>
     </div>
 
 </main>
@@ -126,4 +300,3 @@
 <ng-include src="'/static/html/page-include/student-modal.html'"></ng-include>
 </body>
 </html>
-

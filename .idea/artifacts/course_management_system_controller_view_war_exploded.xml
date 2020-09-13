@@ -1,6 +1,13 @@
 <component name="ArtifactManager">
   <artifact type="exploded-war" name="course_management_system-controller-view:war exploded">
-    <output-path>$PROJECT_DIR$/out/artifacts/course_management_system_controller_view_war_exploded</output-path>
+    <output-path>$PROJECT_DIR$/target/course_management_system-view</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <exploded>true</exploded>
+        <module>course_management_system-controller-view</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
     <root id="root">
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
@@ -65,6 +72,8 @@
           <element id="library" level="project" name="Maven: org.springframework.security:spring-security-config:5.3.3.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework.security:spring-security-core:5.3.3.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework.security:spring-security-web:5.3.3.RELEASE" />
+          <element id="library" level="project" name="Maven: org.apache.tomcat.embed:tomcat-embed-core:9.0.37" />
+          <element id="library" level="project" name="Maven: org.apache.tomcat:tomcat-annotations-api:9.0.37" />
           <element id="library" level="project" name="Maven: org.bouncycastle:bcprov-jdk15on:1.66" />
           <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter-validation:2.3.2.RELEASE" />
           <element id="library" level="project" name="Maven: org.glassfish:jakarta.el:3.0.3" />
@@ -74,8 +83,6 @@
           <element id="library" level="project" name="Maven: com.fasterxml:classmate:1.5.1" />
           <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter-mail:2.3.2.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-context-support:5.2.8.RELEASE" />
-          <element id="library" level="project" name="Maven: org.apache.tomcat:tomcat-annotations-api:9.0.37" />
-          <element id="library" level="project" name="Maven: jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api:1.2.7" />
           <element id="library" level="project" name="Maven: javax.servlet:jstl:1.2" />
           <element id="library" level="project" name="Maven: jakarta.activation:jakarta.activation-api:1.2.2" />
           <element id="library" level="project" name="Maven: com.sun.mail:jakarta.mail:1.6.5" />
@@ -93,6 +100,9 @@
           <element id="library" level="project" name="Maven: org.springframework:spring-core:5.2.8.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-jcl:5.2.8.RELEASE" />
         </element>
+      </element>
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/target/course_management_system-view/META-INF/MANIFEST.MF" />
       </element>
       <element id="javaee-facet-resources" facet="course_management_system-controller-view/web/Web" />
     </root>
