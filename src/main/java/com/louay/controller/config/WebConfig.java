@@ -8,6 +8,7 @@ import org.apache.coyote.http2.Http2Protocol;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
+import org.springframework.boot.web.server.ErrorPage;
 import org.springframework.boot.web.server.Http2;
 import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
@@ -90,6 +91,7 @@ public class WebConfig implements WebMvcConfigurer {
         TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory();
         tomcat.setProtocol("org.apache.coyote.http11.Http11Nio2Protocol");
         tomcat.setHttp2(new Http2());
+        tomcat.addErrorPages(new ErrorPage("/error"));
         tomcat.addAdditionalTomcatConnectors(getHttpConnector());
         return tomcat;
     }
@@ -99,10 +101,8 @@ public class WebConfig implements WebMvcConfigurer {
         Http11Nio2Protocol protocol = (Http11Nio2Protocol) connector.getProtocolHandler();
 
         ClassPathResource keystoreResource = new ClassPathResource("keystore.jks");
-        ClassPathResource cerResource = new ClassPathResource("tomcat.cer");
         File keystore = new File(keystoreResource.getPath());
         File truststore = new File(keystoreResource.getPath());
-        File cer = new File(cerResource.getPath());
         connector.setScheme("https");
         connector.setSecure(true);
         connector.setPort(8443);
@@ -116,7 +116,9 @@ public class WebConfig implements WebMvcConfigurer {
         protocol.setTruststorePass("123456789@tomcat");
         protocol.setKeyAlias("tomcat");
         protocol.setSslProtocol("TLS");
-        protocol.setSSLCertificateFile(cer.getAbsolutePath());
+        protocol.setSslEnabledProtocols("TLSv1+TLSv1.1+TLSv1.2+TLSv1.3");
+        protocol.setSSLCipherSuite("TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384:TLS_DHE_RSA_WITH_AES_256_CBC_SHA256:TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256:TLS_DHE_RSA_WITH_AES_128_CBC_SHA256:TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384:TLS_DHE_RSA_WITH_AES_256_GCM_SHA384:TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256:TLS_DHE_RSA_WITH_AES_128_GCM_SHA256:TLS_AES_128_GCM_SHA256:TLS_AES_256_GCM_SHA384");
+        protocol.setClientAuth("want");
         return connector;
     }
 }

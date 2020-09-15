@@ -20,7 +20,6 @@ app.service('CreateCourseMemberService', [function () {
                 $scope.isSuccess = true;
                 $scope.isStudentJoinToThisCourse = true;
             }, function errorCallback(response) {
-                $scope.submitted = false;
                 $scope.isPageError = true;
                 let errorData = response.data;
                 if (errorData.toString().substr(8, 15) === '<!DOCTYPE html>') {

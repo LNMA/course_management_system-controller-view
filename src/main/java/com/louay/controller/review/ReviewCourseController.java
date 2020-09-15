@@ -84,7 +84,7 @@ public class ReviewCourseController implements Serializable {
 
     private Set<CourseMembers> findCourseMembers(Long courseId) {
         CourseMembers courseMembers = buildCourseMembers(courseId);
-        return this.servicesFactory.getCourseMemberService().findCourseMemberByCourseId(courseMembers);
+        return this.servicesFactory.getCourseMemberService().findCourseMemberEagerStudentByCourseId(courseMembers);
     }
 
     private CourseMembers buildCourseMembers(Long courseId) {

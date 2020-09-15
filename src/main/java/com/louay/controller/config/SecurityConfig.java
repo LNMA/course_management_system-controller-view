@@ -1,5 +1,6 @@
 package com.louay.controller.config;
 
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
@@ -11,10 +12,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
-import org.springframework.security.web.session.SimpleRedirectSessionInformationExpiredStrategy;
-import org.springframework.web.context.WebApplicationContext;
-
-import java.util.regex.Pattern;
 
 @EnableWebSecurity
 @Configuration
@@ -33,8 +30,8 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/student/**").anonymous()
-                .antMatchers("/course/**", "/course_search/**", "/search/**",
-                        "/logout/**", "/session_id", "/user_verify/**", "/review/**").anonymous()
+                .antMatchers("/course/**", "/course_search/**", "/search/**", "/notification/**",
+                        "/logout/**", "/session_id", "/user_verify/**", "/review/**", "/member/**").anonymous()
                 .antMatchers("/student_sign_up/**", "/login/**", "/error/**", "/static/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
@@ -51,6 +48,7 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        super.configure(auth);
         auth.inMemoryAuthentication()
                 .withUser("student").password("studentPassword")
                 .roles("STUDENT")
@@ -63,7 +61,7 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    @Scope(value = WebApplicationContext.SCOPE_APPLICATION)
+    @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     public PasswordEncoder passwordEncoder() {
         return new Argon2PasswordEncoder();
     }

@@ -3,8 +3,11 @@ package com.louay.controller.feedback;
 import com.louay.controller.factory.EntitiesFactory;
 import com.louay.controller.factory.ServicesFactory;
 import com.louay.model.entity.courses.Courses;
+import com.louay.model.entity.courses.members.CourseMembers;
 import com.louay.model.entity.feedback.*;
 import com.louay.model.entity.feedback.constant.FeedbackType;
+import com.louay.model.entity.notification.FeedbackNotification;
+import com.louay.model.entity.notification.constant.NotificationType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -14,9 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.Objects;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 @Controller
 @CrossOrigin(origins = "https://localhost:8443")
@@ -66,13 +67,21 @@ public class CourseFeedbackController implements Serializable {
         }
 
         Long courseIdNumber = Long.valueOf(courseId);
-
+        CourseFeedback courseFeedback = null;
         try {
-            createCourseFeedbackWithContent(buildCourseFeedbackToFileTextFeedback(multipartFile, textFeedback,
-                    courseIdNumber, email));
+            courseFeedback =
+                    createCourseFeedbackWithContent(buildCourseFeedbackToFileTextFeedback(multipartFile, textFeedback,
+                            courseIdNumber, email));
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
+
+        Assert.notNull(courseFeedback, "courseFeedback cannot be null!.");
+
+        List<FeedbackNotification> feedbackNotificationSet =
+                buildFeedbackNotificationList(courseIdNumber, courseFeedback.getFeedbackID(), email);
+
+        createFeedbackNotification(feedbackNotificationSet);
 
         return String.format("redirect:/course/%s/feedback", courseId);
     }
@@ -116,12 +125,21 @@ public class CourseFeedbackController implements Serializable {
         }
 
         Long courseIdNumber = Long.valueOf(courseId);
+        CourseFeedback courseFeedback = null;
 
         try {
-            createCourseFeedbackWithContent(buildCourseFeedbackToFileFeedback(multipartFile, courseIdNumber, email));
+            courseFeedback =
+                    createCourseFeedbackWithContent(buildCourseFeedbackToFileFeedback(multipartFile, courseIdNumber, email));
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
+
+        Assert.notNull(courseFeedback, "courseFeedback cannot be null!.");
+
+        List<FeedbackNotification> feedbackNotificationSet =
+                buildFeedbackNotificationList(courseIdNumber, courseFeedback.getFeedbackID(), email);
+
+        createFeedbackNotification(feedbackNotificationSet);
 
         return String.format("redirect:/course/%s/feedback", courseId);
     }
@@ -159,13 +177,18 @@ public class CourseFeedbackController implements Serializable {
         Long courseIdNumber = Long.valueOf(courseId);
         String textFeedback = messageFeedback.getPostMessage();
 
-        createCourseFeedbackWithContent(buildCourseFeedbackToMessageFeedback(textFeedback, courseIdNumber, emailInSession));
+        CourseFeedback courseFeedback =
+                createCourseFeedbackWithContent(buildCourseFeedbackToMessageFeedback(textFeedback, courseIdNumber, emailInSession));
 
+        List<FeedbackNotification> feedbackNotificationSet =
+                buildFeedbackNotificationList(courseIdNumber, courseFeedback.getFeedbackID(), emailInSession);
+
+        createFeedbackNotification(feedbackNotificationSet);
         return String.format("redirect:/course/%d/feedback", courseIdNumber);
     }
 
-    private void createCourseFeedbackWithContent(CourseFeedback courseFeedback) {
-        this.servicesFactory.getFeedbackService().createCourseFeedback(courseFeedback);
+    private CourseFeedback createCourseFeedbackWithContent(CourseFeedback courseFeedback) {
+        return this.servicesFactory.getFeedbackService().createCourseFeedback(courseFeedback);
     }
 
     private CourseFeedback buildCourseFeedbackToMessageFeedback(String textFeedback, Long courseId, String email) {
@@ -197,6 +220,52 @@ public class CourseFeedbackController implements Serializable {
         return courseFeedback;
     }
 
+    private void createFeedbackNotification(Iterable<FeedbackNotification> notificationIterable) {
+        this.servicesFactory.getNotificationService().createFeedbackNotificationFromIterable(notificationIterable);
+    }
+
+    private List<FeedbackNotification> buildFeedbackNotificationList(Long courseId, Long feedbackId, String loginEmail) {
+        Set<CourseMembers> courseMembersSet = findCourseMembers(courseId);
+        Courses courses = findCourse(courseId);
+
+        List<FeedbackNotification> notificationList = new LinkedList<>();
+
+        for (CourseMembers c : courseMembersSet) {
+            if (!loginEmail.equalsIgnoreCase(c.getStudent().getEmail())) {
+                notificationList.add(buildFeedbackNotification(c.getStudent().getEmail(), courseId, feedbackId));
+            }
+        }
+        notificationList.add(buildFeedbackNotification(courses.getInstructor().getEmail(), courseId, feedbackId));
+
+        return notificationList;
+    }
+
+    private FeedbackNotification buildFeedbackNotification(String email, Long courseId, Long feedbackId) {
+        FeedbackNotification feedbackNotification = this.entitiesFactory.getFeedbackNotification();
+        feedbackNotification.setCourse(buildCourse(courseId));
+        feedbackNotification.setUsers(this.entitiesFactory.getUsers());
+        feedbackNotification.getUsers().setEmail(email);
+        feedbackNotification.setCourseFeedback(this.entitiesFactory.getCourseFeedback());
+        feedbackNotification.getCourseFeedback().setFeedbackID(feedbackId);
+        feedbackNotification.setSeen(false);
+        feedbackNotification.setNotificationType(NotificationType.FEEDBACK);
+
+        return feedbackNotification;
+    }
+
+    private Set<CourseMembers> findCourseMembers(Long courseId) {
+        CourseMembers courseMembers = buildCourseMembers(courseId);
+
+        return this.servicesFactory.getCourseMemberService().findLazyCourseMemberByCourseId(courseMembers);
+    }
+
+    private CourseMembers buildCourseMembers(Long courseId) {
+        CourseMembers courseMembers = this.entitiesFactory.getCourseMembers();
+        courseMembers.setCourse(buildCourse(courseId));
+
+        return courseMembers;
+    }
+
     @GetMapping(value = "/feedback_data")
     @ResponseBody
     public TreeSet<CourseFeedback> getFeedbackPostSet(
@@ -226,6 +295,10 @@ public class CourseFeedbackController implements Serializable {
         courseFeedback.setCourse(buildCourse(courseId));
 
         return courseFeedback;
+    }
+
+    private Courses findCourse(Long courseId) {
+        return this.servicesFactory.getCourseService().findCourseByCourseId(buildCourse(courseId));
     }
 
     private Courses buildCourse(Long courseId) {

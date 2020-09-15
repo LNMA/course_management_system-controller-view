@@ -31,6 +31,8 @@
     <script type="application/javascript" src="/static/js/service/get_info_review_course.js"></script>
     <script type="application/javascript" src="/static/js/service/create_course_member.js"></script>
     <script type="application/javascript" src="/static/js/service/get_session_id.js"></script>
+    <script type="application/javascript" src="/static/js/control/notification-controller.js"></script>
+    <script type="application/javascript" src="/static/js/service/get_notification.js"></script>
     <link href="/static/images/favicon.ico" rel="icon" type="image/x-icon">
     <title>Review Course `by Louay Amr`</title>
 <body ng-app="app" ng-controller="ReviewCourseStudentController">
@@ -74,7 +76,7 @@
                         </div>
                         <div class="col col-md-1 align-self-center">
                             <div ng-if="isStudentJoinToThisCourse === false">
-                                <div ng-if="courseInfo.endDate >= currentTime">
+                                <div ng-if="courseInfo.endDate > currentTime">
                                     <input type="button" class="btn btn-warning text-white font-weight-bold"
                                            value="+ Join" ng-click="addToCourse()">
                                 </div>

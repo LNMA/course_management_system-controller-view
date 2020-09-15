@@ -17,7 +17,6 @@ app.service('GetReviewCourseInfoService', [function () {
             timeout: 5000,
         }).then(
             function successCallback(response) {
-                console.log(response.data);
                 $scope.courseInfo = response.data;
                 getEmail(response.data.instructor.email);
             }, function errorCallback(response) {
@@ -46,7 +45,6 @@ app.service('GetReviewCourseInfoService', [function () {
             timeout: 5000,
         }).then(
             function successCallback(response) {
-                console.log(response.data);
                 $scope.courseMemberList = response.data;
             }, function errorCallback(response) {
                 $scope.submitted = false;
@@ -74,7 +72,6 @@ app.service('GetReviewCourseInfoService', [function () {
             timeout: 5000,
         }).then(
             function successCallback(response) {
-                console.log(response.data);
                 $scope.isStudentJoinToThisCourse = response.data;
             }, function errorCallback(response) {
                 $scope.submitted = false;
@@ -102,7 +99,6 @@ app.service('GetReviewCourseInfoService', [function () {
             timeout: 5000,
         }).then(
             function successCallback(response) {
-                console.log(response.data);
                 $scope.instructorInfo = response.data;
             }, function errorCallback(response) {
                 $scope.submitted = false;
@@ -130,7 +126,6 @@ app.service('GetReviewCourseInfoService', [function () {
             timeout: 5000,
         }).then(
             function successCallback(response) {
-                console.log(response.data);
                 $scope.currentTime = response.data;
             }, function errorCallback(response) {
                 $scope.submitted = false;
