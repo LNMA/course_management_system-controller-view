@@ -8,9 +8,10 @@ app.config(function ($httpProvider) {
     $httpProvider.defaults.xsrfCookieName = 'XSRF-TOKEN';
     $httpProvider.defaults.xsrfHeaderName = 'X-XSRF-TOKEN';
 }).controller('FeedbackNotificationController', FeedbackNotificationCtrl);
-FeedbackNotificationCtrl.$inject = ['$scope', '$http', '$sce'];
+FeedbackNotificationCtrl.$inject = ['$scope', '$http', '$sce', 'GetNotificationDetailsService', 'GetSessionIdService'];
 
-function FeedbackNotificationCtrl($scope, $http, $sce) {
-
+function FeedbackNotificationCtrl($scope, $http, $sce, GetNotificationDetailsService, GetSessionIdService) {
+    GetNotificationDetailsService.getFeedbackNotificationDetails($http, $scope, $sce);
+    GetSessionIdService.getSessionId($http, $scope, $sce);
 }
 

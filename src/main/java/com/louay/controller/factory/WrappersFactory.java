@@ -1,8 +1,6 @@
 package com.louay.controller.factory;
 
-import com.louay.model.entity.wrapper.AdminRememberMeWrapper;
-import com.louay.model.entity.wrapper.GeneralSearch;
-import com.louay.model.entity.wrapper.StudentHomeWrapper;
+import com.louay.model.entity.wrapper.*;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
@@ -13,7 +11,7 @@ import java.io.Serializable;
 @Component
 @Scope(value = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class WrappersFactory implements Serializable {
-    private static final long serialVersionUID = 2434518022177093364L;
+    private static final long serialVersionUID = -5461444849491744769L;
 
     public StudentHomeWrapper getStudentHomeWrapper() {
         return new StudentHomeWrapper();
@@ -25,6 +23,14 @@ public class WrappersFactory implements Serializable {
 
     public GeneralSearch getGeneralSearch() {
         return new GeneralSearch();
+    }
+
+    public CourseSearch getCourseSearch() {
+        return new CourseSearch();
+    }
+
+    public InstructorHomeWrapper getInstructorHomeWrapper() {
+        return new InstructorHomeWrapper();
     }
 
 }

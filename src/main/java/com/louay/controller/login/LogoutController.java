@@ -2,11 +2,9 @@ package com.louay.controller.login;
 
 import com.louay.controller.factory.EntitiesFactory;
 import com.louay.controller.factory.ServicesFactory;
-import com.louay.controller.util.filter.EmailFilter;
 import com.louay.model.entity.status.UserAccountStatus;
 import com.louay.model.entity.status.UserAtCourse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -24,32 +22,27 @@ import java.io.Serializable;
 @CrossOrigin(origins = "https://localhost:8443")
 @RequestMapping(value = "/logout")
 public class LogoutController implements Serializable {
-    private static final long serialVersionUID = -2125032391350724202L;
+    private static final long serialVersionUID = -8516342061848503798L;
     private final EntitiesFactory entitiesFactory;
     private final ServicesFactory servicesFactory;
-    private final EmailFilter emailFilter;
 
     @Autowired
-    public LogoutController(EntitiesFactory entitiesFactory, ServicesFactory servicesFactory, EmailFilter emailFilter) {
+    public LogoutController(EntitiesFactory entitiesFactory, ServicesFactory servicesFactory) {
         Assert.notNull(entitiesFactory, "entitiesFactory cannot be null!.");
         Assert.notNull(servicesFactory, "servicesFactory cannot be null!.");
-        Assert.notNull(emailFilter, "emailFilter cannot be null!.");
 
         this.entitiesFactory = entitiesFactory;
         this.servicesFactory = servicesFactory;
-        this.emailFilter = emailFilter;
     }
 
     @RequestMapping(value = "/logout-account/{email:.+}")
-    public ResponseEntity<String> logoutUser(@PathVariable(value = "email", required = false) String email,
-                                     HttpServletRequest request, HttpServletResponse response) {
+    public String logoutUser(@PathVariable(value = "email", required = false) String email,
+                             HttpServletRequest request, HttpServletResponse response) {
         if (email == null) {
-            return ResponseEntity.ok().body("/login");
+            return "redirect:/login";
         }
 
-        String originalEmail = this.emailFilter.filterEmailUrlToOriginal(email);
-
-        updateUserAccountStatusToOffline(originalEmail);
+        updateUserAccountStatusToOffline(email);
 
         if (request.getSession(false) != null) {
             deleteSessionLogin(request);
@@ -59,7 +52,11 @@ public class LogoutController implements Serializable {
             deleteCookies(request, response);
         }
 
-        return ResponseEntity.ok().body("/login");
+        UserAtCourse userAtCourse = findUserAtCourse(email);
+        userAtCourse.setBusy(false);
+        updateUserAtCourseToFree(userAtCourse);
+
+        return "redirect:/login";
     }
 
     private void deleteSessionLogin(HttpServletRequest request) {
@@ -128,16 +125,16 @@ public class LogoutController implements Serializable {
         return "redirect:/login";
     }
 
-    private void updateUserAtCourseToFree(UserAtCourse userAtCourse){
+    private void updateUserAtCourseToFree(UserAtCourse userAtCourse) {
         this.servicesFactory.getStatusService().updateUserAtCourse(userAtCourse);
     }
 
-    private UserAtCourse findUserAtCourse(String email){
+    private UserAtCourse findUserAtCourse(String email) {
         UserAtCourse userAtCourse = buildUserAtCourse(email);
         return this.servicesFactory.getStatusService().findUserAtCourseByUserId(userAtCourse);
     }
 
-    private UserAtCourse buildUserAtCourse(String email){
+    private UserAtCourse buildUserAtCourse(String email) {
         UserAtCourse userAtCourse = this.entitiesFactory.getUserAtCourse();
         userAtCourse.setUsers(this.entitiesFactory.getUsers());
         userAtCourse.getUsers().setEmail(email);

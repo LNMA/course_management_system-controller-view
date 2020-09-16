@@ -10,6 +10,7 @@ import com.louay.model.entity.notification.FeedbackNotification;
 import com.louay.model.entity.notification.constant.NotificationType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +24,7 @@ import java.util.*;
 @CrossOrigin(origins = "https://localhost:8443")
 @RequestMapping(value = "/course/{courseId}/feedback")
 public class CourseFeedbackController implements Serializable {
-    private static final long serialVersionUID = 4335802874333497100L;
+    private static final long serialVersionUID = -4814687703975515752L;
     private final EntitiesFactory entitiesFactory;
     private final ServicesFactory servicesFactory;
 
@@ -37,19 +38,60 @@ public class CourseFeedbackController implements Serializable {
     }
 
     @GetMapping
-    public String viewCourseFeedbackPage() {
-        return "/static/html/course_feedback.html";
-    }
-
-    @PostMapping(value = "/delete_post", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public String deletePost(@RequestBody CourseFeedback courseFeedback,
-                             @PathVariable(value = "courseId") String courseId) {
-        if (courseFeedback.getFeedbackID() == null) {
+    public String viewCourseFeedbackPage(@SessionAttribute(value = "id", required = false) String emailInSession,
+                                         @PathVariable(value = "courseId", required = false) String courseId) {
+        if (emailInSession == null || courseId == null) {
             return "redirect:/login";
         }
 
+        Long courseIdNumber = Long.valueOf(courseId);
+        Set<FeedbackNotification> notificationSet = buildSeenFeedbackNotificationSet(emailInSession, courseIdNumber);
+        updateFeedbackNotificationSet(notificationSet);
+
+        return "/static/html/course_feedback.html";
+    }
+
+    private void updateFeedbackNotificationSet(Set<FeedbackNotification> feedbackNotificationSet) {
+        this.servicesFactory.getNotificationService().updateFeedbackNotification(feedbackNotificationSet);
+    }
+
+    private Set<FeedbackNotification> buildSeenFeedbackNotificationSet(String email, Long courseId) {
+        Set<FeedbackNotification> notificationSet = findFeedbackNotification(email, courseId);
+
+        for (FeedbackNotification fn : notificationSet) {
+            fn.setSeen(true);
+        }
+
+        return notificationSet;
+    }
+
+    private Set<FeedbackNotification> findFeedbackNotification(String email, Long courseId) {
+        FeedbackNotification feedbackNotification = buildFeedbackNotification(email, courseId);
+
+        return this.servicesFactory.getNotificationService()
+                .findNotSeenFeedbackNotificationByUserIdAndCourseId(feedbackNotification);
+    }
+
+    private FeedbackNotification buildFeedbackNotification(String email, Long courseId) {
+        FeedbackNotification feedbackNotification = this.entitiesFactory.getFeedbackNotification();
+        feedbackNotification.setUsers(this.entitiesFactory.getUsers());
+        feedbackNotification.getUsers().setEmail(email);
+        feedbackNotification.setCourse(this.entitiesFactory.getCourses());
+        feedbackNotification.getCourse().setCourseID(courseId);
+        feedbackNotification.setSeen(false);
+        feedbackNotification.setNotificationType(NotificationType.FEEDBACK);
+
+        return feedbackNotification;
+    }
+
+    @RequestMapping(value = "/delete_post", consumes = MediaType.APPLICATION_JSON_VALUE,
+            method = RequestMethod.DELETE)
+    public ResponseEntity<String> deletePost(@RequestBody CourseFeedback courseFeedback,
+                                             @PathVariable(value = "courseId") String courseId) {
+        Assert.notNull(courseFeedback.getFeedbackID(), "feedbackID cannot be null!.");
+
         this.servicesFactory.getFeedbackService().deleteCourseFeedbackByFeedbackId(courseFeedback);
-        return String.format("redirect:/course/%s/feedback", courseId);
+        return ResponseEntity.ok().body(String.format("/course/%s/feedback", courseId));
     }
 
     @PostMapping(value = "/add_file-text_post", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

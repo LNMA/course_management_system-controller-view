@@ -8,9 +8,11 @@ app.config(function ($httpProvider) {
     $httpProvider.defaults.xsrfCookieName = 'XSRF-TOKEN';
     $httpProvider.defaults.xsrfHeaderName = 'X-XSRF-TOKEN';
 }).controller('MaterialNotificationController', MaterialNotificationCtrl);
-MaterialNotificationCtrl.$inject = ['$scope', '$http', '$sce'];
+MaterialNotificationCtrl.$inject = ['$scope', '$http', '$sce', 'GetNotificationDetailsService', 'GetSessionIdService'];
 
-function MaterialNotificationCtrl($scope, $http, $sce) {
+function MaterialNotificationCtrl($scope, $http, $sce, GetNotificationDetailsService, GetSessionIdService) {
+    GetNotificationDetailsService.getMaterialNotificationDetails($http, $scope, $sce);
 
+    GetSessionIdService.getSessionId($http, $scope, $sce);
 }
 

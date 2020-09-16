@@ -14,6 +14,7 @@ ReviewAccountStudentCtrl.$inject = ['$scope', '$http', '$location', '$sce', 'Get
 function ReviewAccountStudentCtrl($scope, $http, $location, $sce, GetReviewAccountService, GetUserStatusService,
                                   GetJoinCourseReviewAccountService) {
     let emailLoginUser = $location.absUrl().toString().split('/')[5];
+    $scope.updatePictureUrl = 'https://localhost:8443/user/update/' + emailLoginUser + '/profile_picture-update'; //FIXME
 
     let emailReviewUser = $location.absUrl().toString().split("/")[6];
 

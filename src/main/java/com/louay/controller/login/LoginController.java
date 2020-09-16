@@ -3,7 +3,6 @@ package com.louay.controller.login;
 import com.louay.controller.factory.EntitiesFactory;
 import com.louay.controller.factory.ServicesFactory;
 import com.louay.controller.factory.WrappersFactory;
-import com.louay.controller.util.filter.EmailFilter;
 import com.louay.model.entity.authentication.CookieLogin;
 import com.louay.model.entity.role.AccountsRoles;
 import com.louay.model.entity.role.UsersRoles;
@@ -29,29 +28,26 @@ import java.security.SecureRandom;
 @CrossOrigin(origins = "https://localhost:8443")
 @RequestMapping(value = "/login")
 public class LoginController implements Serializable {
-    private static final long serialVersionUID = -4335506227802340794L;
+    private static final long serialVersionUID = -7796548474342711567L;
     private final ServicesFactory servicesFactory;
     private final EntitiesFactory entitiesFactory;
     private final WrappersFactory wrappersFactory;
     private final PasswordEncoder passwordEncoder;
-    private final EmailFilter emailFilter;
     private String urlEmail;
     private AccountsRoles accountsRoles;
 
     @Autowired
     public LoginController(ServicesFactory servicesFactory, EntitiesFactory entitiesFactory,
-                           PasswordEncoder passwordEncoder, WrappersFactory wrappersFactory, EmailFilter emailFilter) {
+                           PasswordEncoder passwordEncoder, WrappersFactory wrappersFactory) {
         Assert.notNull(entitiesFactory, "entitiesFactory cannot be null!.");
         Assert.notNull(servicesFactory, "servicesFactory cannot be null!.");
         Assert.notNull(passwordEncoder, "passwordEncoder cannot be null!.");
         Assert.notNull(wrappersFactory, "wrappersFactory cannot be null!.");
-        Assert.notNull(emailFilter, "emailFilter cannot be null!.");
 
         this.servicesFactory = servicesFactory;
         this.entitiesFactory = entitiesFactory;
         this.passwordEncoder = passwordEncoder;
         this.wrappersFactory = wrappersFactory;
-        this.emailFilter = emailFilter;
     }
 
     @GetMapping
@@ -121,7 +117,7 @@ public class LoginController implements Serializable {
         createNewSessionForSessionLogin(request, adminWrapper);
 
         this.accountsRoles = findAccountRoles(adminWrapper);
-        this.urlEmail = this.emailFilter.filterOriginalToEmailUrl(adminWrapper.getAdmin().getEmail());
+        this.urlEmail = adminWrapper.getAdmin().getEmail();
         return "redirect:/login/redirect_tracer_success_login";
     }
 
@@ -176,7 +172,7 @@ public class LoginController implements Serializable {
         createNewSessionCookieLogin(request, adminWrapper);
 
         this.accountsRoles = findAccountRoles(adminWrapper);
-        this.urlEmail = this.emailFilter.filterOriginalToEmailUrl(adminWrapper.getAdmin().getEmail());
+        this.urlEmail = adminWrapper.getAdmin().getEmail();
 
         return "redirect:/login/redirect_tracer_success_login";
     }
@@ -266,7 +262,7 @@ public class LoginController implements Serializable {
         createNewSession(request, adminWrapper);
 
         this.accountsRoles = findAccountRoles(adminWrapper);
-        this.urlEmail = this.emailFilter.filterOriginalToEmailUrl(adminWrapper.getAdmin().getEmail());
+        this.urlEmail = adminWrapper.getAdmin().getEmail();
 
         return "forward:/login/redirect_success_login";
     }

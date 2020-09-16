@@ -22,7 +22,7 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.requiresChannel().anyRequest().requiresSecure()
                 .and()
                 .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-                .ignoringAntMatchers("/student/student_home/{{email}}/profile_picture-update",
+                .ignoringAntMatchers("/user/update/{{email}}/profile_picture-update",
                         "/course/{courseId}/feedback/add_file_post",
                         "/course/{courseId}/feedback/add_file-text_post",
                         "/course/{courseId}/feedback/{feedbackId}/edit-feedback/update_file-text_post",
@@ -30,9 +30,12 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/student/**").anonymous()
+                .antMatchers("/instructor/**").anonymous()
                 .antMatchers("/course/**", "/course_search/**", "/search/**", "/notification/**",
-                        "/logout/**", "/session_id", "/user_verify/**", "/review/**", "/member/**").anonymous()
-                .antMatchers("/student_sign_up/**", "/login/**", "/error/**", "/static/**").permitAll()
+                        "/logout/**", "/session_id", "/user_verify/**", "/review/**", "/member/**",
+                        "/user/**").anonymous()
+                .antMatchers("/student_sign_up/**", "/login/**", "/error/**", "/static/**",
+                        "/user_verify/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().loginPage("/login")

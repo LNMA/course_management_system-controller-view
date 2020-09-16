@@ -22,11 +22,11 @@
                     </li>
                     <li class="col col-md-7">
                         <form method="get">
-                            <div class="input-group">
+                            <div class="input-group" ng-controller="SearchNavController">
                                 <input class="form-control border border-warning badge-pill" type="text"
-                                       placeholder="Search" name="keySearch">
+                                       placeholder="Search" name="keySearch" ng-model="keyCourseSearch">
                                 <div class="input-group-append">
-                                    <button class="btn btn-warning badge-pill" type="submit">&telrec;</button>
+                                    <button class="btn btn-warning badge-pill" type="submit" ng-click="courseSearchNow(courseId)">&telrec;</button>
                                 </div>
                             </div>
                         </form>

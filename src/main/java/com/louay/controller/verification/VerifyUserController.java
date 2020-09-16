@@ -30,7 +30,7 @@ public class VerifyUserController implements Serializable {
     }
 
     @GetMapping("/verify_success")
-    public String viewSuccessVerifyPage(PushBuilder pushBuilder){
+    public String viewSuccessVerifyPage(PushBuilder pushBuilder) {
         if (pushBuilder != null) {
             pushBuilder
                     .path("/static/images/background_geometry.png")
@@ -46,7 +46,7 @@ public class VerifyUserController implements Serializable {
         return "/static/html/success_verify.html";
     }
 
-    @GetMapping(value = "/perform_verify/{userId}/{verifyNumber}")
+    @GetMapping(value = "/perform_verify/{userId:.+}/{verifyNumber}")
     public String verifyUserThenRedirectIt(@PathVariable(value = "userId") String userId,
                                            @PathVariable(value = "verifyNumber") String verifyNumber) {
         UsersAuthentication usersAuthentication = buildUsersAuthentication(userId);
@@ -57,7 +57,7 @@ public class VerifyUserController implements Serializable {
         return "redirect:/user_verify/verify_success";
     }
 
-    private UsersAuthentication buildUsersAuthentication(String userId){
+    private UsersAuthentication buildUsersAuthentication(String userId) {
         UsersAuthentication usersAuthentication = this.entitiesFactory.getUsersAuthentication();
         usersAuthentication.setUserId(userId);
         usersAuthentication = this.servicesFactory.getAuthenticationService()
@@ -65,13 +65,13 @@ public class VerifyUserController implements Serializable {
         return usersAuthentication;
     }
 
-    private void updateValidUserAccountStatus(String userId){
+    private void updateValidUserAccountStatus(String userId) {
         UserAccountStatus userAccountStatus = buildUserAccountStatus(userId);
 
         this.servicesFactory.getStatusService().updateUserAccountStatus(userAccountStatus);
     }
 
-    private UserAccountStatus buildUserAccountStatus(String userId){
+    private UserAccountStatus buildUserAccountStatus(String userId) {
         UserAccountStatus userAccountStatus = this.entitiesFactory.getUserAccountStatus();
         userAccountStatus.setUsers(this.entitiesFactory.getUsers());
         userAccountStatus.getUsers().setEmail(userId);

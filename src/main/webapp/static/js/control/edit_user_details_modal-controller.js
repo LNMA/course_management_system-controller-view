@@ -52,12 +52,6 @@ function UserDetailModalCtrl($scope, $http, $location, CountryStateService, Upda
             UpdateUserDetailService.updateFullAddressService($http, $location, $scope, emailUri);
         }
     };
-    $scope.updateHeadline = function () {
-        $scope.submitted = true;
-        if ($scope.editHeadlineForm.$valid) {
-            UpdateUserDetailService.updateHeadlineService($http, $location, $scope, emailUri);
-        }
-    };
 }
 
 

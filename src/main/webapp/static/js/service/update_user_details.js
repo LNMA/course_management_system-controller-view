@@ -5,9 +5,9 @@
 app.service('UpdateUserDetailService', [function () {
     this.updateForenameService = function updateForenameService($http, $location, $scope, emailUri) {
         return $http({
-            method: 'POST',
+            method: 'PATCH',
             port: 8443,
-            url: 'https://localhost:8443/student/student_home/' + emailUri + '/forename-update', //FIXME
+            url: 'https://localhost:8443/user/update/' + emailUri + '/forename-update', //FIXME
             headers: {'content-type': 'application/json'},
             contentType: "application/json; charset=utf-8",
             async: false,    //Cross-domain requests and dataType: "jsonp" requests do not support synchronous operation
@@ -35,9 +35,9 @@ app.service('UpdateUserDetailService', [function () {
 
     this.updateSurnameService = function updateSurnameService($http, $location, $scope, emailUri) {
         return $http({
-            method: 'POST',
+            method: 'PATCH',
             port: 8443,
-            url: 'https://localhost:8443/student/student_home/' + emailUri + '/surname-update',//FIXME
+            url: 'https://localhost:8443/user/update/' + emailUri + '/surname-update',//FIXME
             headers: {'content-type': 'application/json'},
             contentType: "application/json; charset=utf-8",
             async: false,    //Cross-domain requests and dataType: "jsonp" requests do not support synchronous operation
@@ -65,9 +65,9 @@ app.service('UpdateUserDetailService', [function () {
 
     this.updateGenderService = function updateGenderService($http, $location, $scope, emailUri) {
         return $http({
-            method: 'POST',
+            method: 'PATCH',
             port: 8443,
-            url: 'https://localhost:8443/student/student_home/' + emailUri + '/gender-update',//FIXME
+            url: 'https://localhost:8443/user/update/' + emailUri + '/gender-update',//FIXME
             headers: {'content-type': 'application/json'},
             contentType: "application/json; charset=utf-8",
             async: false,    //Cross-domain requests and dataType: "jsonp" requests do not support synchronous operation
@@ -95,9 +95,9 @@ app.service('UpdateUserDetailService', [function () {
 
     this.updateBirthdayService = function updateBirthdayService($http, $location, $scope, emailUri) {
         return $http({
-            method: 'POST',
+            method: 'PATCH',
             port: 8443,
-            url: 'https://localhost:8443/student/student_home/' + emailUri + '/birthday-update',//FIXME
+            url: 'https://localhost:8443/user/update/' + emailUri + '/birthday-update',//FIXME
             headers: {'content-type': 'application/json'},
             contentType: "application/json; charset=utf-8",
             async: false,    //Cross-domain requests and dataType: "jsonp" requests do not support synchronous operation
@@ -125,9 +125,9 @@ app.service('UpdateUserDetailService', [function () {
 
     this.updatePhoneService = function updatePhoneService($http, $location, $scope, emailUri) {
         return $http({
-            method: 'POST',
+            method: 'PATCH',
             port: 8443,
-            url: 'https://localhost:8443/student/student_home/' + emailUri + '/phone-update',//FIXME
+            url: 'https://localhost:8443/user/update/' + emailUri + '/phone-update',//FIXME
             headers: {'content-type': 'application/json'},
             contentType: "application/json; charset=utf-8",
             async: false,    //Cross-domain requests and dataType: "jsonp" requests do not support synchronous operation
@@ -154,9 +154,9 @@ app.service('UpdateUserDetailService', [function () {
 
     this.updateFullAddressService = function updateFullAddressService($http, $location, $scope, emailUri) {
         return $http({
-            method: 'POST',
+            method: 'PATCH',
             port: 8443,
-            url: 'https://localhost:8443/student/student_home/' + emailUri + '/full_address-update',//FIXME
+            url: 'https://localhost:8443/user/update/' + emailUri + '/full_address-update',//FIXME
             headers: {'content-type': 'application/json'},
             contentType: "application/json; charset=utf-8",
             async: false,    //Cross-domain requests and dataType: "jsonp" requests do not support synchronous operation
@@ -183,36 +183,6 @@ app.service('UpdateUserDetailService', [function () {
                 $scope.editAddressForm.$valid = false;
                 $scope.editAddressForm.$error = true;
                 $scope.fullAddressErrorMessage = response.data;
-            });
-    }
-
-    this.updateHeadlineService = function updateHeadlineService($http, $location, $scope, emailUri) {
-        return $http({
-            method: 'POST',
-            port: 8443,
-            url: 'https://localhost:8443/student/student_home/' + emailUri + '/headline-update',//FIXME
-            headers: {'content-type': 'application/json'},
-            contentType: "application/json; charset=utf-8",
-            async: false,    //Cross-domain requests and dataType: "jsonp" requests do not support synchronous operation
-            cache: false,    //This will force requested pages not to be cached by the browser
-            processData: false, //To avoid making query String instead of JSON
-            timeout: 4000,
-            data: {
-                headline: $scope.editHeadline
-            }
-
-        }).then(
-            function successCallback(response) {
-                $scope.submitted = false;
-                $scope.editHeadline = null;
-                $scope.headline = response.data;
-                $scope.isEditHeadlineSuccess = true;
-                $scope.headlineSuccessMessage = 'headline change successfully';
-
-            }, function errorCallback(response) {
-                $scope.editHeadlineForm.$valid = false;
-                $scope.editHeadlineForm.$error = true;
-                $scope.headlineErrorMessage = response.data;
             });
     }
 }]);

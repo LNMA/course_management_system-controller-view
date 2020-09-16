@@ -17,4 +17,11 @@ function SearchNavCtrl($scope, $http, $window) {
             $window.location.href = 'https://localhost:8443/search/' + key;//FIXME
         }
     }
+
+    $scope.courseSearchNow = function (courseId) {
+        let key = $scope.keyCourseSearch;
+        if (key !== null && key !== '' && key !== undefined) {
+            $window.location.href = 'https://localhost:8443/search/' + courseId + "/" + key;//FIXME
+        }
+    }
 }
