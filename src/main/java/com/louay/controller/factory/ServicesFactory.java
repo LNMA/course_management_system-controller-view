@@ -8,6 +8,7 @@ import com.louay.model.service.course.CourseService;
 import com.louay.model.service.feedback.FeedbackService;
 import com.louay.model.service.material.MaterialService;
 import com.louay.model.service.member.CourseMemberService;
+import com.louay.model.service.notification.NotificationService;
 import com.louay.model.service.role.RoleService;
 import com.louay.model.service.status.StatusService;
 import com.louay.model.service.userpic.AccountPictureService;
@@ -32,6 +33,7 @@ public class ServicesFactory {
     private final UsersAttendanceService attendanceService;
     private final FeedbackService feedbackService;
     private final CommentService commentService;
+    private final NotificationService notificationService;
 
 
     @Autowired
@@ -40,7 +42,7 @@ public class ServicesFactory {
                            AuthenticationService authenticationService, CourseService courseService,
                            CourseMemberService courseMemberService, MaterialService materialService,
                            UsersAttendanceService attendanceService, FeedbackService feedbackService,
-                           CommentService commentService) {
+                           CommentService commentService, NotificationService notificationService) {
         Assert.notNull(accountService, "accountService cannot be null!");
         Assert.notNull(roleService, "roleService cannot be null!");
         Assert.notNull(pictureService, "pictureService cannot be null!");
@@ -52,6 +54,7 @@ public class ServicesFactory {
         Assert.notNull(attendanceService, "attendanceService cannot be null!");
         Assert.notNull(feedbackService, "feedbackService cannot be null!");
         Assert.notNull(commentService, "commentService cannot be null!");
+        Assert.notNull(notificationService, "notificationService cannot be null!");
 
         this.accountService = accountService;
         this.roleService = roleService;
@@ -64,6 +67,7 @@ public class ServicesFactory {
         this.attendanceService = attendanceService;
         this.feedbackService = feedbackService;
         this.commentService = commentService;
+        this.notificationService = notificationService;
     }
 
     public AccountService getAccountService() {
@@ -108,5 +112,9 @@ public class ServicesFactory {
 
     public CommentService getCommentService() {
         return commentService;
+    }
+
+    public NotificationService getNotificationService() {
+        return notificationService;
     }
 }

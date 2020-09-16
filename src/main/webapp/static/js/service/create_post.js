@@ -7,7 +7,7 @@ app.service('CreateFeedbackService', [function () {
         return $http({
             method: 'POST',
             port: 8443,
-            url: $location.absUrl() + "/add_text_post",
+            url: $location.absUrl() + "/add_text_post", //FIXME: https://localhost:8443/course/{courseId}/feedback
             headers: {'content-type': 'application/json'},
             contentType: "application/json; charset=utf-8",
             async: false,    //Cross-domain requests and dataType: "jsonp" requests do not support synchronous operation
@@ -39,7 +39,7 @@ app.service('CreateFeedbackService', [function () {
         return $http({
             method: 'POST',
             port: 8443,
-            url: $location.absUrl() + "/comment/add_comment",
+            url: $location.absUrl() + "/comment/add_comment", //FIXME: https://localhost:8443/course/{courseId}/feedback
             headers: {'content-type': 'application/json'},
             contentType: "application/json; charset=utf-8",
             async: false,    //Cross-domain requests and dataType: "jsonp" requests do not support synchronous operation

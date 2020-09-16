@@ -13,7 +13,7 @@ MaterialHomeCtrl.$inject = ['$scope', '$http', '$location', '$sce', 'GetCourseIn
 
 function MaterialHomeCtrl($scope, $http, $location, $sce, GetCourseInfoService, GetMaterialContentService,
                           GetMaterialShallowInfoService) {
-    let currentMaterialUrl = $scope.homeCourseMaterialUrl = $location.absUrl();
+    let currentMaterialUrl = $scope.homeCourseMaterialUrl = $location.absUrl();//https://localhost:8443/course/{courseId}/feedback
     let courseId = currentMaterialUrl.toString().split("/")[4];
     let courseUrl = 'https://localhost:8443/course/'+courseId;
 

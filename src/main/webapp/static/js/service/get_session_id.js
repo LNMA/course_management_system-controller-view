@@ -7,7 +7,7 @@ app.service('GetSessionIdService', [function () {
         return $http({
             method: 'GET',
             port: 8443,
-            url: "https://localhost:8443/session_id",
+            url: "https://localhost:8443/session_id", //FIXME
             headers: {'content-type': 'application/json'},
             contentType: "application/json; charset=utf-8",
             async: false,    //Cross-domain requests and dataType: "jsonp" requests do not support synchronous operation
@@ -27,5 +27,5 @@ app.service('GetSessionIdService', [function () {
                     $scope.pageErrorMessage = errorData;
                 }
             });
-    }
+    };
 }]);

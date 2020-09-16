@@ -4,11 +4,11 @@
 /*content-type:application/javascript*/
 app.factory('GetStudentCourseService', function () {
     return {
-        getStudentCourse: function getStudentCourse($http, $location, $scope, $sce) {
+        getStudentCourse: function getStudentCourse($http, $location, $scope, $sce, emailUri) {
             return $http({
                 method: 'GET',
                 port: 8443,
-                url: $location.absUrl() + "/my_course",
+                url: 'https://localhost:8443/student/student_home/' + emailUri + "/my_course", //FIXME
                 headers: {'content-type': 'application/json'},
                 contentType: "application/json; charset=utf-8",
                 async: false,    //Cross-domain requests and dataType: "jsonp" requests do not support synchronous operation

@@ -5,9 +5,9 @@
 app.service('EditFeedbackService', [function () {
     this.deleteFeedback = function deleteFeedback($http, $location, $scope, $window, $sce, feedbackId) {
         return $http({
-            method: 'POST',
+            method: 'DELETE',
             port: 8443,
-            url: $location.absUrl() + "/delete_post",
+            url: $location.absUrl() + "/delete_post", //FIXME: https://localhost:8443/course/{courseId}/feedback
             headers: {'content-type': 'application/json'},
             contentType: "application/json; charset=utf-8",
             async: false,    //Cross-domain requests and dataType: "jsonp" requests do not support synchronous operation
@@ -18,8 +18,8 @@ app.service('EditFeedbackService', [function () {
                 feedbackID: feedbackId
             }
         }).then(
-            function successCallback() {
-                $window.location.href = $location.absUrl();
+            function successCallback(response) {
+                $window.location.href = 'https://localhost:8443'+response.data; //FIXME: https://localhost:8443/course/{courseId}/feedback
 
             }, function errorCallback(response) {
                 $scope.isPageError = true;
@@ -34,9 +34,9 @@ app.service('EditFeedbackService', [function () {
 
     this.updateTextFeedback = function updateTextFeedback($http, $location, $scope, $window, $sce, courseId) {
         return $http({
-            method: 'POST',
+            method: 'PUT',
             port: 8443,
-            url: $location.absUrl() + "/update_text_post",//https://localhost:8443/course/{courseId}/feedback/edit-feedback/{feedbackId}/update_text_post
+            url: $location.absUrl() + "/update_text_post",//FIXME: https://localhost:8443/course/{courseId}/feedback/edit-feedback/{feedbackId}/update_text_post
             headers: {'content-type': 'application/json'},
             contentType: "application/json; charset=utf-8",
             async: false,    //Cross-domain requests and dataType: "jsonp" requests do not support synchronous operation
@@ -47,8 +47,8 @@ app.service('EditFeedbackService', [function () {
                 postMessage: $scope.textMessageFeedback.feedback,
             }
         }).then(
-            function successCallback() {
-                $window.location.href = 'https://localhost:8443/course/' + courseId + '/feedback'
+            function successCallback(response) {
+                $window.location.href = 'https://localhost:8443'+response.data;//FIXME: https://localhost:8443/course/{courseId}/feedback
 
             }, function errorCallback(response) {
                 $scope.isPageError = true;
@@ -63,9 +63,9 @@ app.service('EditFeedbackService', [function () {
 
     this.deleteComment = function deleteComment($http, $location, $scope, $window, $sce, commentId) {
         return $http({
-            method: 'POST',
+            method: 'DELETE',
             port: 8443,
-            url: $location.absUrl() + "/comment/remove_comment",
+            url: $location.absUrl() + "/comment/remove_comment", //FIXME: https://localhost:8443/course/{courseId}/feedback
             headers: {'content-type': 'application/json'},
             contentType: "application/json; charset=utf-8",
             async: false,    //Cross-domain requests and dataType: "jsonp" requests do not support synchronous operation
@@ -76,8 +76,8 @@ app.service('EditFeedbackService', [function () {
                 commentID: commentId
             }
         }).then(
-            function successCallback() {
-                $window.location.href = $location.absUrl();
+            function successCallback(response) {
+                $window.location.href = 'https://localhost:8443'+response.data;//FIXME: https://localhost:8443/course/{courseId}/feedback
 
             }, function errorCallback(response) {
                 $scope.isPageError = true;

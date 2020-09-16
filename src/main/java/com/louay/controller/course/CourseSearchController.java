@@ -37,7 +37,8 @@ public class CourseSearchController implements Serializable {
     @GetMapping(value = "/{pageNumber}/get_courses")
     @ResponseBody
     public List<Courses> getCoursePagination(@PathVariable(value = "pageNumber") Integer pageNumber) {
-        return this.servicesFactory.getCourseService().findAllCoursePagination(pageNumber, 9);
+        int pageSize = 9;
+        return this.servicesFactory.getCourseService().findAllCoursePagination(pageNumber, pageSize);
     }
 
     @GetMapping(value = "/get_courses_row", produces = MediaType.APPLICATION_JSON_VALUE)

@@ -7,7 +7,7 @@ app.service('GetMaterialShallowInfoService', [function () {
         return $http({
             method: 'GET',
             port: 8443,
-            url: $location.absUrl() + "/course_shallow_material",
+            url: $location.absUrl() + "/course_shallow_material", //FIXME: https://localhost:8443/course/{courseId}/material
             headers: {'content-type': 'application/json'},
             contentType: "application/json; charset=utf-8",
             async: false,    //Cross-domain requests and dataType: "jsonp" requests do not support synchronous operation

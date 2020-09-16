@@ -3,9 +3,9 @@
     <option name="OPEN_IN_BROWSER_URL" value="http://localhost:8080/course_management_system-controller-view" />
     <option name="UPDATING_POLICY" value="restart-server" />
     <deployment>
-      <artifact name="course_management_system-view:war exploded">
+      <artifact name="course_management_system-controller-view:war exploded">
         <settings>
-          <option name="CONTEXT_PATH" value="/course_management_system_view_war_exploded" />
+          <option name="CONTEXT_PATH" value="/course_management_system_controller_view_war_exploded" />
         </settings>
       </artifact>
     </deployment>
@@ -69,7 +69,7 @@
     <method v="2">
       <option name="Make" enabled="true" />
       <option name="BuildArtifacts" enabled="true">
-        <artifact name="course_management_system-view:war exploded" />
+        <artifact name="course_management_system-controller-view:war exploded" />
       </option>
     </method>
   </configuration>

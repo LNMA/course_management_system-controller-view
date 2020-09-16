@@ -26,5 +26,4 @@ public class MainWebAppInitializer implements WebApplicationInitializer {
         appServlet.setLoadOnStartup(1);
         appServlet.addMapping("/");
     }
-
 }

@@ -6,6 +6,8 @@ import com.louay.model.entity.material.FileMaterials;
 import com.louay.model.entity.material.MaterialContent;
 import com.louay.model.entity.material.TextMaterials;
 import com.louay.model.entity.material.constant.MaterialType;
+import com.louay.model.entity.notification.MaterialNotification;
+import com.louay.model.entity.notification.constant.NotificationType;
 import com.louay.model.entity.wrapper.FileMaterialWithOutFile;
 import com.louay.model.entity.wrapper.MaterialWithOutContent;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +25,7 @@ import java.util.TreeSet;
 @CrossOrigin(origins = "https://localhost:8443")
 @RequestMapping(value = "/course/{courseId}/material")
 public class MaterialCourseHomeController implements Serializable {
-    private static final long serialVersionUID = -8439626380078593471L;
+    private static final long serialVersionUID = -5445081743525567521L;
     private final EntitiesFactory entitiesFactory;
     private final ServicesFactory servicesFactory;
 
@@ -37,8 +39,51 @@ public class MaterialCourseHomeController implements Serializable {
     }
 
     @GetMapping
-    public String viewCourseMaterialHomePage() {
+    public String viewCourseMaterialHomePage(@SessionAttribute(value = "id", required = false) String emailInSession,
+                                             @PathVariable(value = "courseId", required = false) String courseId) {
+        if (emailInSession == null || courseId == null) {
+            return "redirect:/login";
+        }
+
+        Long courseIdNumber = Long.valueOf(courseId);
+        Set<MaterialNotification> materialNotificationSet =
+                buildSeenMaterialNotificationSet(emailInSession, courseIdNumber);
+        updateMaterialNotificationSet(materialNotificationSet);
+
         return "/static/html/course_material.html";
+    }
+
+    private void updateMaterialNotificationSet(Set<MaterialNotification> materialNotificationSet) {
+        this.servicesFactory.getNotificationService().updateMaterialNotification(materialNotificationSet);
+    }
+
+    private Set<MaterialNotification> buildSeenMaterialNotificationSet(String email, Long courseId) {
+        Set<MaterialNotification> notificationSet = findMaterialNotification(email, courseId);
+
+        for (MaterialNotification mn : notificationSet) {
+            mn.setSeen(true);
+        }
+
+        return notificationSet;
+    }
+
+    private Set<MaterialNotification> findMaterialNotification(String email, Long courseId) {
+        MaterialNotification materialNotification = buildMaterialNotification(email, courseId);
+
+        return this.servicesFactory.getNotificationService()
+                .findNotSeenMaterialNotificationByUserIdAndCourseId(materialNotification);
+    }
+
+    private MaterialNotification buildMaterialNotification(String email, Long courseId) {
+        MaterialNotification materialNotification = this.entitiesFactory.getMaterialNotification();
+        materialNotification.setUsers(this.entitiesFactory.getUsers());
+        materialNotification.getUsers().setEmail(email);
+        materialNotification.setCourse(this.entitiesFactory.getCourses());
+        materialNotification.getCourse().setCourseID(courseId);
+        materialNotification.setSeen(false);
+        materialNotification.setNotificationType(NotificationType.MATERIAL);
+
+        return materialNotification;
     }
 
     @GetMapping(value = "/{materialType}/{materialId}/get_content", produces = MediaType.APPLICATION_JSON_VALUE)

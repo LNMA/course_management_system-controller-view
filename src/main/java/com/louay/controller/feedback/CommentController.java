@@ -5,6 +5,7 @@ import com.louay.controller.factory.ServicesFactory;
 import com.louay.model.entity.feedback.comment.Comment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
@@ -27,26 +28,27 @@ public class CommentController implements Serializable {
         this.servicesFactory = servicesFactory;
     }
 
-    @PostMapping(value = "/course/{courseId}/feedback/comment/remove_comment", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public String removeComment(@RequestBody Comment comment,
-                                @PathVariable(value = "courseId") String courseId) {
+    @RequestMapping(value = "/course/{courseId}/feedback/comment/remove_comment",
+            consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.DELETE)
+    public ResponseEntity<String> removeComment(@RequestBody Comment comment,
+                                                @PathVariable(value = "courseId") String courseId) {
 
         Assert.notNull(comment.getCommentID(), "commentId cannot be null!.");
 
         deleteComment(comment);
 
-        return String.format("redirect:/course/%s/feedback", courseId);
+        return ResponseEntity.ok().body(String.format("/course/%s/feedback", courseId));
     }
 
-    private Comment deleteComment(Comment comment){
-        return this.servicesFactory.getCommentService().deleteCommentByCommentId(comment);
+    private void deleteComment(Comment comment) {
+        this.servicesFactory.getCommentService().deleteCommentByCommentId(comment);
     }
 
 
     @PostMapping(value = "/course/{courseId}/feedback/comment/add_comment", consumes = MediaType.APPLICATION_JSON_VALUE)
     public String addComment(@RequestBody Comment comment,
-                                @SessionAttribute(value = "id", required = false) String email,
-                                @PathVariable(value = "courseId") String courseId) {
+                             @SessionAttribute(value = "id", required = false) String email,
+                             @PathVariable(value = "courseId") String courseId) {
         if (email == null) {
             return "redirect:/login";
         }
@@ -63,8 +65,8 @@ public class CommentController implements Serializable {
         return String.format("redirect:/course/%s/feedback", courseId);
     }
 
-    private Comment createComment(Comment comment) {
-        return this.servicesFactory.getCommentService().createComment(comment);
+    private void createComment(Comment comment) {
+        this.servicesFactory.getCommentService().createComment(comment);
     }
 
     private Comment buildComment(String email, Long feedbackId) {

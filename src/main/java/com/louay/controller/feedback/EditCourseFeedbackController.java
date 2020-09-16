@@ -8,6 +8,7 @@ import com.louay.model.entity.feedback.FileMessageFeedback;
 import com.louay.model.entity.feedback.MessageFeedback;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
@@ -111,9 +112,10 @@ public class EditCourseFeedbackController implements Serializable {
         return courseFeedback;
     }
 
-    @PostMapping(value = "/update_text_post", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public String updateTextPost(@RequestBody MessageFeedback messageFeedback,
-                                 @PathVariable(value = "feedbackId") String feedbackId) {
+    @RequestMapping(value = "/update_text_post", consumes = MediaType.APPLICATION_JSON_VALUE,
+            method = RequestMethod.PUT)
+    public ResponseEntity<String> updateTextPost(@RequestBody MessageFeedback messageFeedback,
+                                         @PathVariable(value = "feedbackId") String feedbackId) {
         Assert.notNull(feedbackId, "feedback id cannot be null!.");
         Assert.notNull(messageFeedback.getPostMessage(), "post content cannot be null!.");
 
@@ -122,7 +124,7 @@ public class EditCourseFeedbackController implements Serializable {
         CourseFeedback courseFeedback =
                 updateCourseFeedback(buildCourseFeedbackToMessageFeedback(messageFeedback, feedbackIdNumber));
 
-        return String.format("redirect:/course/%d/feedback", courseFeedback.getCourse().getCourseID());
+        return ResponseEntity.ok().body(String.format("/course/%d/feedback", courseFeedback.getCourse().getCourseID()));
     }
 
     private CourseFeedback updateCourseFeedback(CourseFeedback courseFeedback) {

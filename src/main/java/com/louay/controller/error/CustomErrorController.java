@@ -1,15 +1,16 @@
 package com.louay.controller.error;
 
 import org.springframework.boot.web.servlet.error.ErrorController;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.PushBuilder;
 import java.io.Serializable;
 
-@Controller
+@ControllerAdvice(basePackageClasses = CustomErrorController.class)
 @CrossOrigin(origins = "https://localhost:8443")
+@RequestMapping(value = "/error")
 public class CustomErrorController implements ErrorController, Serializable {
     private static final long serialVersionUID = 6404263372139633257L;
 
@@ -18,7 +19,7 @@ public class CustomErrorController implements ErrorController, Serializable {
         return null;
     }
 
-    @RequestMapping(value = "/error")
+    @RequestMapping
     public String viewErrorPage(PushBuilder pushBuilder) {
         if (pushBuilder != null) {
             pushBuilder

@@ -10,8 +10,12 @@ import com.louay.model.entity.feedback.FileFeedback;
 import com.louay.model.entity.feedback.FileMessageFeedback;
 import com.louay.model.entity.feedback.MessageFeedback;
 import com.louay.model.entity.feedback.comment.Comment;
+import com.louay.model.entity.material.CourseMaterials;
 import com.louay.model.entity.material.FileMaterials;
 import com.louay.model.entity.material.TextMaterials;
+import com.louay.model.entity.notification.FeedbackNotification;
+import com.louay.model.entity.notification.MaterialNotification;
+import com.louay.model.entity.notification.UserNotification;
 import com.louay.model.entity.role.AccountsRoles;
 import com.louay.model.entity.role.UsersRoles;
 import com.louay.model.entity.status.UserAccountStatus;
@@ -117,5 +121,21 @@ public class EntitiesFactory {
 
     public Comment getComment() {
         return new Comment();
+    }
+
+    public CourseMaterials getCourseMaterials() {
+        return new CourseMaterials();
+    }
+
+    public UserNotification getUserNotification() {
+        return new UserNotification();
+    }
+
+    public FeedbackNotification getFeedbackNotification() {
+        return new FeedbackNotification();
+    }
+
+    public MaterialNotification getMaterialNotification() {
+        return new MaterialNotification();
     }
 }

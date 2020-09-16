@@ -2,7 +2,6 @@ package com.louay.controller.course;
 
 import com.louay.controller.factory.EntitiesFactory;
 import com.louay.controller.factory.ServicesFactory;
-import com.louay.controller.util.filter.EmailFilter;
 import com.louay.model.entity.courses.Courses;
 import com.louay.model.entity.courses.members.CourseMembers;
 import com.louay.model.entity.courses.members.UsersAttendance;
@@ -21,24 +20,20 @@ import java.util.Set;
 @Controller
 @CrossOrigin(origins = "https://localhost:8443")
 public class StudentCourseController implements Serializable {
-    private static final long serialVersionUID = 7879966109306555542L;
+    private static final long serialVersionUID = 1404921203140429569L;
     private final EntitiesFactory entitiesFactory;
     private final ServicesFactory servicesFactory;
-    private final EmailFilter emailFilter;
 
     @Autowired
-    public StudentCourseController(EntitiesFactory entitiesFactory, ServicesFactory servicesFactory,
-                                   EmailFilter emailFilter) {
+    public StudentCourseController(EntitiesFactory entitiesFactory, ServicesFactory servicesFactory) {
         Assert.notNull(entitiesFactory, "entitiesFactory cannot be null!.");
         Assert.notNull(servicesFactory, "servicesFactory cannot be null!.");
-        Assert.notNull(emailFilter, "emailFilter cannot be null!.");
 
         this.entitiesFactory = entitiesFactory;
         this.servicesFactory = servicesFactory;
-        this.emailFilter = emailFilter;
     }
 
-    @GetMapping(value = "/student/student_home/{email}/to_my_course/{courseId}")
+    @GetMapping(value = "/student/student_home/{email:.+}/to_my_course/{courseId}")
     public String joinToCourseThenRedirect(@PathVariable(value = "email", required = false) String email,
                                            @PathVariable(value = "courseId", required = false) String courseId) {
         if (email == null || courseId == null) {
@@ -46,10 +41,9 @@ public class StudentCourseController implements Serializable {
         }
 
         Long courseIdNumber = Long.valueOf(courseId);
-        String originalEmail = this.emailFilter.filterEmailUrlToOriginal(email);
 
-        createUsersAttendance(originalEmail, courseIdNumber);
-        createOrUpdateUserAtCourse(originalEmail);
+        createUsersAttendance(email, courseIdNumber);
+        createOrUpdateUserAtCourse(email);
 
         return String.format("redirect:/course/%s", courseId);
     }
@@ -88,14 +82,13 @@ public class StudentCourseController implements Serializable {
     }
 
 
-    @GetMapping(value = "/student/student_home/{email}/my_course", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/student/student_home/{email:.+}/my_course", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
     Set<Courses> getStudentJoinCourse(@PathVariable(value = "email", required = false) String email) {
-        Assert.notNull(email, "email cannot be null");
+        Assert.notNull(email, "email cannot be null!.");
 
-        String originalEmail = this.emailFilter.filterEmailUrlToOriginal(email);
-        if (isStudentJoinToAnyCourse(originalEmail)) {
-            return findAllCourseInSetCourse(originalEmail);
+        if (isStudentJoinToAnyCourse(email)) {
+            return findAllCourseInSetCourse(email);
         }
 
         return null;

@@ -2,23 +2,21 @@
 /*jshint sub:true*/
 /*Content-Disposition:inline;filename=f.txt*/
 /*content-type:application/javascript*/
-app.service('CourseSearchService', [function () {
-    this.getPageNumber = function getPageNumber($http, $location, $scope, $sce) {
-        $http({
+app.service('GetNotificationService', [function () {
+    this.getAllNotificationCount = function getAllNotificationCount($http, $scope, $sce) {
+        return $http({
             method: 'GET',
             port: 8443,
-            url: $location.absUrl() + '/get_courses_row',
+            url: 'https://localhost:8443/notification/get_user_notification_count' , //FIXME
             headers: {'content-type': 'application/json'},
             contentType: "application/json; charset=utf-8",
             async: false,    //Cross-domain requests and dataType: "jsonp" requests do not support synchronous operation
             cache: false,    //This will force requested pages not to be cached by the browser
             processData: false, //To avoid making query String instead of JSON
-            timeout: 5000,
+            timeout: 4000,
         }).then(
             function successCallback(response) {
-                let courseRowCount = Number.parseInt(response.data);
-                let pageSize = 9;
-                $scope.pageNumber = parseInt(courseRowCount/pageSize) + 1;
+                $scope.allNotificationCount = response.data;
             }, function errorCallback(response) {
                 $scope.submitted = false;
                 $scope.isPageError = true;
@@ -30,20 +28,47 @@ app.service('CourseSearchService', [function () {
                 }
             });
     }
-    this.showCourses = function showCourses($http, $location, $scope, $sce, pageNumber) {
-        $http({
+
+    this.getFeedbackNotificationCount = function getFeedbackNotificationCount($http, $scope, $sce) {
+        return $http({
             method: 'GET',
             port: 8443,
-            url: $location.absUrl() + '/'+pageNumber+'/get_courses',
+            url: 'https://localhost:8443/notification/get_feedback_notification_count' , //FIXME
             headers: {'content-type': 'application/json'},
             contentType: "application/json; charset=utf-8",
             async: false,    //Cross-domain requests and dataType: "jsonp" requests do not support synchronous operation
             cache: false,    //This will force requested pages not to be cached by the browser
             processData: false, //To avoid making query String instead of JSON
-            timeout: 5000,
+            timeout: 4000,
         }).then(
             function successCallback(response) {
-                $scope.courseData = response.data;
+                $scope.feedbackNotificationCount = response.data;
+            }, function errorCallback(response) {
+                $scope.submitted = false;
+                $scope.isPageError = true;
+                let errorData = response.data;
+                if (errorData.toString().substr(8, 15) === '<!DOCTYPE html>') {
+                    $scope.errorRender = $sce.trustAsHtml(errorData);
+                } else {
+                    $scope.pageErrorMessage = errorData;
+                }
+            });
+    }
+
+    this.getMaterialNotificationCount = function getMaterialNotificationCount($http, $scope, $sce) {
+        return $http({
+            method: 'GET',
+            port: 8443,
+            url: 'https://localhost:8443/notification/get_material_notification_count' , //FIXME
+            headers: {'content-type': 'application/json'},
+            contentType: "application/json; charset=utf-8",
+            async: false,    //Cross-domain requests and dataType: "jsonp" requests do not support synchronous operation
+            cache: false,    //This will force requested pages not to be cached by the browser
+            processData: false, //To avoid making query String instead of JSON
+            timeout: 4000,
+        }).then(
+            function successCallback(response) {
+                $scope.materialNotificationCount = response.data;
             }, function errorCallback(response) {
                 $scope.submitted = false;
                 $scope.isPageError = true;

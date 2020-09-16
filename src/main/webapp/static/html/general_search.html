@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <style type="text/css">
+        @import url(/static/lib/bootstrap-4.5.1/css/bootstrap.min.css);
+    </style>
+    <script type="application/javascript" src="/static/lib/jQuery-3.5.1/jquery-3.5.1.min.js"></script>
+    <script type="application/javascript" src="/static/lib/popper-1.16.1/popper.min.js"></script>
+    <script type="application/javascript" src="/static/lib/bootstrap-4.5.1/js/bootstrap.min.js"></script>
+    <script type="application/javascript" src="/static/lib/angularJS-1.8.0/angular.min.js"></script>
+    <script type="application/javascript" src="/static/lib/angularJS-1.8.0/angular-messages.min.js"></script>
+    <script type="application/javascript" src="/static/lib/angularJS-1.8.0/angular-sanitize.min.js"></script>
+    <script type="application/javascript" src="/static/js/app.js"></script>
+    <script type="application/javascript" src="/static/js/control/general_search-controller.js"></script>
+    <script type="application/javascript" src="/static/js/service/get_general_searched.js"></script>
+    <script type="application/javascript" src="/static/js/service/get_session_id.js"></script>
+    <link href="/static/images/favicon.ico" rel="icon" type="image/x-icon">
+    <title>Search `by Louay Amr`</title>
+<body ng-app="app" ng-controller="GeneralSearchController" class="h-100">
+<div ng-bind-html="errorRender"></div>
+<header>
+    <nav class="navbar navbar-expand-md navbar-dark" style="background-color: #3e3c4e;">
+        <p class="text-light text-capitalize h3">General Search</p>
+    </nav>
+    <nav class="row justify-content-center mt-3">
+        <ul class="pagination">
+            <div ng-repeat="pageNumber in [].constructor(pageNumber) track by $index">
+                <li class="page-item">
+                    <button class="page-link" ng-click="showPage($index + 1)">{{$index + 1}}</button>
+                </li>
+            </div>
+        </ul>
+    </nav>
+</header>
+<main class="container-fluid">
+    <div class="container" id="pageAlert" ng-model="pageErrorMessage">
+        <div ng-show="isPageError">
+            <div class="alert alert-danger alert-dismissible fade show">
+                <strong>Error!</strong> {{pageErrorMessage}}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="row row-cols-1 mt-4">
+        <div class="col col-md-12">
+            <div class="container-fluid mt-4">
+                <ng-include src="'/static/html/page-include/pagination_general_search.html'"></ng-include>
+            </div>
+        </div>
+    </div>
+</main>
+<footer class="w-100" style="margin-top: 26em;">
+    <nav class="navbar" style="background-color: #d3c7cd; height: 16em;">
+        <p>Louay Amr © 2020</p>
+    </nav>
+</footer>
+</body>
+</html>
+

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <style type="text/css">
+        @import url(/static/lib/bootstrap-4.5.1/css/bootstrap.min.css);
+    </style>
+    <script src="/static/lib/jQuery-3.5.1/jquery-3.5.1.min.js"></script>
+    <script src="/static/lib/popper-1.16.1/popper.min.js"></script>
+    <script src="/static/lib/bootstrap-4.5.1/js/bootstrap.min.js"></script>
+    <script src="/static/lib/angularJS-1.8.0/angular.min.js"></script>
+    <script src="/static/lib/angularJS-1.8.0/angular-messages.min.js"></script>
+    <script src="/static/lib/angularJS-1.8.0/angular-sanitize.min.js"></script>
+    <script src="/static/js/app.js"></script>
+    <script src="/static/js/control/feedback_notification-controller.js"></script>
+    <script src="/static/js/service/get_notification_details.js"></script>
+    <script src="/static/js/service/get_session_id.js"></script>
+    <link href="/static/images/favicon.ico" rel="icon" type="image/x-icon">
+    <title>Feedback Notification `by Louay Amr`</title>
+<body ng-app="app" ng-controller="FeedbackNotificationController">
+<div ng-bind-html="errorRender"></div>
+<header>
+    <nav class="navbar navbar-expand-md navbar-dark" style="background-color: #3e3c4e;">
+        <p class="text-light text-capitalize h3">New Feedback</p>
+    </nav>
+</header>
+<main class="container-fluid">
+    <div class="container" id="pageAlert" ng-model="pageErrorMessage">
+        <div ng-show="isPageError">
+            <div class="alert alert-danger alert-dismissible fade show">
+                <strong>Error!</strong> {{pageErrorMessage}}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="row row-cols-1 mt-4">
+        <div class="col col-md-12">
+            <div class="row row-cols-1 row-cols-md-3">
+                <div ng-repeat="feedbackList in feedbackList">
+                    <div ng-switch="feedbackList.feedbackType">
+
+                        <div ng-switch-when="FILE">
+                            <div class="col mb-3">
+                                <div class="card h-100">
+                                    <a class="btn btn-outline-danger col col-md-12"
+                                       href="https://localhost:8443/student/student_home/{{sessionId}}/to_my_course/{{feedbackList.course.courseID}}">
+                                        <!--FIXME:PATH CHANGE-->
+                                        <div class="card-body">
+                                            <div>
+                                                <img src="data:image/*;base64,{{feedbackList.feedbackContent.feedbackFileBase64}}"
+                                                     class="card-img-top" alt="feedback image">
+                                            </div>
+                                            <br>
+                                            <div class="card-text small">
+                                                <img src="data:image/*;base64,{{feedbackList.user.accountPicture.profilePictureBase64}}"
+                                                     class="rounded-circle" width="30" height="30"
+                                                     alt="account image">
+                                                By : {{feedbackList.user.forename}} {{feedbackList.user.surname}}
+                                                At: {{feedbackList.feedbackDateString}},
+                                                Course ID : {{feedbackList.course.courseID}}
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div ng-switch-when="MESSAGE">
+                            <div class="col mb-3">
+                                <div class="card h-100">
+                                    <a class="btn btn-outline-danger col col-md-12"
+                                       href="https://localhost:8443/student/student_home/{{sessionId}}/to_my_course/{{feedbackList.course.courseID}}">
+                                        <!--FIXME:PATH CHANGE-->
+                                        <div class="card-body">
+                                            <div class="card-text h6">
+                                                {{feedbackList.feedbackContent.postMessage}}
+                                            </div>
+                                            <br>
+                                            <div class="card-text small">
+                                                <img src="data:image/*;base64,{{feedbackList.user.accountPicture.profilePictureBase64}}"
+                                                     class="rounded-circle" width="30" height="30"
+                                                     alt="account image">
+                                                By : {{feedbackList.user.forename}} {{feedbackList.user.surname}}
+                                                At: {{feedbackList.feedbackDateString}},
+                                                Course ID : {{feedbackList.course.courseID}}
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div ng-switch-when="ALL">
+                            <div class="col mb-3">
+                                <div class="card h-100">
+                                    <a class="btn btn-outline-danger col col-md-12"
+                                       href="https://localhost:8443/student/student_home/{{sessionId}}/to_my_course/{{feedbackList.course.courseID}}">
+                                        <!--FIXME:PATH CHANGE-->
+                                        <div class="card-body">
+                                            <div>
+                                                <img src="data:image/*;base64,{{feedbackList.feedbackContent.feedbackFileBase64}}"
+                                                     class="card-img-top" alt="feedback image">
+                                            </div>
+                                            <br>
+                                            <div class="card-text h6">
+                                                {{feedbackList.feedbackContent.postMessage}}
+                                            </div>
+                                            <br>
+                                            <div class="card-text small">
+                                                <img src="data:image/*;base64,{{feedbackList.user.accountPicture.profilePictureBase64}}"
+                                                     class="rounded-circle" width="30" height="30"
+                                                     alt="account image">
+                                                By : {{feedbackList.user.forename}} {{feedbackList.user.surname}}
+                                                At: {{feedbackList.feedbackDateString}},
+                                                Course ID : {{feedbackList.course.courseID}}
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<footer style="margin-top: 30em;">
+    <nav class="navbar navbar-dark position-relative mt-3" style="background-color: #d3c7cd; height: 16em; width: 100%">
+        <p>Louay Amr © 2020</p>
+    </nav>
+</footer>
+</body>
+</html>
+

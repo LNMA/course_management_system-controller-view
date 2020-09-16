@@ -3,7 +3,7 @@
     <div class="container-fluid">
         <div class="row row-cols-1">
             <div class="col col-md-1 align-self-center">
-                <a class="navbar navbar-brand font-weight-bolder h4" href="https://localhost:8443/login">
+                <a class="navbar navbar-brand font-weight-bolder h4" href="https://localhost:8443/login"><!--FIXME-->
                     Course ms
                 </a>
             </div>
@@ -25,44 +25,46 @@
                         </a>
                     </li>
                     <li class="col col-md-7">
-                        <div class="">
-                            <form action="" method="get">
+                        <div>
+                            <div ng-controller="SearchNavController">
                                 <div class="input-group">
-                                    <input class="form-control border border-warning badge-pill" type="search"
-                                           placeholder="Search" name="keySearch">
+                                    <input class="form-control border border-warning badge-pill" type="text"
+                                           placeholder="Search" name="key" ng-model="keySearch">
                                     <div class="input-group-append">
-                                        <button class="btn btn-warning badge-pill" type="submit">&telrec;</button>
+                                        <button class="btn btn-warning badge-pill" type="button" ng-click="searchNow()">
+                                            &telrec;
+                                        </button>
                                     </div>
                                 </div>
-                            </form>
+                            </div>
                         </div>
                     </li>
-                    <li class="col col-md-1">
-                        <!--<div class="row">
-                            <a class="nav-link" href="">
-                                <span class="font-weight-bolder" style="font-size: small;">My Course</span>
-                            </a>
-                        </div>-->
-                    </li>
-                    <li class="col col-md-1">
-                        <div class="dropdown">
+
+                    <li class="col col-md-2 row justify-content-center">
+                        <div class="dropdown" ng-controller="NotificationController">
                             <a class="dropdown-toggle nav-link" href="#" id="inboxDropdown" role="button"
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <img src="/static/images/notifications_none-white-48dp.svg"
                                      class="rounded-circle" width="36" height="36" alt="Notification">
-                                <span class="badge badge-primary badge-pill"></span>
+                                <span class="badge badge-primary badge-pill">{{allNotificationCount}}</span>
                             </a>
                             <div class="dropdown-menu" aria-labelledby="inboxDropdown">
-                                <a class="dropdown-item" href="">
+                                <a class="dropdown-item"
+                                   href="https://localhost:8443/notification/details/view_feedback_notification_page">
+                                    <!--FIXME-->
                                     <img src="/static/images/chat-black-48dp.svg" width="24" height="24"
                                          alt="Feedback">
-                                    Feedback <span class="badge badge-primary badge-pill"></span>
+                                    Feedback
+                                    <span class="badge badge-primary badge-pill">{{feedbackNotificationCount}}</span>
                                 </a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="">
+                                <a class="dropdown-item"
+                                   href="https://localhost:8443/notification/details/view_material_notification_page">
+                                    <!--FIXME-->
                                     <img src="/static/images/attach_file-black-48dp.svg"
                                          width="24" height="24" alt="Files">
-                                    Material <span class="badge badge-primary badge-pill"></span>
+                                    Material
+                                    <span class="badge badge-primary badge-pill">{{materialNotificationCount}}</span>
                                 </a>
                             </div>
                         </div>
@@ -72,7 +74,8 @@
             <div class="nav-item navbar-nav col col-md-1">
                 <div class="dropdown row justify-content-center">
                     <a class="dropdown-toggle nav-link" href="#" id="accountUserDropdown" role="button"
-                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                       ng-controller="StudentHomeController">
                         <img src="data:image/*;base64,{{picture}}"
                              class="rounded-circle" width="50" height="50" alt="My Picture"/>
                     </a>
@@ -80,7 +83,9 @@
                         <button class="dropdown-item dropdownProfile" id="dropdownProfile" data-toggle="modal"
                                 data-target="#profileModal">Profile
                         </button>
-                        <a class="dropdown-item" href="">Logout</a>
+                        <a class="dropdown-item" href="https://localhost:8443/logout/logout-account/{{sessionId}}">
+                            Logout
+                        </a>
                     </div>
                 </div>
             </div>

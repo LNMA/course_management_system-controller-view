@@ -3,11 +3,11 @@
 /*Content-Disposition:inline;filename=f.txt*/
 /*content-type:application/javascript*/
 app.service('UpdatePasswordService', [function () {
-    this.updatePasswordService = function updatePasswordService($http, $location, $scope) {
+    this.updatePasswordService = function updatePasswordService($http, $location, $scope, emailUri) {
         return $http({
-            method: 'POST',
+            method: 'PATCH',
             port: 8443,
-            url: $location.absUrl() + "/password-update",
+            url: 'https://localhost:8443/user/update/' + emailUri + '/password-update', //FIXME
             headers: {'content-type': 'application/json'},
             contentType: "application/json; charset=utf-8",
             async: false,    //Cross-domain requests and dataType: "jsonp" requests do not support synchronous operation

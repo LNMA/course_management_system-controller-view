@@ -13,7 +13,7 @@ EditFeedbackCtrl.$inject = ['$scope', '$http', '$location', '$sce', '$window', '
 
 function EditFeedbackCtrl($scope, $http, $location, $sce, $window, GetCourseInfoService, GetFeedbackDataService,
                           EditFeedbackService) {
-    let currentFeedbackUrl = $scope.homeCourseFeedbackUrl = $location.absUrl();
+    let currentFeedbackUrl = $scope.homeCourseFeedbackUrl = $location.absUrl();//https://localhost:8443/course/{courseId}/feedback
     let courseId = currentFeedbackUrl.toString().split("/")[4];
     let feedbackId = currentFeedbackUrl.toString().split("/")[6];
     let courseUrl = 'https://localhost:8443/course/' + courseId;

@@ -1,5 +1,6 @@
 package com.louay.controller.config;
 
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
@@ -10,9 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
-import org.springframework.web.context.WebApplicationContext;
 
 @EnableWebSecurity
 @Configuration
@@ -22,42 +21,50 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.requiresChannel().anyRequest().requiresSecure()
                 .and()
-                .authorizeRequests()
-                .antMatchers("/student_sign_up").permitAll()
-                .and()
-                .formLogin().loginPage("/login").loginProcessingUrl("/perform_login")
-                .and()
-                .rememberMe().key("uniqueAndSecret").tokenValiditySeconds(60 * 60 * 24 * 30)
-                .and()
                 .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-                .ignoringAntMatchers("/student/student_home/{{email}}/profile_picture-update",
+                .ignoringAntMatchers("/user/update/{{email}}/profile_picture-update",
                         "/course/{courseId}/feedback/add_file_post",
                         "/course/{courseId}/feedback/add_file-text_post",
                         "/course/{courseId}/feedback/{feedbackId}/edit-feedback/update_file-text_post",
                         "/course/{courseId}/feedback/{feedbackId}/edit-feedback/update_file_post")
                 .and()
-                .exceptionHandling()
-                .authenticationEntryPoint(new Http403ForbiddenEntryPoint())
+                .authorizeRequests()
+                .antMatchers("/student/**").anonymous()
+                .antMatchers("/instructor/**").anonymous()
+                .antMatchers("/course/**", "/course_search/**", "/search/**", "/notification/**",
+                        "/logout/**", "/session_id", "/user_verify/**", "/review/**", "/member/**",
+                        "/user/**").anonymous()
+                .antMatchers("/student_sign_up/**", "/login/**", "/error/**", "/static/**",
+                        "/user_verify/**").permitAll()
+                .anyRequest().authenticated()
                 .and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED).maximumSessions(1);
+                .formLogin().loginPage("/login")
+                .permitAll()
+                .and()
+                .logout().logoutUrl("/logout/logout-account/{email}").clearAuthentication(true)
+                .and()
+                .exceptionHandling().accessDeniedPage("/error")
+                .and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED).maximumSessions(1)
+                .maxSessionsPreventsLogin(true).expiredUrl("/error");
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         super.configure(auth);
         auth.inMemoryAuthentication()
-                .withUser("student").password(passwordEncoder().encode("studentPass"))
+                .withUser("student").password("studentPassword")
                 .roles("STUDENT")
                 .and()
-                .withUser("instructor").password(passwordEncoder().encode("instructorPss"))
+                .withUser("instructor").password("instructorPassword")
                 .roles("INSTRUCTOR")
                 .and()
-                .withUser("admin").password(passwordEncoder().encode("adminPass"))
+                .withUser("admin").password("adminPassword")
                 .roles("ADMIN");
     }
 
     @Bean
-    @Scope(value = WebApplicationContext.SCOPE_APPLICATION)
+    @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     public PasswordEncoder passwordEncoder() {
         return new Argon2PasswordEncoder();
     }
