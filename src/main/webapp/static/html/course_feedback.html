@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="app" ng-controller="UserRoleController">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -17,19 +17,26 @@
     <script type="application/javascript" src="/static/lib/angularJS-1.8.0/angular-messages.min.js"></script>
     <script type="application/javascript" src="/static/lib/angularJS-1.8.0/angular-sanitize.min.js"></script>
     <script type="application/javascript" src="/static/js/app.js"></script>
-    <script type="application/javascript" src="/static/js/control/course_feedback-controller.js"></script>
+    <script src="/static/js/control/user_role-controller.js"></script>
+    <div ng-if="userRole === 'INSTRUCTOR'">
+        <script type="application/javascript" src="/static/js/control/edit_course-controller.js"></script>
+    </div>
+
     <script type="application/javascript" src="/static/js/service/get_course_info.js"></script>
+    <script type="application/javascript" src="/static/js/control/search_nav-controller.js"></script>
+    <script type="application/javascript" src="/static/js/service/get_course_instructor_info.js"></script>
+
+    <script type="application/javascript" src="/static/js/control/course_feedback-controller.js"></script>
     <script type="application/javascript" src="/static/js/service/get_course_feedback.js"></script>
-    <script type="application/javascript" src="/static/js/service/get_session_id.js"></script>
     <script type="application/javascript" src="/static/js/service/create_post.js"></script>
     <script type="application/javascript" src="/static/js/service/edit_feedback.js"></script>
-    <script type="application/javascript" src="/static/js/control/search_nav-controller.js"></script>
+    <script type="application/javascript" src="/static/js/service/get_session_id.js"></script>
     <link href="/static/images/favicon.ico" rel="icon" type="image/x-icon">
     <title>Feedback `by Louay Amr`</title>
 <body ng-app="app" ng-controller="FeedbackHomeController" class="bg-secondary">
 <div ng-bind-html="errorRender"></div>
 <header>
-    <ng-include src="'/static/html/page-include/student_course-navbar.html'"></ng-include>
+    <ng-include src="'/static/html/page-include/course-navbar.html'"></ng-include>
 </header>
 <main class="container-fluid">
     <div class="row row-cols-1">
@@ -238,7 +245,8 @@
                                                             </label>
                                                         </div>
                                                         <div class="col col-md-1">
-                                                            <button class="btn" ng-click="deleteComment(commentList.commentID)">
+                                                            <button class="btn"
+                                                                    ng-click="deleteComment(commentList.commentID)">
                                                                 <img src="/static/images/delete_forever-black-48dp.svg"
                                                                      height="22" width="22" alt="delete">
                                                             </button>
@@ -295,6 +303,7 @@
         <p>Louay Amr © 2020</p>
     </div>
 </footer>
+<ng-include src="'/static/html/page-include/course-modal.html'"></ng-include>
 </body>
 </html>
 <script>

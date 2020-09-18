@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="app" ng-controller="UserRoleController">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -17,15 +17,22 @@
     <script src="/static/lib/angularJS-1.8.0/angular-messages.min.js"></script>
     <script src="/static/lib/angularJS-1.8.0/angular-sanitize.min.js"></script>
     <script src="/static/js/app.js"></script>
+    <script src="/static/js/control/user_role-controller.js"></script>
+    <div ng-if="userRole === 'INSTRUCTOR'">
+        <script type="application/javascript" src="/static/js/control/edit_course-controller.js"></script>
+    </div>
+
+    <script type="application/javascript" src="/static/js/service/get_course_info.js"></script>
+    <script type="application/javascript" src="/static/js/control/search_nav-controller.js"></script>
+    <script type="application/javascript" src="/static/js/service/get_course_instructor_info.js"></script>
+
     <script src="/static/js/control/course_search_content-controller.js"></script>
     <link href="/static/images/favicon.ico" rel="icon" type="image/x-icon">
     <title>Search `by Louay Amr`</title>
-<body ng-app="app" ng-controller="CourseSearchController" class="h-100">
+<body ng-controller="CourseSearchController" class="h-100">
 <div ng-bind-html="errorRender"></div>
 <header>
-    <nav class="navbar navbar-expand-md navbar-dark" style="background-color: #3e3c4e;">
-        <p class="text-light text-capitalize h3">Course Search</p>
-    </nav>
+    <ng-include src="'/static/html/page-include/course-navbar.html'"></ng-include>
 </header>
 <main class="container-fluid">
     <div class="container" id="pageAlert" ng-model="pageErrorMessage">
@@ -64,7 +71,8 @@
                                                             <img src="data:image/*;base64,{{searchResult.user.accountPicture.profilePictureBase64}}"
                                                                  class="rounded-circle" width="30" height="30"
                                                                  alt="account image">
-                                                            By : {{searchResult.user.forename}} {{searchResult.user.surname}}
+                                                            By : {{searchResult.user.forename}}
+                                                            {{searchResult.user.surname}}
                                                             At: {{searchResult.feedbackDateString}},
                                                             Course ID : {{searchResult.course.courseID}}
                                                         </div>
@@ -89,7 +97,8 @@
                                                             <img src="data:image/*;base64,{{searchResult.user.accountPicture.profilePictureBase64}}"
                                                                  class="rounded-circle" width="30" height="30"
                                                                  alt="account image">
-                                                            By : {{searchResult.user.forename}} {{searchResult.user.surname}}
+                                                            By : {{searchResult.user.forename}}
+                                                            {{searchResult.user.surname}}
                                                             At: {{searchResult.feedbackDateString}},
                                                             Course ID : {{searchResult.course.courseID}}
                                                         </div>
@@ -119,7 +128,8 @@
                                                             <img src="data:image/*;base64,{{searchResult.user.accountPicture.profilePictureBase64}}"
                                                                  class="rounded-circle" width="30" height="30"
                                                                  alt="account image">
-                                                            By : {{searchResult.user.forename}} {{searchResult.user.surname}}
+                                                            By : {{searchResult.user.forename}}
+                                                            {{searchResult.user.surname}}
                                                             At: {{searchResult.feedbackDateString}},
                                                             Course ID : {{searchResult.course.courseID}}
                                                         </div>
@@ -237,6 +247,7 @@
         <p>Louay Amr © 2020</p>
     </nav>
 </footer>
+<ng-include src="'/static/html/page-include/course-modal.html'"></ng-include>
 </body>
 </html>
 

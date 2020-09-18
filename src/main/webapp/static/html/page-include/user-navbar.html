@@ -41,32 +41,11 @@
                     </li>
 
                     <li class="col col-md-2 row justify-content-center">
-                        <div class="dropdown" ng-controller="NotificationController">
-                            <a class="dropdown-toggle nav-link" href="#" id="inboxDropdown" role="button"
-                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img src="/static/images/notifications_none-white-48dp.svg"
-                                     class="rounded-circle" width="36" height="36" alt="Notification">
-                                <span class="badge badge-primary badge-pill">{{allNotificationCount}}</span>
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="inboxDropdown">
-                                <a class="dropdown-item"
-                                   href="https://localhost:8443/notification/details/view_feedback_notification_page">
-                                    <!--FIXME-->
-                                    <img src="/static/images/chat-black-48dp.svg" width="24" height="24"
-                                         alt="Feedback">
-                                    Feedback
-                                    <span class="badge badge-primary badge-pill">{{feedbackNotificationCount}}</span>
-                                </a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item"
-                                   href="https://localhost:8443/notification/details/view_material_notification_page">
-                                    <!--FIXME-->
-                                    <img src="/static/images/attach_file-black-48dp.svg"
-                                         width="24" height="24" alt="Files">
-                                    Material
-                                    <span class="badge badge-primary badge-pill">{{materialNotificationCount}}</span>
-                                </a>
-                            </div>
+                        <div ng-if="userRole === 'STUDENT'">
+                            <ng-include src="'/static/html/page-include/student-navbar-notification.html'"></ng-include>
+                        </div>
+                        <div ng-if="userRole === 'INSTRUCTOR'">
+                            <ng-include src="'/static/html/page-include/instructor-navbar-notification.html'"></ng-include>
                         </div>
                     </li>
                 </ul>
@@ -74,8 +53,7 @@
             <div class="nav-item navbar-nav col col-md-1">
                 <div class="dropdown row justify-content-center">
                     <a class="dropdown-toggle nav-link" href="#" id="accountUserDropdown" role="button"
-                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                       ng-controller="StudentHomeController">
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <img src="data:image/*;base64,{{picture}}"
                              class="rounded-circle" width="50" height="50" alt="My Picture"/>
                     </a>

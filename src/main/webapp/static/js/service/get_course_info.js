@@ -3,11 +3,11 @@
 /*Content-Disposition:inline;filename=f.txt*/
 /*content-type:application/javascript*/
 app.service('GetCourseInfoService', [function () {
-    this.getCourseInfo = function getCourseInfo($http, $location, $scope, $sce, url) {
+    this.getCourseInfo = function getCourseInfo($http, $location, $scope, $sce, courseId) {
         return $http({
             method: 'GET',
             port: 8443,
-            url: url + "/course_info", //https://localhost:8443/course/{courseId}
+            url: 'https://localhost:8443/course/' + courseId + "/course_info", //https://localhost:8443/course/{courseId}
             headers: {'content-type': 'application/json'},
             contentType: "application/json; charset=utf-8",
             async: false,    //Cross-domain requests and dataType: "jsonp" requests do not support synchronous operation

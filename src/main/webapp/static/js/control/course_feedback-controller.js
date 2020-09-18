@@ -8,16 +8,19 @@ app.config(function ($httpProvider) {
     $httpProvider.defaults.xsrfCookieName = 'XSRF-TOKEN';
     $httpProvider.defaults.xsrfHeaderName = 'X-XSRF-TOKEN';
 }).controller('FeedbackHomeController', FeedbackHomeCtrl);
-FeedbackHomeCtrl.$inject = ['$scope', '$http', '$location', '$sce', '$window', 'GetCourseInfoService',
-    'GetFeedbackDataService', 'GetSessionIdService', 'CreateFeedbackService', 'EditFeedbackService'];
+FeedbackHomeCtrl.$inject = ['$scope', '$http', '$location', '$sce', '$window', 'GetFeedbackDataService',
+    'GetSessionIdService', 'CreateFeedbackService', 'EditFeedbackService', 'GetCourseInfoService',
+    'GetInstructorCourseInfoService'];
 
-function FeedbackHomeCtrl($scope, $http, $location, $sce, $window, GetCourseInfoService, GetFeedbackDataService,
-                          GetSessionIdService, CreateFeedbackService, EditFeedbackService) {
+function FeedbackHomeCtrl($scope, $http, $location, $sce, $window, GetFeedbackDataService, GetSessionIdService,
+                          CreateFeedbackService, EditFeedbackService, GetCourseInfoService,
+                          GetInstructorCourseInfoService) {
     let currentFeedbackUrl = $scope.homeCourseFeedbackUrl = $location.absUrl();//https://localhost:8443/course/{courseId}/feedback
     let courseId = currentFeedbackUrl.toString().split("/")[4];
-    let courseUrl = 'https://localhost:8443/course/' + courseId;
+    $scope.courseId = courseId;
 
-    GetCourseInfoService.getCourseInfo($http, $location, $scope, $sce, courseUrl);
+    GetCourseInfoService.getCourseInfo($http, $location, $scope, $sce, courseId);
+    GetInstructorCourseInfoService.getInstructorCourseInfo($http, $location, $scope, $sce, courseId);
     GetFeedbackDataService.getFeedbackData($http, $location, $scope, $sce);
     GetSessionIdService.getSessionId($http, $scope, $sce);
 

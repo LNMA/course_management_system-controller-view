@@ -15,7 +15,6 @@ function ReviewCourseStudentCtrl($scope, $http, $location, $sce, GetReviewCourse
                                  CreateCourseMemberService) {
     let emailLoginUser = $location.absUrl().toString().split('/')[5];
     $scope.sessionId = emailLoginUser;
-    $scope.updatePictureUrl = 'https://localhost:8443/user/update/' + emailLoginUser + '/profile_picture-update'; //FIXME
 
     let courseId = $location.absUrl().toString().split("/")[6];
 

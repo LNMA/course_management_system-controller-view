@@ -7,24 +7,23 @@ app.config(function ($httpProvider) {
     $httpProvider.defaults.withCredentials = true;
     $httpProvider.defaults.xsrfCookieName = 'XSRF-TOKEN';
     $httpProvider.defaults.xsrfHeaderName = 'X-XSRF-TOKEN';
-}).controller('EditPasswordController', EditPasswordCtrl);
-EditPasswordCtrl.$inject = ['$scope', '$http', '$location', 'UpdatePasswordService'];
+}).controller('InstructorNotificationController', InstructorNotificationCtrl);
+InstructorNotificationCtrl.$inject = ['$scope', '$http', '$sce'];
 
-function EditPasswordCtrl($scope, $http, $location, UpdatePasswordService) {
-    let emailUri; //https://localhost:8443/student/student_home/{email}
+function InstructorNotificationCtrl($scope, $http, $sce) {
     $http({
         method: 'GET',
         port: 8443,
-        url: "https://localhost:8443/session_id", //FIXME
+        url: 'https://localhost:8443/notification/get_feedback_notification_count', //FIXME
         headers: {'content-type': 'application/json'},
         contentType: "application/json; charset=utf-8",
         async: false,    //Cross-domain requests and dataType: "jsonp" requests do not support synchronous operation
         cache: false,    //This will force requested pages not to be cached by the browser
         processData: false, //To avoid making query String instead of JSON
-        timeout: 5000,
+        timeout: 4000,
     }).then(
         function successCallback(response) {
-            getEmail(response.data);
+            $scope.feedbackNotificationCount = response.data;
         }, function errorCallback(response) {
             $scope.submitted = false;
             $scope.isPageError = true;
@@ -35,22 +34,5 @@ function EditPasswordCtrl($scope, $http, $location, UpdatePasswordService) {
                 $scope.pageErrorMessage = errorData;
             }
         });
-
-    function getEmail(email) {
-        emailUri = email;
-        $scope.submitted = false;
-        $scope.updatePassword = function () {
-            $scope.submitted = true;
-            if ($scope.editPasswordForm.$valid) {
-                if ($scope.editPassword.passwordNew === $scope.editPassword.passwordReNew) {
-                    UpdatePasswordService.updatePasswordService($http, $location, $scope, emailUri);
-                } else {
-                    $scope.editPasswordForm.$valid = false;
-                    $scope.editPasswordForm.$error = true;
-                    $scope.passwordErrorMessage = 'password did not match!.';
-                }
-            }
-        };
-    }
 }
 

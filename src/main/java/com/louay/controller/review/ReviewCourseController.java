@@ -34,7 +34,7 @@ public class ReviewCourseController implements Serializable {
 
     @GetMapping
     public String viewReviewCourse() {
-        return "/static/html/course_review-student.html";
+        return "/static/html/course_review.html";
     }
 
     @GetMapping(value = "/course_info", produces = MediaType.APPLICATION_JSON_VALUE)

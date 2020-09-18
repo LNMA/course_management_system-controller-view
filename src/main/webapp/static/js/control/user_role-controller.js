@@ -7,22 +7,14 @@ app.config(function ($httpProvider) {
     $httpProvider.defaults.withCredentials = true;
     $httpProvider.defaults.xsrfCookieName = 'XSRF-TOKEN';
     $httpProvider.defaults.xsrfHeaderName = 'X-XSRF-TOKEN';
-}).controller('CourseSearchController', CourseSearchCtrl);
-CourseSearchCtrl.$inject = ['$scope', '$location', '$http', '$sce', 'GetCourseInfoService',
-    'GetInstructorCourseInfoService'];
+}).controller('UserRoleController', UserRoleCtrl);
+UserRoleCtrl.$inject = ['$scope', '$http', '$sce'];
 
-function CourseSearchCtrl($scope, $location, $http, $sce, GetCourseInfoService,
-                          GetInstructorCourseInfoService) {
-    let courseId = $location.absUrl().toString().split('/')[4];
-    $scope.courseId = courseId;
-    $scope.homeCourseMateialUrl = courseId;
-    GetCourseInfoService.getCourseInfo($http, $location, $scope, $sce, courseId);
-    GetInstructorCourseInfoService.getInstructorCourseInfo($http, $location, $scope, $sce, courseId);
-
+function UserRoleCtrl($scope, $http, $sce) {
     $http({
         method: 'GET',
         port: 8443,
-        url: $location.absUrl() + '/get_search_result', //FIXME
+        url: 'https://localhost:8443/session_object/get_role_user', //FIXME
         headers: {'content-type': 'application/json'},
         contentType: "application/json; charset=utf-8",
         async: false,    //Cross-domain requests and dataType: "jsonp" requests do not support synchronous operation
@@ -31,8 +23,7 @@ function CourseSearchCtrl($scope, $location, $http, $sce, GetCourseInfoService,
         timeout: 4000
     }).then(
         function successCallback(response) {
-            console.log(response.data);
-            $scope.searchResult = response.data;
+            $scope.userRole = response.data;
         }, function errorCallback(response) {
             $scope.isPageError = true;
             let errorData = response.data;
@@ -45,4 +36,3 @@ function CourseSearchCtrl($scope, $location, $http, $sce, GetCourseInfoService,
 
         });
 }
-

@@ -26,7 +26,8 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/course/{courseId}/feedback/add_file_post",
                         "/course/{courseId}/feedback/add_file-text_post",
                         "/course/{courseId}/feedback/{feedbackId}/edit-feedback/update_file-text_post",
-                        "/course/{courseId}/feedback/{feedbackId}/edit-feedback/update_file_post")
+                        "/course/{courseId}/feedback/{feedbackId}/edit-feedback/update_file_post",
+                        "/course/{courseId}/update_course/course_picture")
                 .and()
                 .authorizeRequests()
                 .antMatchers("/student/**").anonymous()
@@ -35,7 +36,7 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/logout/**", "/session_id", "/user_verify/**", "/review/**", "/member/**",
                         "/user/**").anonymous()
                 .antMatchers("/student_sign_up/**", "/login/**", "/error/**", "/static/**",
-                        "/user_verify/**").permitAll()
+                        "/user_verify/**", "/session_object/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().loginPage("/login")

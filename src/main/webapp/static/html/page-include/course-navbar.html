@@ -41,7 +41,13 @@
                              class="rounded-circle" width="50" height="50" alt="My Picture"/>
                     </a>
                     <div class="dropdown-menu" aria-labelledby="courseDropdown">
-                        <a class="dropdown-item" href="https://localhost:8443/logout/exit-course/{{courseId}}">Exit Course</a> <!--FIXME: PATH CHANGE-->
+                        <button class="dropdown-item" data-toggle="modal"
+                                data-target="#courseProfileModal">
+                            Course Info
+                        </button>
+                        <a class="dropdown-item" href="https://localhost:8443/logout/exit-course/{{courseId}}">
+                            Exit Course
+                        </a> <!--FIXME: PATH CHANGE-->
                     </div>
                 </div>
             </div>

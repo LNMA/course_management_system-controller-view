@@ -40,7 +40,7 @@ public class ReviewAccountControllers implements Serializable {
 
     @GetMapping
     public String viewReviewAccount() {
-        return "/static/html/account_review-student.html";
+        return "/static/html/account_review.html";
     }
 
     @GetMapping(value = "/user_info", produces = MediaType.APPLICATION_JSON_VALUE)
