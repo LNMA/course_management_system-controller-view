@@ -10,11 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.Serializable;
 
 @Controller
@@ -35,19 +34,13 @@ public class SessionObjectController implements Serializable {
 
     @GetMapping(value = "/session_id", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public String getSessionId(@SessionAttribute(value = "id", required = false) String sessionEmail) {
-        if (sessionEmail == null) {
-            redirectToLoginPage();
-        }
+    public String getSessionId(@SessionAttribute(value = "id") String sessionEmail) {
         return sessionEmail;
     }
 
     @GetMapping(value = "/session_object/get_role_user", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public Role getUserRole(@SessionAttribute(value = "id", required = false) String emailInSession) {
-        if (emailInSession == null) {
-            redirectToLoginPage();
-        }
+    public Role getUserRole(@SessionAttribute(value = "id") String emailInSession) {
 
         return findAccountsRoles(emailInSession).getRoleName();
     }
@@ -88,9 +81,27 @@ public class SessionObjectController implements Serializable {
         return admin;
     }
 
-    @GetMapping(value = "/session_object-redirect-login")
-    public String redirectToLoginPage() {
-        return "redirect:/login";
+    public boolean hasInstructorRole(HttpServletRequest request){
+        HttpSession session = request.getSession(false);
+        if (session == null ){
+            return false;
+        }
+        Role role = (Role) session.getAttribute("role");
+        if (role == null ){
+            return false;
+        }
+        return role.compareTo(Role.INSTRUCTOR) == 0;
     }
 
+    public boolean hasStudentRole(HttpServletRequest request){
+        HttpSession session = request.getSession(false);
+        if (session == null ){
+            return false;
+        }
+        Role role = (Role) session.getAttribute("role");
+        if (role == null ){
+            return false;
+        }
+        return role.compareTo(Role.STUDENT) == 0;
+    }
 }

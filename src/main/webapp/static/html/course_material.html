@@ -20,6 +20,8 @@
     <script src="/static/js/control/user_role-controller.js"></script>
     <div ng-if="userRole === 'INSTRUCTOR'">
         <script type="application/javascript" src="/static/js/control/edit_course-controller.js"></script>
+
+        <script type="application/javascript" src="/static/js/control/add_material-controller.js"></script>
     </div>
 
     <script type="application/javascript" src="/static/js/service/get_course_info.js"></script>
@@ -57,6 +59,14 @@
                 </button>
                 <div class="collapse navbar-collapse col col-md-12" id="courseContentList">
                     <ul class="list-group d-block mt-3 mb-3 overflow-auto" data-spy="scroll">
+                        <li class="list-group-item">
+                            <div class="row justify-content-center">
+                                <button class="btn btn-outline-success" data-toggle="modal"
+                                        data-target="#addMaterialModal">
+                                    Add Material
+                                </button>
+                            </div>
+                        </li>
                         <div ng-repeat="materialsList in materialsList">
                             <li ng-click="showContent(materialsList.coursesId, materialsList.materialType, materialsList.materialID)"
                                 class="list-group-item list-group-item-action">
@@ -90,6 +100,215 @@
     </div>
 </footer>
 <ng-include src="'/static/html/page-include/course-modal.html'"></ng-include>
+
+<nav ng-controller="AddMaterialController">
+    <!-- addMaterial Modal -->
+    <div class="modal fade" id="addMaterialModal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Add Material</h4>
+                    <button type="button" class="close" data-dismiss="modal">
+                        &times;
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="form-row">
+                        <div class="container-fluid">
+                            <div class="form-group col col-md-12">
+                                <label for="materialTypeInput">
+                                    Material Type:
+                                </label>
+                                <br>
+                                <select id="materialTypeInput" ng-model="typeOfMaterial" class="custom-select" required>
+                                    <option value="" disabled selected>Choose...</option>
+                                    <option value="addFileMaterialModal">File</option>
+                                    <option value="addTextMaterialModal">Url</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success" data-toggle="modal"
+                            data-target="#{{typeOfMaterial}}" data-dismiss="modal">
+                        Next
+                    </button>
+                    <button type="button" class="btn btn-danger"
+                            data-dismiss="modal">Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- addFile material modal -->
+    <div class="modal fade" id="addFileMaterialModal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Add File Material</h4>
+                    <button type="button" class="close" data-dismiss="modal">
+                        &times;
+                    </button>
+                </div>
+                <div class="container" id="addFileMaterialErrorAlert"
+                     ng-hide="addFileMaterialForm.$valid" role="alert">
+                    <div ng-messages="addFileMaterialForm.$error || addFileMaterialForm.$invalid"
+                         ng-show="submittedFileMaterial && (addFileMaterialForm.$invalid || addFileMaterialForm.$error)">
+                        <div class="alert alert-danger alert-dismissible fade show">
+                            <strong>Error!</strong>
+                            <span ng-show="addFileMaterialForm.file.$error.required">
+                                    file material Required!
+                                </span>
+                            <span ng-show="addFileMaterialForm.courseNameFileMaterial.$error.required">
+                                    course name file material Required!
+                                </span>
+                            <span ng-show="addFileMaterialForm.courseNameFileMaterial.$invalid">
+                                    course name file material Invalid!
+                                </span>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <form action="{{addFileMaterialUrl}}" method="POST" enctype="multipart/form-data"><!--FIXME-->
+                    <div class="modal-body">
+                        <div class="container-fluid justify-content-center">
+                            <div class="form-row">
+                                <div class="form-group col col-md-12">
+                                    <label for="addFileMaterialInput">
+                                        File:
+                                    </label>
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="addFileMaterialInput"
+                                               name="file" required>
+                                        <label class="custom-file-label" for="addFileMaterialInput">Choose
+                                            file...</label>
+                                    </div>
+                                    <label for="materialNameToFileInput">
+                                        Material Name:
+                                    </label>
+                                    <input type="text" id="materialNameToFileInput" class="form-control"
+                                           placeholder="type new course name" min="2" max="200" minlength="2"
+                                           maxlength="200"
+                                           name="courseNameFileMaterial" required>
+                                </div>
+                            </div>
+                        </div>
+                        <script>
+                            // Add the following code if you want the name of the file appear on select
+                            $(".custom-file-input").on("change", function () {
+                                let fileName = $(this).val().split("\\").pop();
+                                $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+                            });
+                        </script>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">
+                            Save
+                        </button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">
+                            Close
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- add text material modal -->
+    <div class="modal fade" id="addTextMaterialModal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Add File Material</h4>
+                    <button type="button" class="close" data-dismiss="modal">
+                        &times;
+                    </button>
+                </div>
+                <div ng-bind-html="errorRender"></div>
+                <div class="container" id="addTextMaterialSuccessAlert" ng-model="addTextMaterialSuccessMessage"
+                     ng-show="isAddTextMaterialSuccess" role="alert">
+                    <div class="alert alert-success alert-dismissible fade show">
+                        <strong>Success!</strong>
+                        {{addTextMaterialSuccessMessage}}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="container" id="addTextMaterialErrorAlert" ng-model="addTextMaterialErrorMessage"
+                     ng-hide="addTextMaterialFrom.$valid" role="alert">
+                    <div ng-messages="addTextMaterialFrom.$error || addTextMaterialFrom.$invalid"
+                         ng-show="submittedTextMaterial && (addTextMaterialFrom.$invalid || addTextMaterialFrom.$error)">
+                        <div class="alert alert-danger alert-dismissible fade show">
+                            <strong>Error!</strong>
+                            <span ng-show="addTextMaterialFrom.contentTextMaterial.$error.required">
+                                    urlTextMaterial Required!
+                                </span>
+                            <span ng-show="addTextMaterialFrom.contentTextMaterial.$invalid">
+                                    urlTextMaterial Invalid!
+                                </span>
+                            <span ng-show="addTextMaterialFrom.nameTextMaterial.$error.required">
+                                    nameTextMaterial Required!
+                                </span>
+                            <span ng-show="addTextMaterialFrom.nameTextMaterial.$invalid">
+                                    nameTextMaterial Invalid!
+                                </span>
+                            {{addTextMaterialErrorMessage}}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <form ng-submit="AddTextMaterial()" method="POST" name="addTextMaterialFrom" novalidate>
+                    <div class="modal-body">
+                        <div class="container-fluid justify-content-center">
+                            <div class="form-row">
+                                <div class="form-group col col-md-12">
+                                    <label for="materialContentToTextInput">
+                                        URL Material:
+                                    </label>
+                                    <input type="text" id="materialContentToTextInput" class="form-control"
+                                           placeholder="type material url" ng-minlength="2" ng-maxlength="2000"
+                                           required name="contentTextMaterial"
+                                           ng-class="{'is-invalid': submittedTextMaterial &&
+                                                          (addTextMaterialFrom.contentTextMaterial.$error.required ||
+                                                          addTextMaterialFrom.contentTextMaterial.$invalid),
+                                                          'is-valid': addTextMaterialFrom.contentTextMaterial.$valid}"
+                                           ng-model="textMaterial.content">
+                                    <label for="materialNameToTextInput">
+                                        Material Name:
+                                    </label>
+                                    <input type="text" id="materialNameToTextInput" class="form-control"
+                                           placeholder="type material name" ng-minlength="2" ng-maxlength="200"
+                                           required name="nameTextMaterial"
+                                           ng-class="{'is-invalid': submittedTextMaterial &&
+                                                          (addTextMaterialFrom.nameTextMaterial.$error.required ||
+                                                          addTextMaterialFrom.nameTextMaterial.$invalid),
+                                                          'is-valid': addTextMaterialFrom.nameTextMaterial.$valid}"
+                                           ng-model="textMaterial.name">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">
+                            Save
+                        </button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">
+                            Close
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</nav>
+
 </body>
 </html>
 

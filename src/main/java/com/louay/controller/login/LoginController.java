@@ -114,9 +114,10 @@ public class LoginController implements Serializable {
 
         updateUserAccountStatusToOnline(adminWrapper);
 
+        this.accountsRoles = findAccountRoles(adminWrapper);
+
         createNewSessionForSessionLogin(request, adminWrapper);
 
-        this.accountsRoles = findAccountRoles(adminWrapper);
         this.urlEmail = adminWrapper.getAdmin().getEmail();
         return "redirect:/login/redirect_tracer_success_login";
     }
@@ -132,8 +133,10 @@ public class LoginController implements Serializable {
         HttpSession session = request.getSession(false);
         session.setAttribute("id", null);
         session.setAttribute("password", null);
+        session.setAttribute("role", null);
         session.removeAttribute("id");
         session.removeAttribute("password");
+        session.removeAttribute("role");
     }
 
     @RequestMapping(value = "/perform_cookie_login")
@@ -169,9 +172,10 @@ public class LoginController implements Serializable {
         createSignInDate(adminWrapper);
         updateUserAccountStatusToOnline(adminWrapper);
 
+        this.accountsRoles = findAccountRoles(adminWrapper);
+
         createNewSessionCookieLogin(request, adminWrapper);
 
-        this.accountsRoles = findAccountRoles(adminWrapper);
         this.urlEmail = adminWrapper.getAdmin().getEmail();
 
         return "redirect:/login/redirect_tracer_success_login";
@@ -259,9 +263,10 @@ public class LoginController implements Serializable {
         createSignInDate(adminWrapper);
         updateUserAccountStatusToOnline(adminWrapper);
 
+        this.accountsRoles = findAccountRoles(adminWrapper);
+
         createNewSession(request, adminWrapper);
 
-        this.accountsRoles = findAccountRoles(adminWrapper);
         this.urlEmail = adminWrapper.getAdmin().getEmail();
 
         return "forward:/login/redirect_success_login";
@@ -442,6 +447,7 @@ public class LoginController implements Serializable {
         session.setAttribute("id", adminWrapper.getAdmin().getEmail());
         Admin admin = findAdminByEmail(adminWrapper);
         session.setAttribute("password", admin.getPassword());
+        session.setAttribute("role", this.accountsRoles.getRoleName());
     }
 
     private void createNewSessionCookieLogin(HttpServletRequest request, AdminRememberMeWrapper adminWrapper) {
@@ -449,11 +455,13 @@ public class LoginController implements Serializable {
         session.setAttribute("id", adminWrapper.getAdmin().getEmail());
         Admin admin = findAdminByEmail(adminWrapper);
         session.setAttribute("password", admin.getPassword());
+        session.setAttribute("role", this.accountsRoles.getRoleName());
     }
 
     private void createNewSessionForSessionLogin(HttpServletRequest request, AdminRememberMeWrapper adminWrapper) {
         HttpSession session = request.getSession(true);
         session.setAttribute("id", adminWrapper.getAdmin().getEmail());
         session.setAttribute("password", adminWrapper.getAdmin().getPassword());
+        session.setAttribute("role", this.accountsRoles.getRoleName());
     }
 }

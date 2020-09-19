@@ -63,8 +63,10 @@ public class LogoutController implements Serializable {
         HttpSession session = request.getSession(false);
         session.setAttribute("id", null);
         session.setAttribute("password", null);
+        session.setAttribute("role", null);
         session.removeAttribute("id");
         session.removeAttribute("password");
+        session.removeAttribute("role");
     }
 
     private void deleteCookies(HttpServletRequest request, HttpServletResponse response) {

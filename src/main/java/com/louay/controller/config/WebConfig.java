@@ -25,7 +25,6 @@ import org.springframework.web.servlet.resource.CssLinkResourceTransformer;
 import org.springframework.web.servlet.resource.ResourceUrlEncodingFilter;
 import org.springframework.web.servlet.resource.VersionResourceResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
-import org.springframework.web.servlet.view.JstlView;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -57,15 +56,13 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Bean
     public ViewResolver viewResolver() {
-        InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
-        viewResolver.setViewClass(JstlView.class);
-        return viewResolver;
+        return new InternalResourceViewResolver();
     }
 
     @Bean(name = "multipartResolver")
     public CommonsMultipartResolver multipartResolver() {
         CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
-        multipartResolver.setMaxUploadSize(1024 * 1024 * 20);
+        multipartResolver.setMaxUploadSize(1024 * 1024 * 70);
         return multipartResolver;
     }
 
@@ -99,6 +96,7 @@ public class WebConfig implements WebMvcConfigurer {
     private Connector getHttpConnector() {
         Connector connector = new Connector("org.apache.coyote.http11.Http11Nio2Protocol");
         Http11Nio2Protocol protocol = (Http11Nio2Protocol) connector.getProtocolHandler();
+        connector.setMaxPostSize(1024*1024*70);
 
         ClassPathResource keystoreResource = new ClassPathResource("keystore.jks");
         File keystore = new File(keystoreResource.getPath());
