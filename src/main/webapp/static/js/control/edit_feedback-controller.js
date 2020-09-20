@@ -9,16 +9,16 @@ app.config(function ($httpProvider) {
     $httpProvider.defaults.xsrfHeaderName = 'X-XSRF-TOKEN';
 }).controller('EditFeedbackController', EditFeedbackCtrl);
 EditFeedbackCtrl.$inject = ['$scope', '$http', '$location', '$sce', '$window', 'GetCourseInfoService',
-    'GetFeedbackDataService', 'EditFeedbackService'];
+    'GetFeedbackDataService', 'EditFeedbackService', 'GetInstructorCourseInfoService'];
 
 function EditFeedbackCtrl($scope, $http, $location, $sce, $window, GetCourseInfoService, GetFeedbackDataService,
-                          EditFeedbackService) {
+                          EditFeedbackService, GetInstructorCourseInfoService) {
     let currentFeedbackUrl = $scope.homeCourseFeedbackUrl = $location.absUrl();//https://localhost:8443/course/{courseId}/feedback
     let courseId = currentFeedbackUrl.toString().split("/")[4];
-    let feedbackId = currentFeedbackUrl.toString().split("/")[6];
-    let courseUrl = 'https://localhost:8443/course/' + courseId;
+    $scope.courseId = courseId;
 
-    GetCourseInfoService.getCourseInfo($http, $location, $scope, $sce, courseUrl);
+    GetCourseInfoService.getCourseInfo($http, $location, $scope, $sce, courseId);
+    GetInstructorCourseInfoService.getInstructorCourseInfo($http, $location, $scope, $sce, courseId);
     GetFeedbackDataService.getOneFeedback($http, $location, $scope, $sce, currentFeedbackUrl);
 
     $scope.textMessageFeedback = {feedback: ''};

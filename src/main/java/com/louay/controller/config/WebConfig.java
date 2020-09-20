@@ -25,7 +25,6 @@ import org.springframework.web.servlet.resource.CssLinkResourceTransformer;
 import org.springframework.web.servlet.resource.ResourceUrlEncodingFilter;
 import org.springframework.web.servlet.resource.VersionResourceResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
-import org.springframework.web.servlet.view.JstlView;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -57,16 +56,12 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Bean
     public ViewResolver viewResolver() {
-        InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
-        viewResolver.setViewClass(JstlView.class);
-        return viewResolver;
+        return new InternalResourceViewResolver();
     }
 
-    @Bean(name = "multipartResolver")
+    @Bean
     public CommonsMultipartResolver multipartResolver() {
-        CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
-        multipartResolver.setMaxUploadSize(1024 * 1024 * 20);
-        return multipartResolver;
+        return new CommonsMultipartResolver();
     }
 
     @Override
@@ -99,13 +94,16 @@ public class WebConfig implements WebMvcConfigurer {
     private Connector getHttpConnector() {
         Connector connector = new Connector("org.apache.coyote.http11.Http11Nio2Protocol");
         Http11Nio2Protocol protocol = (Http11Nio2Protocol) connector.getProtocolHandler();
+        connector.setMaxPostSize(1024*1024*70);
 
-        ClassPathResource keystoreResource = new ClassPathResource("keystore.jks");
+        ClassPathResource keystoreResource = new ClassPathResource("jsse/keystore.jks");
+        ClassPathResource truststoreResource = new ClassPathResource("jsse/cacerts.jks");
         File keystore = new File(keystoreResource.getPath());
-        File truststore = new File(keystoreResource.getPath());
+        File truststore = new File(truststoreResource.getPath());
         connector.setScheme("https");
         connector.setSecure(true);
         connector.setPort(8443);
+        protocol.setSslImplementationName("org.apache.tomcat.util.net.jsse.JSSEImplementation");
         protocol.addUpgradeProtocol(new Http2Protocol());
         protocol.setSSLEnabled(true);
         protocol.setKeystoreType("jks");

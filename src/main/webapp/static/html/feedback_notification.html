@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="app" ng-controller="UserRoleController">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -17,17 +17,56 @@
     <script src="/static/lib/angularJS-1.8.0/angular-messages.min.js"></script>
     <script src="/static/lib/angularJS-1.8.0/angular-sanitize.min.js"></script>
     <script src="/static/js/app.js"></script>
+    <script src="/static/js/control/user_role-controller.js"></script>
+    <div ng-switch="userRole">
+        <div ng-switch-when="INSTRUCTOR">
+            <script src="/static/js/control/instructor_home-controller.js"></script>
+            <script src="/static/js/service/get_instructor_info.js"></script>
+            <script src="/static/js/service/edit_instructor_details.js"></script>
+
+
+            <script src="/static/js/control/instructor_notification-controller.js"></script>
+        </div>
+        <div ng-switch-when="STUDENT">
+            <script src="/static/js/control/student_home-controller.js"></script>
+            <script src="/static/js/service/get_student_home_info.js"></script>
+            <script src="/static/js/service/edit_student_details.js"></script>
+
+
+            <script src="/static/js/control/student_notification-controller.js"></script>
+        </div>
+    </div>
+    <script src="/static/js/control/edit_user_details_modal-controller.js"></script>
+    <script src="/static/js/service/country_state.js"></script>
+    <script src="/static/js/service/update_user_details.js"></script>
+
+    <script src="/static/js/control/edit_password-controller.js"></script>
+    <script src="/static/js/service/edit_password.js"></script>
+
+    <script src="/static/js/control/search_nav-controller.js"></script>
+
     <script src="/static/js/control/feedback_notification-controller.js"></script>
     <script src="/static/js/service/get_notification_details.js"></script>
     <script src="/static/js/service/get_session_id.js"></script>
     <link href="/static/images/favicon.ico" rel="icon" type="image/x-icon">
     <title>Feedback Notification `by Louay Amr`</title>
-<body ng-app="app" ng-controller="FeedbackNotificationController">
+<body ng-controller="FeedbackNotificationController">
 <div ng-bind-html="errorRender"></div>
 <header>
-    <nav class="navbar navbar-expand-md navbar-dark" style="background-color: #3e3c4e;">
-        <p class="text-light text-capitalize h3">New Feedback</p>
-    </nav>
+    <div ng-switch="userRole">
+        <div ng-switch-when="INSTRUCTOR">
+            <div ng-controller="InstructorHomeController">
+                <ng-include src="'/static/html/page-include/user-navbar.html'"></ng-include>
+                <ng-include src="'/static/html/page-include/instructor-modal.html'"></ng-include>
+            </div>
+        </div>
+        <div ng-switch-when="STUDENT">
+            <div ng-controller="StudentHomeController">
+                <ng-include src="'/static/html/page-include/user-navbar.html'"></ng-include>
+                <ng-include src="'/static/html/page-include/student-modal.html'"></ng-include>
+            </div>
+        </div>
+    </div>
 </header>
 <main class="container-fluid">
     <div class="container" id="pageAlert" ng-model="pageErrorMessage">
@@ -42,91 +81,185 @@
     </div>
     <div class="row row-cols-1 mt-4">
         <div class="col col-md-12">
-            <div class="row row-cols-1 row-cols-md-3">
-                <div ng-repeat="feedbackList in feedbackList">
-                    <div ng-switch="feedbackList.feedbackType">
+            <div ng-switch="userRole">
+                <div ng-switch-when="INSTRUCTOR">
+                    <div class="row row-cols-1 row-cols-md-3">
+                        <div ng-repeat="feedbackList in feedbackList">
+                            <div ng-switch="feedbackList.feedbackType">
 
-                        <div ng-switch-when="FILE">
-                            <div class="col mb-3">
-                                <div class="card h-100">
-                                    <a class="btn btn-outline-danger col col-md-12"
-                                       href="https://localhost:8443/student/student_home/{{sessionId}}/to_my_course/{{feedbackList.course.courseID}}">
-                                        <!--FIXME:PATH CHANGE-->
-                                        <div class="card-body">
-                                            <div>
-                                                <img src="data:image/*;base64,{{feedbackList.feedbackContent.feedbackFileBase64}}"
-                                                     class="card-img-top" alt="feedback image">
-                                            </div>
-                                            <br>
-                                            <div class="card-text small">
-                                                <img src="data:image/*;base64,{{feedbackList.user.accountPicture.profilePictureBase64}}"
-                                                     class="rounded-circle" width="30" height="30"
-                                                     alt="account image">
-                                                By : {{feedbackList.user.forename}} {{feedbackList.user.surname}}
-                                                At: {{feedbackList.feedbackDateString}},
-                                                Course ID : {{feedbackList.course.courseID}}
-                                            </div>
+                                <div ng-switch-when="FILE">
+                                    <div class="col mb-3">
+                                        <div class="card h-100">
+                                            <a class="btn btn-outline-danger col col-md-12"
+                                               href="https://localhost:8443/instructor/{{sessionId}}/to_my_course/{{feedbackList.course.courseID}}">
+                                                <!--FIXME:PATH CHANGE-->
+                                                <div class="card-body">
+                                                    <div>
+                                                        <img src="data:image/*;base64,{{feedbackList.feedbackContent.feedbackFileBase64}}"
+                                                             class="card-img-top" alt="feedback image">
+                                                    </div>
+                                                    <br>
+                                                    <div class="card-text small">
+                                                        <img src="data:image/*;base64,{{feedbackList.user.accountPicture.profilePictureBase64}}"
+                                                             class="rounded-circle" width="30" height="30"
+                                                             alt="account image">
+                                                        By : {{feedbackList.user.forename}} {{feedbackList.user.surname}}
+                                                        At: {{feedbackList.feedbackDateString}},
+                                                        Course ID : {{feedbackList.course.courseID}}
+                                                    </div>
+                                                </div>
+                                            </a>
                                         </div>
-                                    </a>
+                                    </div>
                                 </div>
+
+                                <div ng-switch-when="MESSAGE">
+                                    <div class="col mb-3">
+                                        <div class="card h-100">
+                                            <a class="btn btn-outline-danger col col-md-12"
+                                               href="https://localhost:8443/instructor/{{sessionId}}/to_my_course/{{feedbackList.course.courseID}}">
+                                                <!--FIXME:PATH CHANGE-->
+                                                <div class="card-body">
+                                                    <div class="card-text h6">
+                                                        {{feedbackList.feedbackContent.postMessage}}
+                                                    </div>
+                                                    <br>
+                                                    <div class="card-text small">
+                                                        <img src="data:image/*;base64,{{feedbackList.user.accountPicture.profilePictureBase64}}"
+                                                             class="rounded-circle" width="30" height="30"
+                                                             alt="account image">
+                                                        By : {{feedbackList.user.forename}} {{feedbackList.user.surname}}
+                                                        At: {{feedbackList.feedbackDateString}},
+                                                        Course ID : {{feedbackList.course.courseID}}
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div ng-switch-when="ALL">
+                                    <div class="col mb-3">
+                                        <div class="card h-100">
+                                            <a class="btn btn-outline-danger col col-md-12"
+                                               href="https://localhost:8443/instructor/{{sessionId}}/to_my_course/{{feedbackList.course.courseID}}">
+                                                <!--FIXME:PATH CHANGE-->
+                                                <div class="card-body">
+                                                    <div>
+                                                        <img src="data:image/*;base64,{{feedbackList.feedbackContent.feedbackFileBase64}}"
+                                                             class="card-img-top" alt="feedback image">
+                                                    </div>
+                                                    <br>
+                                                    <div class="card-text h6">
+                                                        {{feedbackList.feedbackContent.postMessage}}
+                                                    </div>
+                                                    <br>
+                                                    <div class="card-text small">
+                                                        <img src="data:image/*;base64,{{feedbackList.user.accountPicture.profilePictureBase64}}"
+                                                             class="rounded-circle" width="30" height="30"
+                                                             alt="account image">
+                                                        By : {{feedbackList.user.forename}} {{feedbackList.user.surname}}
+                                                        At: {{feedbackList.feedbackDateString}},
+                                                        Course ID : {{feedbackList.course.courseID}}
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
+                    </div>
+                </div>
+                <div ng-switch-when="STUDENT">
+                    <div class="row row-cols-1 row-cols-md-3">
+                        <div ng-repeat="feedbackList in feedbackList">
+                            <div ng-switch="feedbackList.feedbackType">
 
-                        <div ng-switch-when="MESSAGE">
-                            <div class="col mb-3">
-                                <div class="card h-100">
-                                    <a class="btn btn-outline-danger col col-md-12"
-                                       href="https://localhost:8443/student/student_home/{{sessionId}}/to_my_course/{{feedbackList.course.courseID}}">
-                                        <!--FIXME:PATH CHANGE-->
-                                        <div class="card-body">
-                                            <div class="card-text h6">
-                                                {{feedbackList.feedbackContent.postMessage}}
-                                            </div>
-                                            <br>
-                                            <div class="card-text small">
-                                                <img src="data:image/*;base64,{{feedbackList.user.accountPicture.profilePictureBase64}}"
-                                                     class="rounded-circle" width="30" height="30"
-                                                     alt="account image">
-                                                By : {{feedbackList.user.forename}} {{feedbackList.user.surname}}
-                                                At: {{feedbackList.feedbackDateString}},
-                                                Course ID : {{feedbackList.course.courseID}}
-                                            </div>
+                                <div ng-switch-when="FILE">
+                                    <div class="col mb-3">
+                                        <div class="card h-100">
+                                            <a class="btn btn-outline-danger col col-md-12"
+                                               href="https://localhost:8443/student/student_home/{{sessionId}}/to_my_course/{{feedbackList.course.courseID}}">
+                                                <!--FIXME:PATH CHANGE-->
+                                                <div class="card-body">
+                                                    <div>
+                                                        <img src="data:image/*;base64,{{feedbackList.feedbackContent.feedbackFileBase64}}"
+                                                             class="card-img-top" alt="feedback image">
+                                                    </div>
+                                                    <br>
+                                                    <div class="card-text small">
+                                                        <img src="data:image/*;base64,{{feedbackList.user.accountPicture.profilePictureBase64}}"
+                                                             class="rounded-circle" width="30" height="30"
+                                                             alt="account image">
+                                                        By : {{feedbackList.user.forename}} {{feedbackList.user.surname}}
+                                                        At: {{feedbackList.feedbackDateString}},
+                                                        Course ID : {{feedbackList.course.courseID}}
+                                                    </div>
+                                                </div>
+                                            </a>
                                         </div>
-                                    </a>
+                                    </div>
                                 </div>
+
+                                <div ng-switch-when="MESSAGE">
+                                    <div class="col mb-3">
+                                        <div class="card h-100">
+                                            <a class="btn btn-outline-danger col col-md-12"
+                                               href="https://localhost:8443/student/student_home/{{sessionId}}/to_my_course/{{feedbackList.course.courseID}}">
+                                                <!--FIXME:PATH CHANGE-->
+                                                <div class="card-body">
+                                                    <div class="card-text h6">
+                                                        {{feedbackList.feedbackContent.postMessage}}
+                                                    </div>
+                                                    <br>
+                                                    <div class="card-text small">
+                                                        <img src="data:image/*;base64,{{feedbackList.user.accountPicture.profilePictureBase64}}"
+                                                             class="rounded-circle" width="30" height="30"
+                                                             alt="account image">
+                                                        By : {{feedbackList.user.forename}} {{feedbackList.user.surname}}
+                                                        At: {{feedbackList.feedbackDateString}},
+                                                        Course ID : {{feedbackList.course.courseID}}
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div ng-switch-when="ALL">
+                                    <div class="col mb-3">
+                                        <div class="card h-100">
+                                            <a class="btn btn-outline-danger col col-md-12"
+                                               href="https://localhost:8443/student/student_home/{{sessionId}}/to_my_course/{{feedbackList.course.courseID}}">
+                                                <!--FIXME:PATH CHANGE-->
+                                                <div class="card-body">
+                                                    <div>
+                                                        <img src="data:image/*;base64,{{feedbackList.feedbackContent.feedbackFileBase64}}"
+                                                             class="card-img-top" alt="feedback image">
+                                                    </div>
+                                                    <br>
+                                                    <div class="card-text h6">
+                                                        {{feedbackList.feedbackContent.postMessage}}
+                                                    </div>
+                                                    <br>
+                                                    <div class="card-text small">
+                                                        <img src="data:image/*;base64,{{feedbackList.user.accountPicture.profilePictureBase64}}"
+                                                             class="rounded-circle" width="30" height="30"
+                                                             alt="account image">
+                                                        By : {{feedbackList.user.forename}} {{feedbackList.user.surname}}
+                                                        At: {{feedbackList.feedbackDateString}},
+                                                        Course ID : {{feedbackList.course.courseID}}
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
-
-                        <div ng-switch-when="ALL">
-                            <div class="col mb-3">
-                                <div class="card h-100">
-                                    <a class="btn btn-outline-danger col col-md-12"
-                                       href="https://localhost:8443/student/student_home/{{sessionId}}/to_my_course/{{feedbackList.course.courseID}}">
-                                        <!--FIXME:PATH CHANGE-->
-                                        <div class="card-body">
-                                            <div>
-                                                <img src="data:image/*;base64,{{feedbackList.feedbackContent.feedbackFileBase64}}"
-                                                     class="card-img-top" alt="feedback image">
-                                            </div>
-                                            <br>
-                                            <div class="card-text h6">
-                                                {{feedbackList.feedbackContent.postMessage}}
-                                            </div>
-                                            <br>
-                                            <div class="card-text small">
-                                                <img src="data:image/*;base64,{{feedbackList.user.accountPicture.profilePictureBase64}}"
-                                                     class="rounded-circle" width="30" height="30"
-                                                     alt="account image">
-                                                By : {{feedbackList.user.forename}} {{feedbackList.user.surname}}
-                                                At: {{feedbackList.feedbackDateString}},
-                                                Course ID : {{feedbackList.course.courseID}}
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-
                     </div>
                 </div>
             </div>

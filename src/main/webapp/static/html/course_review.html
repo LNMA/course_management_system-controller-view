@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="app" ng-controller="UserRoleController">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -17,27 +17,57 @@
     <script type="application/javascript" src="/static/lib/angularJS-1.8.0/angular-messages.min.js"></script>
     <script type="application/javascript" src="/static/lib/angularJS-1.8.0/angular-sanitize.min.js"></script>
     <script type="application/javascript" src="/static/js/app.js"></script>
+    <script src="/static/js/control/user_role-controller.js"></script>
+    <div ng-switch="userRole">
+        <div ng-switch-when="INSTRUCTOR">
+            <script src="/static/js/control/instructor_home-controller.js"></script>
+            <script src="/static/js/service/get_instructor_info.js"></script>
+            <script src="/static/js/service/edit_instructor_details.js"></script>
+
+
+            <script src="/static/js/control/instructor_notification-controller.js"></script>
+        </div>
+        <div ng-switch-when="STUDENT">
+            <script src="/static/js/control/student_home-controller.js"></script>
+            <script src="/static/js/service/get_student_home_info.js"></script>
+            <script src="/static/js/service/edit_student_details.js"></script>
+
+
+            <script src="/static/js/control/student_notification-controller.js"></script>
+        </div>
+    </div>
+    <script src="/static/js/control/edit_user_details_modal-controller.js"></script>
+    <script src="/static/js/service/country_state.js"></script>
+    <script src="/static/js/service/update_user_details.js"></script>
+
+    <script src="/static/js/control/edit_password-controller.js"></script>
+    <script src="/static/js/service/edit_password.js"></script>
+
+    <script src="/static/js/control/search_nav-controller.js"></script>
+
     <script type="application/javascript" src="/static/js/control/review_course-student.js"></script>
-    <script type="application/javascript" src="/static/js/control/student_home-controller.js"></script>
-    <script type="application/javascript" src="/static/js/control/edit_user_details_modal-controller.js"></script>
-    <script type="application/javascript" src="/static/js/control/edit_password-controller.js"></script>
-    <script type="application/javascript" src="/static/js/control/search_nav-controller.js"></script>
-    <script type="application/javascript" src="/static/js/service/get_student_home_info.js"></script>
-    <script type="application/javascript" src="/static/js/service/country_state.js"></script>
-    <script type="application/javascript" src="/static/js/service/update_user_details.js"></script>
-    <script type="application/javascript" src="/static/js/service/edit_student_details.js"></script>
-    <script type="application/javascript" src="/static/js/service/edit_password.js"></script>
     <script type="application/javascript" src="/static/js/service/get_info_review_course.js"></script>
     <script type="application/javascript" src="/static/js/service/create_course_member.js"></script>
     <script type="application/javascript" src="/static/js/service/get_session_id.js"></script>
-    <script type="application/javascript" src="/static/js/control/notification-controller.js"></script>
-    <script type="application/javascript" src="/static/js/service/get_notification.js"></script>
     <link href="/static/images/favicon.ico" rel="icon" type="image/x-icon">
     <title>Review Course `by Louay Amr`</title>
-<body ng-app="app" ng-controller="ReviewCourseStudentController">
+<body ng-controller="ReviewCourseStudentController">
 <div ng-bind-html="errorRender"></div>
 <header>
-    <ng-include src="'/static/html/page-include/student-navbar.html'"></ng-include>
+    <div ng-switch="userRole">
+        <div ng-switch-when="INSTRUCTOR">
+            <div ng-controller="InstructorHomeController">
+                <ng-include src="'/static/html/page-include/user-navbar.html'"></ng-include>
+                <ng-include src="'/static/html/page-include/instructor-modal.html'"></ng-include>
+            </div>
+        </div>
+        <div ng-switch-when="STUDENT">
+            <div ng-controller="StudentHomeController">
+                <ng-include src="'/static/html/page-include/user-navbar.html'"></ng-include>
+                <ng-include src="'/static/html/page-include/student-modal.html'"></ng-include>
+            </div>
+        </div>
+    </div>
 </header>
 <main class="container-fluid">
     <div class="container" id="pageAlert" ng-model="pageErrorMessage">
@@ -74,10 +104,12 @@
                             {{courseInfo.courseName}}
                         </div>
                         <div class="col col-md-1 align-self-center">
-                            <div ng-if="isStudentJoinToThisCourse === false">
-                                <div ng-if="courseInfo.endDate > currentTime">
-                                    <input type="button" class="btn btn-warning text-white font-weight-bold"
-                                           value="+ Join" ng-click="addToCourse()">
+                            <div ng-if="userRole === 'STUDENT'">
+                                <div ng-if="isStudentJoinToThisCourse === false">
+                                    <div ng-if="courseInfo.endDate > currentTime">
+                                        <input type="button" class="btn btn-warning text-white font-weight-bold"
+                                               value="+ Join" ng-click="addToCourse()">
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -95,6 +127,9 @@
             </div>
             <div class="card-body">
                 <ul>
+                    <li>
+                        #Course ID: {{courseInfo.courseID}}
+                    </li>
                     <li>
                         Start Date: {{courseInfo.startDate}}
                     </li>

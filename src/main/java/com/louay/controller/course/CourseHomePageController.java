@@ -3,7 +3,6 @@ package com.louay.controller.course;
 import com.louay.controller.factory.EntitiesFactory;
 import com.louay.controller.factory.ServicesFactory;
 import com.louay.controller.factory.WrappersFactory;
-import com.louay.controller.util.filter.EmailFilter;
 import com.louay.model.entity.courses.Courses;
 import com.louay.model.entity.users.Instructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,22 +17,19 @@ import java.io.Serializable;
 @CrossOrigin(origins = "https://localhost:8443")
 @RequestMapping(value = "/course/{courseId}")
 public class CourseHomePageController implements Serializable {
-    private static final long serialVersionUID = 1253385220733525320L;
+    private static final long serialVersionUID = 3434744642746620434L;
     private final EntitiesFactory entitiesFactory;
     private final ServicesFactory servicesFactory;
-    private final EmailFilter emailFilter;
 
     @Autowired
     public CourseHomePageController(EntitiesFactory entitiesFactory, ServicesFactory servicesFactory,
-                                    WrappersFactory wrappersFactory, EmailFilter emailFilter) {
+                                    WrappersFactory wrappersFactory) {
         Assert.notNull(entitiesFactory, "entitiesFactory cannot be null!.");
         Assert.notNull(servicesFactory, "servicesFactory cannot be null!.");
         Assert.notNull(wrappersFactory, "wrappersFactory cannot be null!.");
-        Assert.notNull(emailFilter, "emailFilter cannot be null!.");
 
         this.entitiesFactory = entitiesFactory;
         this.servicesFactory = servicesFactory;
-        this.emailFilter = emailFilter;
     }
 
     @GetMapping
@@ -53,7 +49,7 @@ public class CourseHomePageController implements Serializable {
     private Instructor buildInstructorWithProfilePicture(Long courseId) {
         Courses courses = findCourse(courseId);
         Instructor instructor = findInstructor(courses.getInstructor().getEmail());
-        instructor.setEmail(this.emailFilter.filterOriginalToEmailUrl(instructor.getEmail()));
+        instructor.setEmail(instructor.getEmail());
 
         return instructor;
     }

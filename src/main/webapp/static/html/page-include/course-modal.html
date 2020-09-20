@@ -1,0 +1,332 @@
+<nav ng-controller="EditCourseController">
+    <div class="modal fade" id="courseProfileModal">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Course Profile</h4>
+                    <button type="button" class="close" data-dismiss="modal">
+                        &times;
+                    </button>
+                </div>
+
+                <div class="modal-body">
+
+                    <div class="container-fluid">
+                        <div class="row row-cols-1">
+                            <div class="col col-md-7">
+                                <div class="form-row">
+                                    <div class="form-group col col-md-10">
+                                        <label for="id" class="font-weight-bold">
+                                            Course ID:
+                                        </label>
+                                        <input class="form-control" id="id" name="courseId"
+                                               type="text" value="{{courseId}}" readonly disabled>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col col-md-10">
+                                        <div class="row col col-md-10">
+                                            <label for="courseId" class="font-weight-bold">
+                                                Course Name:
+                                            </label>
+                                            <div ng-if="userRole === 'INSTRUCTOR'">
+                                                <button class="btn" data-toggle="modal" data-dismiss="modal"
+                                                        data-target="#courseNameModal">
+                                                    <img src="/static/images/edit-black-48dp.svg"
+                                                         width="16" height="16" alt="edit">
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <input class="form-control" id="courseId"
+                                               name="courseId" type="text"
+                                               value="{{courseName}}" readonly disabled>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col col-md-10">
+                                        <label for="startDate" class="font-weight-bold">
+                                            Start Date:
+                                        </label>
+                                        <input class="form-control" id="startDate" name="startDate"
+                                               type="text" value="{{startDateString}}" readonly disabled>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col col-md-10">
+                                        <div class="row col col-md-10">
+                                            <label for="endDate" class="font-weight-bold">
+                                                End Date:
+                                            </label>
+                                            <div ng-if="userRole === 'INSTRUCTOR'">
+                                                <button class="btn" data-toggle="modal" data-dismiss="modal"
+                                                        data-target="#endDateModal">
+                                                    <img src="/static/images/edit-black-48dp.svg"
+                                                         width="16" height="16" alt="edit">
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <input class="form-control" id="endDate" name="endDate"
+                                               type="text" value="{{endDateString}}" readonly disabled>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="align-self-center col col-md-5">
+                                <div class="row justify-content-center">
+                                    <img src="data:image/*;base64,{{coursePicture}}" class="rounded-circle"
+                                         width="256" height="256" alt="course Picture">
+                                    <div ng-if="userRole === 'INSTRUCTOR'" class="align-self-center">
+                                        <button class="btn" data-toggle="modal" data-dismiss="modal"
+                                                data-target="#ImageModal">
+                                            <img src="/static/images/add_photo_alternate-black-48dp.svg"
+                                                 width="28" height="28" alt="add image">
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="container-fluid">
+                        <div class="form-row">
+                            <div class="form-group col col-md-12">
+                                <label for="instructorFullName" class="font-weight-bold">
+                                    Instructor:
+                                </label>
+                                <input class="form-control" id="instructorFullName"
+                                       value="{{instructorNickname}} {{instructorForename}} {{instructorSurname}}"
+                                       type="text" readonly disabled>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group col col-md-12 justify-content-center row">
+                                <img src="data:image/*;base64,{{instructorPicture}}" class="rounded-circle"
+                                     width="256" height="256" alt="course Picture">
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger"
+                            data-dismiss="modal">Close
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- endDate Modal -->
+    <div class="modal fade" id="endDateModal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Change Course End Date</h4>
+                    <button type="button" class="close" data-dismiss="modal">
+                        &times;
+                    </button>
+                </div>
+                <div ng-bind-html="errorRender"></div>
+                <div class="container" id="editEndDateSuccessAlert" ng-model="editEndDateSuccessMessage"
+                     ng-show="isEditEndDateSuccess" role="alert">
+                    <div class="alert alert-success alert-dismissible fade show">
+                        <strong>Success!</strong>
+                        {{editEndDateSuccessMessage}}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="container" id="editEndDateErrorAlert" ng-model="editEndDateErrorMessage"
+                     ng-hide="editEndDateForm.$valid" role="alert">
+                    <div ng-messages="editEndDateForm.$error || editEndDateForm.$invalid"
+                         ng-show="submitted && (editEndDateForm.$invalid || editEndDateForm.$error)">
+                        <div class="alert alert-danger alert-dismissible fade show">
+                            <strong>Error!</strong>
+                            <span ng-show="editEndDateForm.endDate.$error.required">
+                                                        end date Required!
+                                                    </span>
+                            <span ng-show="editEndDateForm.endDate.$invalid">
+                                                        end date Invalid!
+                                                    </span>
+                            <span ng-show="editEndDateForm.endTime.$error.required">
+                                                        end time Required!
+                                                    </span>
+                            <span ng-show="editEndDateForm.endTime.$invalid">
+                                                        end time Invalid!
+                                                    </span>
+                            {{editEndDateErrorMessage}}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <form ng-submit="editEndDate(course.endDate | date : 'yyyy-MM-dd', course.endTime | date: 'HH:mm:ss')"
+                      name="editEndDateForm" method="post" novalidate>
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <div class="form-row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="inputEndDate">End Date:</label>
+                                        <br>
+                                        <input class="form-control w-100" type="date"
+                                               ng-model="course.endDate"
+                                               id="inputEndDate" name="endDate" required
+                                               ng-class="{'is-invalid': submitted &&
+                                                                    (editEndDateForm.endDate.$error.required ||editEndDateForm.endDate.$invalid),
+                                                                    'is-valid': editEndDateForm.endDate.$valid}"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="inputEndTime">End Time:</label>
+                                        <br>
+                                        <input class="form-control w-100" type="time"
+                                               ng-model="course.endTime"
+                                               id="inputEndTime" name="endTime" required
+                                               ng-class="{'is-invalid': submitted &&
+                                                                    (editEndDateForm.endTime.$error.required ||editEndDateForm.endTime.$invalid),
+                                                                    'is-valid': editEndDateForm.endTime.$valid}"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">
+                            Save
+                        </button>
+                        <button type="button" class="btn btn-danger"
+                                data-dismiss="modal">Close
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- courseName Modal -->
+    <div class="modal fade" id="courseNameModal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Change Course Name</h4>
+                    <button type="button" class="close" data-dismiss="modal">
+                        &times;
+                    </button>
+                </div>
+                <div ng-bind-html="errorRender"></div>
+                <div class="container" id="editCourseNameSuccessAlert" ng-model="editCourseNameSuccessMessage"
+                     ng-show="isEditcourseNameSuccess" role="alert">
+                    <div class="alert alert-success alert-dismissible fade show">
+                        <strong>Success!</strong>
+                        {{editCourseNameSuccessMessage}}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="container" id="editCourseNameErrorAlert" ng-model="editCourseNameErrorMessage"
+                     ng-hide="editCourseNameForm.$valid" role="alert">
+                    <div ng-messages="editCourseNameForm.$error || editCourseNameForm.$invalid"
+                         ng-show="submitted && (editCourseNameForm.$invalid || editCourseNameForm.$error)">
+                        <div class="alert alert-danger alert-dismissible fade show">
+                            <strong>Error!</strong>
+                            <span ng-show="editCourseNameForm.courseName.$error.required">
+                                    course Name Required!
+                                </span>
+                            <span ng-show="editCourseNameForm.courseName.$invalid">
+                                    course Name Invalid!
+                                </span>
+                            {{editCourseNameErrorMessage}}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <form ng-submit="editCourseNameSub()" name="editCourseNameForm" method="post" novalidate>
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <div class="form-row">
+                                <div class="form-group col col-md-9">
+                                    <label class="font-weight-bold" for="inputCourseName">
+                                        Course Name:
+                                    </label>
+                                    <input id="inputCourseName" name="courseName" type="text" class="form-control"
+                                           placeholder="type new course name" ng-minlength="2" ng-maxlength="150"
+                                           required
+                                           ng-class="{'is-invalid': submitted &&
+                                                          (editCourseNameForm.courseName.$error.required ||
+                                                          editCourseNameForm.courseName.$invalid),
+                                                          'is-valid': editCourseNameForm.courseName.$valid}"
+                                           ng-model="editCourseName">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">
+                            Save
+                        </button>
+                        <button type="button" class="btn btn-danger"
+                                data-dismiss="modal">Close
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- image modal -->
+    <div class="modal fade" id="ImageModal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Change Picture</h4>
+                    <button type="button" class="close" data-dismiss="modal">
+                        &times;
+                    </button>
+                </div>
+                <form action="{{editCourseImgUrl}}" method="post"
+                      enctype="multipart/form-data"><!--FIXME-->
+                    <div class="modal-body">
+                        <div class="container-fluid justify-content-center">
+                            <div class="form-row">
+                                <div class="form-group col col-md-9">
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="inputFileModal" name="file"
+                                               accept="image/*" required>
+                                        <label class="custom-file-label" for="inputFileModal">Choose file...</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <script>
+                            // Add the following code if you want the name of the file appear on select
+                            $(".custom-file-input").on("change", function () {
+                                let fileName = $(this).val().split("\\").pop();
+                                $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+                            });
+                        </script>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">
+                            Save
+                        </button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">
+                            Close
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</nav>

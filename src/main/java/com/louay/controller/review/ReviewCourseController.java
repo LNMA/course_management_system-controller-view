@@ -34,7 +34,7 @@ public class ReviewCourseController implements Serializable {
 
     @GetMapping
     public String viewReviewCourse() {
-        return "/static/html/course_review-student.html";
+        return "/static/html/course_review.html";
     }
 
     @GetMapping(value = "/course_info", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -111,19 +111,19 @@ public class ReviewCourseController implements Serializable {
 
     @GetMapping(value = "/{instructorEmail:.+}/get_instructor_info", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public Instructor getInstructor(@PathVariable(value = "instructorEmail") String email){
+    public Instructor getInstructor(@PathVariable(value = "instructorEmail") String email) {
         Assert.notNull(email, "email cannot be null!.");
 
         return findInstructor(email);
     }
 
-    private Instructor findInstructor(String email){
+    private Instructor findInstructor(String email) {
         Instructor instructor = buildInstructor(email);
 
         return this.servicesFactory.getAccountService().findInstructorsDetailsByInstructorID(instructor);
     }
 
-    private Instructor buildInstructor(String email){
+    private Instructor buildInstructor(String email) {
         Instructor instructor = this.entitiesFactory.getInstructor();
         instructor.setEmail(email);
 
@@ -132,7 +132,7 @@ public class ReviewCourseController implements Serializable {
 
     @GetMapping(value = "/get_time", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public Calendar getCurrentTime(){
+    public Calendar getCurrentTime() {
         return Calendar.getInstance();
     }
 }

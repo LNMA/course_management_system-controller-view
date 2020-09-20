@@ -38,7 +38,7 @@ public class InstructorHomeController implements Serializable {
 
     @GetMapping
     public String viewInstructorHomePage() {
-        return "/static/html/instructor-home.html";
+        return "/static/html/user-home.html";
     }
 
     @RequestMapping(value = "/profile_visibility-update", consumes = MediaType.APPLICATION_JSON_VALUE,

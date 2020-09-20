@@ -4,6 +4,7 @@ import com.louay.controller.factory.EntitiesFactory;
 import com.louay.controller.factory.ServicesFactory;
 import com.louay.model.entity.status.UserAccountStatus;
 import com.louay.model.entity.status.UserAtCourse;
+import com.louay.model.entity.users.constant.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
@@ -22,7 +23,7 @@ import java.io.Serializable;
 @CrossOrigin(origins = "https://localhost:8443")
 @RequestMapping(value = "/logout")
 public class LogoutController implements Serializable {
-    private static final long serialVersionUID = -8516342061848503798L;
+    private static final long serialVersionUID = 6956861229212734644L;
     private final EntitiesFactory entitiesFactory;
     private final ServicesFactory servicesFactory;
 
@@ -37,8 +38,9 @@ public class LogoutController implements Serializable {
 
     @RequestMapping(value = "/logout-account/{email:.+}")
     public String logoutUser(@PathVariable(value = "email", required = false) String email,
+                             @SessionAttribute(value = "role", required = false) Role role,
                              HttpServletRequest request, HttpServletResponse response) {
-        if (email == null) {
+        if (email == null || role == null) {
             return "redirect:/login";
         }
 
@@ -52,9 +54,11 @@ public class LogoutController implements Serializable {
             deleteCookies(request, response);
         }
 
-        UserAtCourse userAtCourse = findUserAtCourse(email);
-        userAtCourse.setBusy(false);
-        updateUserAtCourseToFree(userAtCourse);
+        if (role.compareTo(Role.ADMIN) != 0) {
+            UserAtCourse userAtCourse = findUserAtCourse(email);
+            userAtCourse.setBusy(false);
+            updateUserAtCourseToFree(userAtCourse);
+        }
 
         return "redirect:/login";
     }
@@ -63,8 +67,10 @@ public class LogoutController implements Serializable {
         HttpSession session = request.getSession(false);
         session.setAttribute("id", null);
         session.setAttribute("password", null);
+        session.setAttribute("role", null);
         session.removeAttribute("id");
         session.removeAttribute("password");
+        session.removeAttribute("role");
     }
 
     private void deleteCookies(HttpServletRequest request, HttpServletResponse response) {

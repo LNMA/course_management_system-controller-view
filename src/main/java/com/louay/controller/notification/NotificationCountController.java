@@ -18,7 +18,7 @@ import java.io.Serializable;
 @CrossOrigin(origins = "https://localhost:8443")
 @RequestMapping(value = "/notification")
 public class NotificationCountController implements Serializable {
-    private static final long serialVersionUID = -1948797297422838295L;
+    private static final long serialVersionUID = -8469269471316852620L;
     private final EntitiesFactory entitiesFactory;
     private final ServicesFactory servicesFactory;
 

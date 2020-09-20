@@ -8,9 +8,17 @@ app.config(function ($httpProvider) {
     $httpProvider.defaults.xsrfCookieName = 'XSRF-TOKEN';
     $httpProvider.defaults.xsrfHeaderName = 'X-XSRF-TOKEN';
 }).controller('CourseSearchController', CourseSearchCtrl);
-CourseSearchCtrl.$inject = ['$scope', '$location', '$http', '$sce'];
+CourseSearchCtrl.$inject = ['$scope', '$location', '$http', '$sce', 'GetCourseInfoService',
+    'GetInstructorCourseInfoService'];
 
-function CourseSearchCtrl($scope, $location, $http, $sce) {
+function CourseSearchCtrl($scope, $location, $http, $sce, GetCourseInfoService,
+                          GetInstructorCourseInfoService) {
+    let courseId = $location.absUrl().toString().split('/')[4];
+    $scope.courseId = courseId;
+    $scope.homeCourseMateialUrl = courseId;
+    GetCourseInfoService.getCourseInfo($http, $location, $scope, $sce, courseId);
+    GetInstructorCourseInfoService.getInstructorCourseInfo($http, $location, $scope, $sce, courseId);
+
     $http({
         method: 'GET',
         port: 8443,

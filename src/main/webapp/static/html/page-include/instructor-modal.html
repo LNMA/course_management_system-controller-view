@@ -1,101 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no"/>
-    <meta name="apple-mobile-web-app-capable" content="yes"/>
-    <style type="text/css">
-        @import url(/static/lib/bootstrap-4.5.1/css/bootstrap.min.css);
-    </style>
-    <script src="/static/lib/jQuery-3.5.1/jquery-3.5.1.min.js"></script>
-    <script src="/static/lib/popper-1.16.1/popper.min.js"></script>
-    <script src="/static/lib/bootstrap-4.5.1/js/bootstrap.min.js"></script>
-    <script src="/static/lib/angularJS-1.8.0/angular.min.js"></script>
-    <script src="/static/lib/angularJS-1.8.0/angular-messages.min.js"></script>
-    <script src="/static/lib/angularJS-1.8.0/angular-sanitize.min.js"></script>
-    <script src="/static/js/app.js"></script>
-    <script src="/static/js/control/student_home-controller.js"></script>
-    <script src="/static/js/control/edit_user_details_modal-controller.js"></script>
-    <script src="/static/js/control/edit_password-controller.js"></script>
-    <script src="/static/js/control/search_nav-controller.js"></script>
-    <script src="/static/js/control/student_home_course-controller.js"></script>
-    <script src="/static/js/service/get_student_home_info.js"></script>
-    <script src="/static/js/service/country_state.js"></script>
-    <script src="/static/js/service/update_user_details.js"></script>
-    <script src="/static/js/service/edit_student_details.js"></script>
-    <script src="/static/js/service/edit_password.js"></script>
-    <script src="/static/js/service/get_student_join_course.js"></script>
-    <script src="/static/js/control/notification-controller.js"></script>
-    <script src="/static/js/service/get_notification.js"></script>
-    <link href="/static/images/favicon.ico" rel="icon" type="image/x-icon">
-    <title>Student Home `by Louay Amr`</title>
-<body ng-app="app" ng-controller="StudentHomeController">
-<div ng-bind-html="errorRender"></div>
-<header>
-    <ng-include src="'/static/html/page-include/student-navbar.html'"></ng-include>
-</header>
-<main class="container-fluid">
-    <div class="container" id="pageAlert" ng-model="pageErrorMessage">
-        <div ng-show="isPageError">
-            <div class="alert alert-danger alert-dismissible fade show">
-                <strong>Error!</strong> {{pageErrorMessage}}
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-        </div>
-    </div>
-    <div class="row row-cols-1">
-        <aside class="col col-md-2 mt-3 justify-content-center pb-4">
-            <div class="form-row">
-                <img src="data:image/*;base64,{{picture}}"
-                     class="rounded-circle" width="134" height="134" alt="My Picture"/>
-                <p class="mt-5 ml-1 font-weight-bold h5">
-                    {{forename}} {{surname}}
-                </p>
-            </div>
-            <p class="text-muted font-weight-bold">{{headline}}</p>
-            <p class="font-weight-bold">Interest: {{interests}}</p>
-            <button class="btn btn-outline-secondary btn-sm w-100 dropdownProfile" data-toggle="modal"
-                    data-target="#profileModal">
-                Edit Profile
-            </button>
-        </aside>
-        <article class="col col-md-10" ng-controller="StudentHomeCourseController">
-            <div class="container-fluid mt-4">
-                <div class="row row-cols-1 row-cols-md-3">
-                    <div ng-model="courseData" ng-repeat="courseData in courseData">
-                        <div class="col mb-3">
-                            <div class="card h-100">
-                                <img src="data:image/*;base64,{{courseData.coursePictureBase64}}" class="card-img-top"
-                                     alt="course image">
-                                <div class="card-body">
-                                    <div class="card-text">
-                                        {{courseData.courseName}}
-                                    </div>
-                                </div>
-                                <a href="{{joinToCourseUrl}}{{courseData.courseID}}">
-                                    <button type="button" class="btn btn-outline-primary col col-md-12">
-                                        Join to Course
-                                    </button>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </article>
-    </div>
-</main>
-<footer style="bottom: 0; width: 100%;">
-    <nav class="navbar navbar-dark position-relative mt-0" style="background-color: #d3c7cd; height: 20em; width: 100%">
-        <p>Louay Amr © 2020</p>
-    </nav>
-</footer>
-<nav>
+<nav ng-controller="InstructorHomeController">
     <div id="viewProfileModal">
         <div class="modal fade" id="profileModal">
             <div class="modal-dialog modal-xl">
@@ -117,7 +20,7 @@
                                             <label for="username" class="font-weight-bold">
                                                 Email:
                                             </label>
-                                            <input class="form-control" id="username" name="Studentemail"
+                                            <input class="form-control" id="username" name="instructorEmail"
                                                    type="text" value="{{email}}" readonly disabled>
                                         </div>
                                     </div>
@@ -307,20 +210,60 @@
                                            type="text" readonly disabled>
                                 </div>
                                 <div class="form-group col col-md-6">
-                                    <label for="interest" class="font-weight-bold">
-                                        Interests:
+                                    <label for="specialty" class="font-weight-bold">
+                                        Specialty:
                                         <button class="btn" data-toggle="modal" data-dismiss="modal"
-                                                data-target="#interestsModal">
+                                                data-target="#specialtyModal">
                                             <img src="/static/images/edit-black-48dp.svg"
                                                  width="16" height="16" alt="edit">
                                         </button>
                                     </label>
-                                    <input class="form-control" id="interest" value="{{interests}}"
+                                    <input class="form-control" id="specialty" value="{{specialty}}"
+                                           type="text" readonly disabled>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col col-md-6">
+                                    <label for="nickname" class="font-weight-bold">
+                                        Nickname:
+                                        <button class="btn" data-toggle="modal" data-dismiss="modal"
+                                                data-target="#nicknameModal">
+                                            <img src="/static/images/edit-black-48dp.svg"
+                                                 width="16" height="16" alt="edit">
+                                        </button>
+                                    </label>
+                                    <input class="form-control" id="nickname" value="{{nickname}}"
+                                           type="text" readonly disabled>
+                                </div>
+                                <div class="form-group col col-md-6">
+                                    <label for="portfolio" class="font-weight-bold">
+                                        Portfolio:
+                                        <button class="btn" data-toggle="modal" data-dismiss="modal"
+                                                data-target="#portfolioModal">
+                                            <img src="/static/images/edit-black-48dp.svg"
+                                                 width="16" height="16" alt="edit">
+                                        </button>
+                                    </label>
+                                    <input class="form-control" id="portfolio" value="{{portfolio}}"
+                                           type="text" readonly disabled>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col col-md-6">
+                                    <label for="profileVisibility" class="font-weight-bold">
+                                        profile Visibility:
+                                        <button class="btn" data-toggle="modal" data-dismiss="modal"
+                                                data-target="#profileVisibilityModal">
+                                            <img src="/static/images/edit-black-48dp.svg"
+                                                 width="16" height="16" alt="edit">
+                                        </button>
+                                    </label>
+                                    <input class="form-control" id="profileVisibility"
+                                           value="{{profileVisibility}}"
                                            type="text" readonly disabled>
                                 </div>
                             </div>
                         </div>
-
                     </div>
 
                     <div class="modal-footer">
@@ -382,8 +325,11 @@
                                         <label class="font-weight-bold" for="inputHeadline">
                                             Headline:
                                         </label>
-                                        <input id="inputHeadline" name="headline" type="text" class="form-control"
-                                               placeholder="type new headline" ng-minlength="2" ng-maxlength="300" required
+                                        <input id="inputHeadline" name="headline" type="text"
+                                               class="form-control"
+                                               placeholder="type new headline" ng-minlength="2"
+                                               ng-maxlength="300"
+                                               required
                                                ng-class="{'is-invalid': submitted &&
                                            (editHeadlineForm.headline.$error.required ||
                                            editHeadlineForm.headline.$invalid),
@@ -406,61 +352,291 @@
             </div>
         </div>
 
-        <!-- interests Modal -->
-        <div class="modal fade" id="interestsModal">
+        <!-- specialty Modal -->
+        <div class="modal fade" id="specialtyModal">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">Change Interests</h4>
+                        <h4 class="modal-title">Change Specialty</h4>
                         <button type="button" class="close" data-dismiss="modal">
                             &times;
                         </button>
                     </div>
-                    <div class="container" id="editInterestsSuccessAlert" ng-model="interestsSuccessMessage"
-                         ng-show="isEditInterestsSuccess" role="alert">
+                    <div class="container" id="editSpecialtySuccessAlert" ng-model="specialtySuccessMessage"
+                         ng-show="isEditSpecialtySuccess" role="alert">
                         <div class="alert alert-success alert-dismissible fade show">
                             <strong>Success!</strong>
-                            {{interestsSuccessMessage}}
+                            {{specialtySuccessMessage}}
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                     </div>
-                    <div class="container" id="editInterestsErrorAlert" ng-model="interestsErrorMessage"
-                         ng-hide="editInterestsForm.$valid" role="alert">
-                        <div ng-messages="editInterestsForm.$error || editInterestsForm.$invalid"
-                             ng-show="submitted && (editInterestsForm.$invalid || editInterestsForm.$error)">
+                    <div class="container" id="editInterestsErrorAlert" ng-model="specialtyErrorMessage"
+                         ng-hide="editSpecialtyForm.$valid" role="alert">
+                        <div ng-messages="editSpecialtyForm.$error || editSpecialtyForm.$invalid"
+                             ng-show="submitted && (editSpecialtyForm.$invalid || editSpecialtyForm.$error)">
                             <div class="alert alert-danger alert-dismissible fade show">
                                 <strong>Error!</strong>
-                                <span ng-show="editInterestsForm.interests.$error.required">
-                                    interests Required!
+                                <span ng-show="editSpecialtyForm.specialty.$error.required">
+                                    specialty Required!
                                 </span>
-                                <span ng-show="editInterestsForm.interests.$invalid">
-                                    interests Invalid!
+                                <span ng-show="editSpecialtyForm.specialty.$invalid">
+                                    specialty Invalid!
                                 </span>
-                                {{interestsErrorMessage}}
+                                {{specialtyErrorMessage}}
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
                         </div>
                     </div>
-                    <form ng-submit="updateInterests()" name="editInterestsForm" method="post" novalidate>
+                    <form ng-submit="updateSpecialty()" name="editSpecialtyForm" method="post" novalidate>
                         <div class="modal-body">
                             <div class="container-fluid">
                                 <div class="form-row">
                                     <div class="form-group col col-md-9">
-                                        <label class="font-weight-bold" for="inputInterests">
-                                            Interests:
+                                        <label class="font-weight-bold" for="inputSpecialty">
+                                            specialty:
                                         </label>
-                                        <input id="inputInterests" name="interests" type="text" class="form-control"
-                                               placeholder="type new headline" ng-minlength="2" ng-maxlength="300"
+                                        <input id="inputSpecialty" name="specialty" type="text"
+                                               class="form-control"
+                                               placeholder="type new specialty" ng-minlength="2"
+                                               ng-maxlength="300"
                                                required
                                                ng-class="{'is-invalid': submitted &&
-                                                          (editInterestsForm.interests.$error.required ||
-                                                          editInterestsForm.interests.$invalid),
-                                                          'is-valid': editInterestsForm.interests.$valid}"
-                                               ng-model="editInterests">
+                                                          (editSpecialtyForm.specialty.$error.required ||
+                                                          editSpecialtyForm.specialty.$invalid),
+                                                          'is-valid': editSpecialtyForm.specialty.$valid}"
+                                               ng-model="editSpecialty">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-success">
+                                Save
+                            </button>
+                            <button type="button" class="btn btn-danger"
+                                    data-dismiss="modal">Close
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- nickname Modal -->
+        <div class="modal fade" id="nicknameModal">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Change Nickname</h4>
+                        <button type="button" class="close" data-dismiss="modal">
+                            &times;
+                        </button>
+                    </div>
+                    <div class="container" id="editNicknameSuccessAlert" ng-model="nicknameSuccessMessage"
+                         ng-show="isEditNicknameSuccess" role="alert">
+                        <div class="alert alert-success alert-dismissible fade show">
+                            <strong>Success!</strong>
+                            {{nicknameSuccessMessage}}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="container" id="editNicknameErrorAlert" ng-model="nicknameErrorMessage"
+                         ng-hide="editNicknameForm.$valid" role="alert">
+                        <div ng-messages="editNicknameForm.$error || editNicknameForm.$invalid"
+                             ng-show="submitted && (editNicknameForm.$invalid || editNicknameForm.$error)">
+                            <div class="alert alert-danger alert-dismissible fade show">
+                                <strong>Error!</strong>
+                                <span ng-show="editNicknameForm.nickname.$error.required">
+                                    nickname Required!
+                                </span>
+                                <span ng-show="editNicknameForm.nickname.$invalid">
+                                    nickname Invalid!
+                                </span>
+                                {{nicknameErrorMessage}}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <form ng-submit="updateNickname()" name="editNicknameForm" method="post" novalidate>
+                        <div class="modal-body">
+                            <div class="container-fluid">
+                                <div class="form-row">
+                                    <div class="form-group col col-md-9">
+                                        <label class="font-weight-bold" for="inputNickname">
+                                            nickname:
+                                        </label>
+                                        <input id="inputNickname" name="nickname" type="text"
+                                               class="form-control"
+                                               placeholder="type new nickname" ng-minlength="2"
+                                               ng-maxlength="50"
+                                               required
+                                               ng-class="{'is-invalid': submitted &&
+                                                          (editNicknameForm.nickname.$error.required ||
+                                                          editNicknameForm.nickname.$invalid),
+                                                          'is-valid': editNicknameForm.nickname.$valid}"
+                                               ng-model="editNickname">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-success">
+                                Save
+                            </button>
+                            <button type="button" class="btn btn-danger"
+                                    data-dismiss="modal">Close
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- portfolio Modal -->
+        <div class="modal fade" id="portfolioModal">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Change Portfolio</h4>
+                        <button type="button" class="close" data-dismiss="modal">
+                            &times;
+                        </button>
+                    </div>
+                    <div class="container" id="editportfolioSuccessAlert" ng-model="portfolioSuccessMessage"
+                         ng-show="isEditPortfolioSuccess" role="alert">
+                        <div class="alert alert-success alert-dismissible fade show">
+                            <strong>Success!</strong>
+                            {{portfolioSuccessMessage}}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="container" id="editPortfolioErrorAlert" ng-model="portfolioErrorMessage"
+                         ng-hide="editPortfolioForm.$valid" role="alert">
+                        <div ng-messages="editPortfolioForm.$error || editPortfolioForm.$invalid"
+                             ng-show="submitted && (editPortfolioForm.$invalid || editPortfolioForm.$error)">
+                            <div class="alert alert-danger alert-dismissible fade show">
+                                <strong>Error!</strong>
+                                <span ng-show="editPortfolioForm.portfolio.$error.required">
+                                    portfolio Required!
+                                </span>
+                                <span ng-show="editPortfolioForm.portfolio.$invalid">
+                                    portfolio Invalid!
+                                </span>
+                                {{portfolioErrorMessage}}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <form ng-submit="updatePortfolio()" name="editPortfolioForm" method="post" novalidate>
+                        <div class="modal-body">
+                            <div class="container-fluid">
+                                <div class="form-row">
+                                    <div class="form-group col col-md-9">
+                                        <label class="font-weight-bold" for="inputPortfolio">
+                                            portfolio:
+                                        </label>
+                                        <input id="inputPortfolio" name="portfolio" type="text"
+                                               class="form-control"
+                                               placeholder="type new portfolio" ng-minlength="2"
+                                               ng-maxlength="300"
+                                               required
+                                               ng-class="{'is-invalid': submitted &&
+                                                          (editPortfolioForm.portfolio.$error.required ||
+                                                          editPortfolioForm.portfolio.$invalid),
+                                                          'is-valid': editPortfolioForm.portfolio.$valid}"
+                                               ng-model="editPortfolio">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-success">
+                                Save
+                            </button>
+                            <button type="button" class="btn btn-danger"
+                                    data-dismiss="modal">Close
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- profileVisibility Modal -->
+        <div class="modal fade" id="profileVisibilityModal">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Change Profile Visibility</h4>
+                        <button type="button" class="close" data-dismiss="modal">
+                            &times;
+                        </button>
+                    </div>
+                    <div class="container" id="editProfileVisibilitySuccessAlert"
+                         ng-model="profileVisibilitySuccessMessage"
+                         ng-show="isEditProfileVisibilitySuccess" role="alert">
+                        <div class="alert alert-success alert-dismissible fade show">
+                            <strong>Success!</strong>
+                            {{profileVisibilitySuccessMessage}}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="container" id="editProfileVisibilityErrorAlert"
+                         ng-model="profileVisibilityErrorMessage"
+                         ng-hide="editProfileVisibilityForm.$valid" role="alert">
+                        <div ng-messages="editProfileVisibilityForm.$error || editProfileVisibilityForm.$invalid"
+                             ng-show="submitted && (editProfileVisibilityForm.$invalid || editProfileVisibilityForm.$error)">
+                            <div class="alert alert-danger alert-dismissible fade show">
+                                <strong>Error!</strong>
+                                <span ng-show="editProfileVisibilityForm.profileVisibility.$error.required">
+                                    profile Visibility Required!
+                                </span>
+                                <span ng-show="editProfileVisibilityForm.profileVisibility.$invalid">
+                                    profile Visibility Invalid!
+                                </span>
+                                {{profileVisibilityErrorMessage}}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <form ng-submit="updateProfileVisibility()" name="editProfileVisibilityForm"
+                          method="post"
+                          novalidate>
+                        <div class="modal-body">
+                            <div class="container-fluid">
+                                <div class="form-row">
+                                    <div class="form-group col col-md-9">
+                                        <label class="font-weight-bold" for="inputProfileVisibility">
+                                            Profile Visibility:
+                                        </label>
+                                        <br>
+                                        <select class="custom-select" id="inputProfileVisibility"
+                                                name="profileVisibility" ng-model="editProfileVisibility"
+                                                required
+                                                ng-class="{'is-invalid': submitted &&
+                                        (editProfileVisibilityForm.profileVisibility.$error.required ||
+                                        editProfileVisibilityForm.profileVisibility.$invalid),
+                                        'is-valid': editProfileVisibilityForm.profileVisibility.$valid}">
+                                            <option selected disabled value="">Select visibility...</option>
+                                            <option value="PUBLIC">PUBLIC</option>
+                                            <option value="PRIVATE">PRIVATE</option>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -494,9 +670,11 @@
                                 <div class="form-row">
                                     <div class="form-group col col-md-9">
                                         <div class="custom-file">
-                                            <input type="file" class="custom-file-input" id="inputFileModal" name="file"
+                                            <input type="file" class="custom-file-input" id="inputFileModal"
+                                                   name="file" required
                                                    accept="image/*">
-                                            <label class="custom-file-label" for="inputFileModal">Choose file...</label>
+                                            <label class="custom-file-label" for="inputFileModal">Choose
+                                                file...</label>
                                         </div>
                                     </div>
                                 </div>
@@ -524,6 +702,3 @@
 
     </div>
 </nav>
-</body>
-</html>
-

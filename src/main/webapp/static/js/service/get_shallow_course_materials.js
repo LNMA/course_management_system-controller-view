@@ -17,7 +17,6 @@ app.service('GetMaterialShallowInfoService', [function () {
         }).then(
             function successCallback(response) {
                 $scope.materialsList = response.data;
-
             }, function errorCallback(response) {
                 $scope.submitted = false;
                 $scope.isPageError = true;

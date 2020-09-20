@@ -277,7 +277,9 @@ public class CourseFeedbackController implements Serializable {
                 notificationList.add(buildFeedbackNotification(c.getStudent().getEmail(), courseId, feedbackId));
             }
         }
-        notificationList.add(buildFeedbackNotification(courses.getInstructor().getEmail(), courseId, feedbackId));
+        if (!loginEmail.equalsIgnoreCase(courses.getInstructor().getEmail())) {
+            notificationList.add(buildFeedbackNotification(courses.getInstructor().getEmail(), courseId, feedbackId));
+        }
 
         return notificationList;
     }

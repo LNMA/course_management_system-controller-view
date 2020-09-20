@@ -1,0 +1,18 @@
+<div class="dropdown" ng-controller="InstructorNotificationController">
+    <a class="dropdown-toggle nav-link" href="#" id="inboxDropdown" role="button"
+       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <img src="/static/images/notifications_none-white-48dp.svg"
+             class="rounded-circle" width="36" height="36" alt="Notification">
+        <span class="badge badge-primary badge-pill">{{feedbackNotificationCount}}</span>
+    </a>
+    <div class="dropdown-menu" aria-labelledby="inboxDropdown">
+        <a class="dropdown-item"
+           href="https://localhost:8443/notification/details/view_feedback_notification_page">
+            <!--FIXME-->
+            <img src="/static/images/chat-black-48dp.svg" width="24" height="24"
+                 alt="Feedback">
+            Feedback
+            <span class="badge badge-primary badge-pill">{{feedbackNotificationCount}}</span>
+        </a>
+    </div>
+</div>

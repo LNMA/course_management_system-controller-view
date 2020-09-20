@@ -8,19 +8,21 @@ app.config(function ($httpProvider) {
     $httpProvider.defaults.xsrfCookieName = 'XSRF-TOKEN';
     $httpProvider.defaults.xsrfHeaderName = 'X-XSRF-TOKEN';
 }).controller('MaterialHomeController', MaterialHomeCtrl);
-MaterialHomeCtrl.$inject = ['$scope', '$http', '$location', '$sce', 'GetCourseInfoService',
-    'GetMaterialContentService', "GetMaterialShallowInfoService"];
+MaterialHomeCtrl.$inject = ['$scope', '$http', '$location', '$sce', 'GetMaterialContentService',
+    'GetMaterialShallowInfoService', 'GetCourseInfoService', 'GetInstructorCourseInfoService'];
 
-function MaterialHomeCtrl($scope, $http, $location, $sce, GetCourseInfoService, GetMaterialContentService,
-                          GetMaterialShallowInfoService) {
-    let currentMaterialUrl = $scope.homeCourseMaterialUrl = $location.absUrl();//https://localhost:8443/course/{courseId}/feedback
-    let courseId = currentMaterialUrl.toString().split("/")[4];
-    let courseUrl = 'https://localhost:8443/course/'+courseId;
+function MaterialHomeCtrl($scope, $http, $location, $sce, GetMaterialContentService,
+                          GetMaterialShallowInfoService, GetCourseInfoService, GetInstructorCourseInfoService) {
+    let courseId = $location.absUrl().toString().split('/')[4];
 
-    GetCourseInfoService.getCourseInfo($http, $location, $scope, $sce, courseUrl);
     GetMaterialShallowInfoService.getMaterialShallowInfo($http, $location, $scope, $sce);
 
     $scope.showContent = function (courseId, materialType, materialId) {
         GetMaterialContentService.getMaterialContent($http, $scope, $sce, courseId, materialType, materialId)
     }
+
+    GetCourseInfoService.getCourseInfo($http, $location, $scope, $sce, courseId);
+    GetInstructorCourseInfoService.getInstructorCourseInfo($http, $location, $scope, $sce, courseId);
+    $scope.courseId = courseId;
+
 }

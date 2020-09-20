@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="app" ng-controller="UserRoleController">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -17,17 +17,56 @@
     <script src="/static/lib/angularJS-1.8.0/angular-messages.min.js"></script>
     <script src="/static/lib/angularJS-1.8.0/angular-sanitize.min.js"></script>
     <script src="/static/js/app.js"></script>
+    <script src="/static/js/control/user_role-controller.js"></script>
+    <div ng-switch="userRole">
+        <div ng-switch-when="INSTRUCTOR">
+            <script src="/static/js/control/instructor_home-controller.js"></script>
+            <script src="/static/js/service/get_instructor_info.js"></script>
+            <script src="/static/js/service/edit_instructor_details.js"></script>
+
+
+            <script src="/static/js/control/instructor_notification-controller.js"></script>
+        </div>
+        <div ng-switch-when="STUDENT">
+            <script src="/static/js/control/student_home-controller.js"></script>
+            <script src="/static/js/service/get_student_home_info.js"></script>
+            <script src="/static/js/service/edit_student_details.js"></script>
+
+
+            <script src="/static/js/control/student_notification-controller.js"></script>
+        </div>
+    </div>
+    <script src="/static/js/control/edit_user_details_modal-controller.js"></script>
+    <script src="/static/js/service/country_state.js"></script>
+    <script src="/static/js/service/update_user_details.js"></script>
+
+    <script src="/static/js/control/edit_password-controller.js"></script>
+    <script src="/static/js/service/edit_password.js"></script>
+
+    <script src="/static/js/control/search_nav-controller.js"></script>
+
     <script src="/static/js/control/material_notification-controller.js"></script>
     <script src="/static/js/service/get_notification_details.js"></script>
     <script src="/static/js/service/get_session_id.js"></script>
     <link href="/static/images/favicon.ico" rel="icon" type="image/x-icon">
     <title>Material Notification `by Louay Amr`</title>
-<body ng-app="app" ng-controller="MaterialNotificationController">
+<body ng-controller="MaterialNotificationController">
 <div ng-bind-html="errorRender"></div>
 <header>
-    <nav class="navbar navbar-expand-md navbar-dark" style="background-color: #3e3c4e;">
-        <p class="text-light text-capitalize h3">New Material</p>
-    </nav>
+    <div ng-switch="userRole">
+        <div ng-switch-when="INSTRUCTOR">
+            <div ng-controller="InstructorHomeController">
+                <ng-include src="'/static/html/page-include/user-navbar.html'"></ng-include>
+                <ng-include src="'/static/html/page-include/instructor-modal.html'"></ng-include>
+            </div>
+        </div>
+        <div ng-switch-when="STUDENT">
+            <div ng-controller="StudentHomeController">
+                <ng-include src="'/static/html/page-include/user-navbar.html'"></ng-include>
+                <ng-include src="'/static/html/page-include/student-modal.html'"></ng-include>
+            </div>
+        </div>
+    </div>
 </header>
 <main class="container-fluid">
     <div class="container" id="pageAlert" ng-model="pageErrorMessage">
@@ -42,42 +81,13 @@
     </div>
     <div class="row row-cols-1 mt-4">
         <div class="col col-md-12">
-            <div class="row row-cols-1 row-cols-md-3">
-                <div ng-repeat="materialList in materialList">
-                    <div ng-switch="materialList.materialType">
+            <div ng-switch="userRole">
+                <div ng-switch-when="STUDENT">
+                    <div class="row row-cols-1 row-cols-md-3">
+                        <div ng-repeat="materialList in materialList">
+                            <div ng-switch="materialList.materialType">
 
-                        <div ng-switch-when="TEXT">
-                            <div class="col mb-3">
-                                <div class="card h-100">
-                                    <a class="btn btn-outline-danger col col-md-12"
-                                       href="https://localhost:8443/student/student_home/{{sessionId}}/to_my_course/{{materialList.course.courseID}}">
-                                        <!--FIXME:PATH CHANGE-->
-                                        <div class="card-body">
-                                            <div class="card-text h6">
-                                                {{materialList.text}}
-                                            </div>
-                                            <br>
-                                            <div class="card-text h6">
-                                                {{materialList.materialName}}
-                                            </div>
-                                            <br>
-                                            <div class="card-text small">
-                                                <img src="data:image/*;base64,{{materialList.course.coursePictureBase64}}"
-                                                     class="rounded-circle" width="30" height="30"
-                                                     alt="course image">
-                                                upload at: {{materialList.materialDateString}},
-                                                In Course: {{materialList.course.courseName}}
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div ng-switch-when="FILE">
-                            <div ng-switch="materialList.fileType">
-
-                                <div ng-switch-when="PDF">
+                                <div ng-switch-when="TEXT">
                                     <div class="col mb-3">
                                         <div class="card h-100">
                                             <a class="btn btn-outline-danger col col-md-12"
@@ -85,32 +95,7 @@
                                                 <!--FIXME:PATH CHANGE-->
                                                 <div class="card-body">
                                                     <div class="card-text h6">
-                                                        {{materialList.materialName}}
-                                                    </div>
-                                                    <br>
-                                                    <div class="card-text small">
-                                                        <img src="data:image/*;base64,{{materialList.course.coursePictureBase64}}"
-                                                             class="rounded-circle" width="30" height="30"
-                                                             alt="course image">
-                                                        upload at: {{materialList.materialDateString}},
-                                                        In Course: {{materialList.course.courseName}}
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div ng-switch-when="IMAGE">
-                                    <div class="col mb-3">
-                                        <div class="card h-100">
-                                            <a class="btn btn-outline-danger col col-md-12"
-                                               href="https://localhost:8443/student/student_home/{{sessionId}}/to_my_course/{{materialList.course.courseID}}">
-                                                <!--FIXME:PATH CHANGE-->
-                                                <div class="card-body">
-                                                    <div>
-                                                        <img src="data:image/*;base64,{{materialList.base64}}"
-                                                             class="card-img" alt="material image">
+                                                        {{materialList.text}}
                                                     </div>
                                                     <br>
                                                     <div class="card-text h6">
@@ -130,10 +115,69 @@
                                     </div>
                                 </div>
 
+                                <div ng-switch-when="FILE">
+                                    <div ng-switch="materialList.fileType">
+
+                                        <div ng-switch-when="PDF">
+                                            <div class="col mb-3">
+                                                <div class="card h-100">
+                                                    <a class="btn btn-outline-danger col col-md-12"
+                                                       href="https://localhost:8443/student/student_home/{{sessionId}}/to_my_course/{{materialList.course.courseID}}">
+                                                        <!--FIXME:PATH CHANGE-->
+                                                        <div class="card-body">
+                                                            <div class="card-text h6">
+                                                                {{materialList.materialName}}
+                                                            </div>
+                                                            <br>
+                                                            <div class="card-text small">
+                                                                <img src="data:image/*;base64,{{materialList.course.coursePictureBase64}}"
+                                                                     class="rounded-circle" width="30" height="30"
+                                                                     alt="course image">
+                                                                upload at: {{materialList.materialDateString}},
+                                                                In Course: {{materialList.course.courseName}}
+                                                            </div>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div ng-switch-when="IMAGE">
+                                            <div class="col mb-3">
+                                                <div class="card h-100">
+                                                    <a class="btn btn-outline-danger col col-md-12"
+                                                       href="https://localhost:8443/student/student_home/{{sessionId}}/to_my_course/{{materialList.course.courseID}}">
+                                                        <!--FIXME:PATH CHANGE-->
+                                                        <div class="card-body">
+                                                            <div>
+                                                                <img src="data:image/*;base64,{{materialList.base64}}"
+                                                                     class="card-img" alt="material image">
+                                                            </div>
+                                                            <br>
+                                                            <div class="card-text h6">
+                                                                {{materialList.materialName}}
+                                                            </div>
+                                                            <br>
+                                                            <div class="card-text small">
+                                                                <img src="data:image/*;base64,{{materialList.course.coursePictureBase64}}"
+                                                                     class="rounded-circle" width="30" height="30"
+                                                                     alt="course image">
+                                                                upload at: {{materialList.materialDateString}},
+                                                                In Course: {{materialList.course.courseName}}
+                                                            </div>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
-
                     </div>
+
                 </div>
             </div>
         </div>

@@ -33,8 +33,9 @@ app.factory('GetInstructorHomeInfoService', function () {
                     $scope.specialty = response.data.instructor.specialty;
                     $scope.nickname = response.data.instructor.nickname;
                     $scope.portfolio = response.data.instructor.portfolio;
-                    $scope.profileVisibility = response.data.instructor.portfolio;
+                    $scope.profileVisibility = response.data.instructor.profileVisibility;
                     $scope.age = response.data.instructor.age;
+                    $scope.userRole = response.data.instructor.userRole;
                     $scope.lastSignIn = response.data.lastSignInDate;
                     $scope.picture = response.data.instructor.accountPicture.profilePictureBase64;
                     $scope.pictureUploadDate = response.data.instructor.accountPicture.uploadPicDate;

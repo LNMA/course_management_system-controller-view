@@ -51,7 +51,7 @@ public class StudentHomePageController implements Serializable {
                     .path("/static/lib/jQuery-3.5.1/jquery-3.5.1.min.js")
                     .push();
         }
-        return "/static/html/student_home.html";
+        return "/static/html/user-home.html";
     }
 
     @RequestMapping(value = "/interests-update", consumes = MediaType.APPLICATION_JSON_VALUE,

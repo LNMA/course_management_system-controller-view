@@ -65,7 +65,7 @@ public class UpdateUserDetailsController implements Serializable {
         accountPicture.setPicture(newImage);
         updateAccountPicture(accountPicture);
 
-        return String.format("redirect:/student/student_home/%s", email);
+        return "redirect:/login";
     }
 
     private void updateAccountPicture(AccountPicture accountPicture) {
