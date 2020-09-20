@@ -20,7 +20,7 @@ import java.util.Set;
 @CrossOrigin(origins = "https://localhost:8443")
 @RequestMapping(value = "/search/{courseId}/{key}")
 public class CourseContentSearchController implements Serializable {
-    private static final long serialVersionUID = 249461374280036546L;
+    private static final long serialVersionUID = 4847218313346762017L;
     private final ServicesFactory servicesFactory;
     private final EntitiesFactory entitiesFactory;
     private final WrappersFactory wrappersFactory;

@@ -12,14 +12,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.io.Serializable;
 
 @Controller
 @CrossOrigin(origins = "https://localhost:8443")
 public class SessionObjectController implements Serializable {
-    private static final long serialVersionUID = -8516342061848503798L;
+    private static final long serialVersionUID = -5225408155730964513L;
     private final EntitiesFactory entitiesFactory;
     private final ServicesFactory servicesFactory;
 
@@ -79,29 +77,5 @@ public class SessionObjectController implements Serializable {
         admin.setEmail(email);
 
         return admin;
-    }
-
-    public boolean hasInstructorRole(HttpServletRequest request){
-        HttpSession session = request.getSession(false);
-        if (session == null ){
-            return false;
-        }
-        Role role = (Role) session.getAttribute("role");
-        if (role == null ){
-            return false;
-        }
-        return role.compareTo(Role.INSTRUCTOR) == 0;
-    }
-
-    public boolean hasStudentRole(HttpServletRequest request){
-        HttpSession session = request.getSession(false);
-        if (session == null ){
-            return false;
-        }
-        Role role = (Role) session.getAttribute("role");
-        if (role == null ){
-            return false;
-        }
-        return role.compareTo(Role.STUDENT) == 0;
     }
 }

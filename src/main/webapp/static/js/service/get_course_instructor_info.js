@@ -16,7 +16,6 @@ app.service('GetInstructorCourseInfoService', [function () {
             timeout: 5000,
         }).then(
             function successCallback(response) {
-                console.log(response.data);
                 $scope.instructorEmail = response.data.email;
                 $scope.instructorGender = response.data.gender;
                 $scope.instructorPicture = response.data.accountPicture.profilePictureBase64;

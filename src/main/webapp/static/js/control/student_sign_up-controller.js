@@ -47,6 +47,7 @@ function RegisterCtrl($scope, $http, $sce, RegisterStudentSubmitService, Country
                         }
                     });
             } else {
+                $scope.loading = false;
                 $scope.studentForm.password.$invalid = true;
                 $scope.studentForm.rePassword.$invalid = true;
                 $scope.isError = true;

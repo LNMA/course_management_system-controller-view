@@ -15,7 +15,7 @@ import java.io.Serializable;
 @Controller
 @CrossOrigin(origins = "https://localhost:8443")
 public class CommentController implements Serializable {
-    private static final long serialVersionUID = 2658313554463206998L;
+    private static final long serialVersionUID = -4132727550612126195L;
     private final EntitiesFactory entitiesFactory;
     private final ServicesFactory servicesFactory;
 

@@ -43,7 +43,7 @@ public class CreateEditCourseController implements Serializable {
             produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.PUT)
     @ResponseBody
     public Calendar updateCourseEndDate(@PathVariable(value = "courseId") String courseId,
-                                   @RequestBody Courses courses) {
+                                        @RequestBody Courses courses) {
 
         Assert.notNull(courseId, "courseId cannot be null!.");
         Assert.notNull(courses.getEndDate(), "course end date cannot be null!.");

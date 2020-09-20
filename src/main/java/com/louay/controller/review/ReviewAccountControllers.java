@@ -25,7 +25,7 @@ import java.util.Set;
 @CrossOrigin(origins = "https://localhost:8443")
 @RequestMapping(value = "/review/account/{myEmail:.+}/{emailVisit:.+}")
 public class ReviewAccountControllers implements Serializable {
-    private static final long serialVersionUID = -8439626380078593471L;
+    private static final long serialVersionUID = 3570313013829320773L;
     private final EntitiesFactory entitiesFactory;
     private final ServicesFactory servicesFactory;
 
@@ -224,13 +224,13 @@ public class ReviewAccountControllers implements Serializable {
         return findCourseInstructorTeach(email);
     }
 
-    private Set<Courses> findCourseInstructorTeach(String email){
+    private Set<Courses> findCourseInstructorTeach(String email) {
         Courses courses = buildCourses(email);
 
         return this.servicesFactory.getCourseService().findCourseByInstructorId(courses);
     }
 
-    private Courses buildCourses(String email){
+    private Courses buildCourses(String email) {
         Courses courses = this.entitiesFactory.getCourses();
         courses.setInstructor(buildInstructor(email));
 

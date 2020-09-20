@@ -22,7 +22,7 @@ import java.util.Set;
 @CrossOrigin(origins = "https://localhost:8443")
 @RequestMapping(value = "/search/{key}")
 public class GeneralSearchController implements Serializable {
-    private static final long serialVersionUID = 5049902782600651810L;
+    private static final long serialVersionUID = 1338711401251438657L;
     private final ServicesFactory servicesFactory;
     private final EntitiesFactory entitiesFactory;
     private final WrappersFactory wrappersFactory;
@@ -40,7 +40,7 @@ public class GeneralSearchController implements Serializable {
     }
 
     @GetMapping
-    public String viewsSearchPage(){
+    public String viewsSearchPage() {
         return "/static/html/general_search.html";
     }
 
@@ -57,11 +57,11 @@ public class GeneralSearchController implements Serializable {
         return assemblySetResult(buildGeneralSearch(key, pageNumberParse, pageSize));
     }
 
-    private Set<Object> assemblySetResult(GeneralSearch generalSearch){
+    private Set<Object> assemblySetResult(GeneralSearch generalSearch) {
         Set<Users> accountsSet = this.servicesFactory.getAccountService()
                 .findUserLikeForSearch(generalSearch);
 
-        Set<Courses>  coursesSet = this.servicesFactory.getCourseService()
+        Set<Courses> coursesSet = this.servicesFactory.getCourseService()
                 .findCourseLikeForSearch(generalSearch);
 
         Set<CourseFeedback> courseFeedbacks = this.servicesFactory.getFeedbackService()
@@ -71,16 +71,16 @@ public class GeneralSearchController implements Serializable {
                 .findCourseMaterialsLikeForSearch(generalSearch);
 
         Set<Object> objectSet = new HashSet<>();
-        if (!accountsSet.isEmpty()){
+        if (!accountsSet.isEmpty()) {
             objectSet.addAll(accountsSet);
         }
-        if (!coursesSet.isEmpty()){
+        if (!coursesSet.isEmpty()) {
             objectSet.addAll(coursesSet);
         }
-        if (!courseFeedbacks.isEmpty()){
+        if (!courseFeedbacks.isEmpty()) {
             objectSet.addAll(courseFeedbacks);
         }
-        if (!courseMaterialsSet.isEmpty()){
+        if (!courseMaterialsSet.isEmpty()) {
             objectSet.addAll(courseMaterialsSet);
         }
 

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <style type="text/css">
+        @import url(/static/lib/bootstrap-4.5.1/css/bootstrap.min.css);
+    </style>
+    <script src="/static/lib/jQuery-3.5.1/jquery-3.5.1.min.js"></script>
+    <script src="/static/lib/popper-1.16.1/popper.min.js"></script>
+    <script src="/static/lib/bootstrap-4.5.1/js/bootstrap.min.js"></script>
+    <script src="/static/lib/angularJS-1.8.0/angular.min.js"></script>
+    <script src="/static/lib/angularJS-1.8.0/angular-messages.min.js"></script>
+    <script src="/static/lib/angularJS-1.8.0/angular-sanitize.min.js"></script>
+    <script src="/static/js/app.js"></script>
+    <script src="/static/js/control/admin-home-controller.js"></script>
+    <title>Admin Home `by Louay Amr`</title>
+    <link href="/static/images/favicon.ico" rel="icon" type="image/x-icon">
+</head>
+<body ng-app="app" ng-controller="AdminHomeController">
+<header class="navbar navbar-dark navbar-expand-md navbar-expand-lg navbar-expand-xl shadow mb-0"
+        style="background-color: #3e3c4e ;">
+    <div class="container-fluid">
+        <div class="row row-cols-1">
+            <div class="col col-md-1 align-self-center">
+                <a class="navbar navbar-brand font-weight-bolder h4" href="https://localhost:8443/login"><!--FIXME-->
+                    Course ms
+                </a>
+            </div>
+            <button class="navbar-toggler nav-item" type="button" data-toggle="collapse"
+                    data-target="#navbarUserAccount" aria-controls="navbarUserAccount" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse col col-md-9" id="navbarUserAccount">
+                <ul class="nav-item navbar-nav container-fluid justify-content-center">
+                    <li class="col col-md-1">
+                        <a class="nav-link" href="https://localhost:8443/login">
+                            <span class="font-weight-bold " style="font-size: small;">Home</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="navbar-nav nav-item col col-md-2 justify-content-end">
+                <div class="align-self-center">
+                    <a class="btn btn-danger font-weight-bold"
+                       href="https://localhost:8443/logout/logout-account/{{email}}">
+                        Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<main class="container-fluid mt-3">
+    <div class="row row-cols-1">
+    <aside class="col col-md-2">
+        <p class="font-weight-bolder text-danger text-center text-uppercase" style="font-size: x-large">
+            ROOT
+        </p>
+        <P class="font-weight-bolder text-center">
+            {{email}}
+        </P>
+    </aside>
+    <article class="col col-md-10">
+        <div class="row justify-content-center">
+            <div class="col col-md-10">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Operation</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th scope="row">1</th>
+                        <th scope="row">Create Instructor</th>
+                        <td>
+                            <a class="btn btn-success" href="https://localhost:8443/admin/register-instructor">
+                                + Create Instructor
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </article>
+    </div>
+</main>
+<footer style="margin-top: 20%; width: 100%;">
+    <nav class="navbar navbar-dark position-relative mt-0"
+         style="background-color: #d3c7cd; height: 20em; width: 100%">
+        <p>Louay Amr © 2020</p>
+    </nav>
+</footer>
+</body>
+</html>

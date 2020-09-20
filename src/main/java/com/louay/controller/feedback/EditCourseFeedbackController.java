@@ -22,7 +22,7 @@ import java.util.Objects;
 @CrossOrigin(origins = "https://localhost:8443")
 @RequestMapping(value = "/course/{courseId}/feedback/{feedbackId}/edit-feedback")
 public class EditCourseFeedbackController implements Serializable {
-    private static final long serialVersionUID = -4393511517072335131L;
+    private static final long serialVersionUID = -1123209976990620107L;
     private final EntitiesFactory entitiesFactory;
     private final ServicesFactory servicesFactory;
 
@@ -115,7 +115,7 @@ public class EditCourseFeedbackController implements Serializable {
     @RequestMapping(value = "/update_text_post", consumes = MediaType.APPLICATION_JSON_VALUE,
             method = RequestMethod.PUT)
     public ResponseEntity<String> updateTextPost(@RequestBody MessageFeedback messageFeedback,
-                                         @PathVariable(value = "feedbackId") String feedbackId) {
+                                                 @PathVariable(value = "feedbackId") String feedbackId) {
         Assert.notNull(feedbackId, "feedback id cannot be null!.");
         Assert.notNull(messageFeedback.getPostMessage(), "post content cannot be null!.");
 

@@ -7,6 +7,7 @@ import com.louay.model.entity.material.FileMaterials;
 import com.louay.model.entity.material.TextMaterials;
 import com.louay.model.entity.material.constant.FileType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -14,6 +15,7 @@ import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -21,7 +23,7 @@ import java.util.Objects;
 @CrossOrigin(origins = "https://localhost:8443")
 @RequestMapping(value = "/course/{courseId}/material")
 public class CreateEditMaterialController implements Serializable {
-    private static final long serialVersionUID = -5445081743525567521L;
+    private static final long serialVersionUID = -614034491981897043L;
     private final EntitiesFactory entitiesFactory;
     private final ServicesFactory servicesFactory;
 
@@ -32,6 +34,34 @@ public class CreateEditMaterialController implements Serializable {
 
         this.entitiesFactory = entitiesFactory;
         this.servicesFactory = servicesFactory;
+    }
+
+    @RequestMapping(value = "/{materialId}/remove_material", produces = MediaType.APPLICATION_JSON_VALUE,
+            method = RequestMethod.DELETE)
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public String removeMaterial(@PathVariable(value = "materialId", required = false) String materialIdInPath,
+                                 @PathVariable(value = "courseId", required = false) String courseIdInPath) {
+        Assert.notNull(materialIdInPath, "material id cannot be null!.");
+        Assert.notNull(courseIdInPath, "course id cannot be null!.");
+
+        Long materialId = Long.valueOf(materialIdInPath);
+        deleteMaterial(materialId);
+
+        return String.format("/course/%s/material", courseIdInPath);
+    }
+
+    private void deleteMaterial(Long materialId) {
+        CourseMaterials courseMaterials = buildCourseMaterials(materialId);
+
+        this.servicesFactory.getMaterialService().deleteCourseMaterialsByMaterialId(courseMaterials);
+    }
+
+    private CourseMaterials buildCourseMaterials(Long materialId) {
+        CourseMaterials courseMaterials = this.entitiesFactory.getCourseMaterials();
+        courseMaterials.setMaterialID(materialId);
+
+        return courseMaterials;
     }
 
     @PostMapping(value = "/add_text_material", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -46,12 +76,13 @@ public class CreateEditMaterialController implements Serializable {
         Long courseId = Long.valueOf(courseIdInPath);
         CourseMaterials courseMaterials = buildCourseMaterials(courseId, emailInSession);
         TextMaterials textMaterialsEntity = assembleTextMaterial(textMaterials, courseMaterials);
-        saveTextMaterials(textMaterialsEntity);
+        textMaterialsEntity = saveTextMaterials(textMaterialsEntity);
 
-        return ResponseEntity.ok().body("Text material created successfully.");
+        return ResponseEntity.ok().body(String.format("Text material ID %d created successfully.",
+                textMaterialsEntity.getMaterialID()));
     }
 
-    @PostMapping(value = "/add_file_material", consumes = MediaType.MULTIPART_MIXED_VALUE)
+    @PostMapping(value = "/add_file_material", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public String addFileMaterial(@RequestParam(value = "file") MultipartFile multipartFile,
                                   @RequestParam(value = "courseNameFileMaterial") String materialName,
                                   @PathVariable(value = "courseId", required = false) String courseIdInPath,
@@ -69,16 +100,36 @@ public class CreateEditMaterialController implements Serializable {
 
         System.out.println(multipartFile.getContentType());
 
+        /*
+        Long courseId = Long.valueOf(courseIdInPath);
+        String contentType = multipartFile.getContentType();
+        CourseMaterials courseMaterials = buildCourseMaterials(courseId, emailInSession);
+        FileMaterials fileMaterials = null;
+        try {
+            if (contentType.contains("image")){
+                fileMaterials = buildFileMaterials(materialName, multipartFile.getBytes(), FileType.IMAGE);
+            }else if (contentType.contains("pdf")){
+                fileMaterials = buildFileMaterials(materialName, multipartFile.getBytes(), FileType.PDF);
+            }else {
+                throw new UnsupportedOperationException("the must be image or pdf ONLY!.");
+            }
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+        Assert.notNull(fileMaterials, "fileMaterials cannot be null!.");
+        FileMaterials fileMaterialsEntity = assembleFileMaterials(fileMaterials, courseMaterials);
+        saveFileMaterials(fileMaterialsEntity);
+        */
 
         return String.format("redirect:/course/%s/material", courseIdInPath);
     }
 
-    private void saveTextMaterials(TextMaterials textMaterials) {
-        this.servicesFactory.getMaterialService().createTextMaterials(textMaterials);
+    private TextMaterials saveTextMaterials(TextMaterials textMaterials) {
+        return this.servicesFactory.getMaterialService().createTextMaterials(textMaterials);
     }
 
-    private FileMaterials saveFileMaterials(FileMaterials fileMaterials) {
-        return this.servicesFactory.getMaterialService().createFileMaterials(fileMaterials);
+    private void saveFileMaterials(FileMaterials fileMaterials) {
+        this.servicesFactory.getMaterialService().createFileMaterials(fileMaterials);
     }
 
     private TextMaterials assembleTextMaterial(TextMaterials textMaterials, CourseMaterials courseMaterials) {

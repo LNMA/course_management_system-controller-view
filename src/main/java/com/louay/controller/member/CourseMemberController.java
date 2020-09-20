@@ -19,7 +19,7 @@ import java.io.Serializable;
 @CrossOrigin(origins = "https://localhost:8443")
 @RequestMapping(value = "/member")
 public class CourseMemberController implements Serializable {
-    private static final long serialVersionUID = -625632338137039481L;
+    private static final long serialVersionUID = 4584083592911898824L;
     private final EntitiesFactory entitiesFactory;
     private final ServicesFactory servicesFactory;
 
@@ -34,7 +34,7 @@ public class CourseMemberController implements Serializable {
 
     @PostMapping("/{email:.+}/{courseId}/be_a_member")
     public ResponseEntity<String> joinUserToCourse(@PathVariable(value = "email") String email,
-                                           @PathVariable(value = "courseId") String courseId) {
+                                                   @PathVariable(value = "courseId") String courseId) {
         Assert.notNull(email, "email cannot be null!.");
         Assert.notNull(courseId, "courseId cannot be null!.");
 

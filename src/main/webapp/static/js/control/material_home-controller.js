@@ -24,4 +24,5 @@ function MaterialHomeCtrl($scope, $http, $location, $sce, GetMaterialContentServ
     GetCourseInfoService.getCourseInfo($http, $location, $scope, $sce, courseId);
     GetInstructorCourseInfoService.getInstructorCourseInfo($http, $location, $scope, $sce, courseId);
     $scope.courseId = courseId;
+
 }

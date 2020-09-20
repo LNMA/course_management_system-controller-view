@@ -59,11 +59,9 @@ public class WebConfig implements WebMvcConfigurer {
         return new InternalResourceViewResolver();
     }
 
-    @Bean(name = "multipartResolver")
+    @Bean
     public CommonsMultipartResolver multipartResolver() {
-        CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
-        multipartResolver.setMaxUploadSize(1024 * 1024 * 70);
-        return multipartResolver;
+        return new CommonsMultipartResolver();
     }
 
     @Override
@@ -98,12 +96,14 @@ public class WebConfig implements WebMvcConfigurer {
         Http11Nio2Protocol protocol = (Http11Nio2Protocol) connector.getProtocolHandler();
         connector.setMaxPostSize(1024*1024*70);
 
-        ClassPathResource keystoreResource = new ClassPathResource("keystore.jks");
+        ClassPathResource keystoreResource = new ClassPathResource("jsse/keystore.jks");
+        ClassPathResource truststoreResource = new ClassPathResource("jsse/cacerts.jks");
         File keystore = new File(keystoreResource.getPath());
-        File truststore = new File(keystoreResource.getPath());
+        File truststore = new File(truststoreResource.getPath());
         connector.setScheme("https");
         connector.setSecure(true);
         connector.setPort(8443);
+        protocol.setSslImplementationName("org.apache.tomcat.util.net.jsse.JSSEImplementation");
         protocol.addUpgradeProtocol(new Http2Protocol());
         protocol.setSSLEnabled(true);
         protocol.setKeystoreType("jks");
