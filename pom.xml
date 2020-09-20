@@ -20,11 +20,22 @@
     <url>https://www.example.com</url>
 
     <properties>
+        <github.global.server>github</github.global.server>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>11</java.version>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
     </properties>
+
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub Louay Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/LNMA/course_management_system-controller-view</url>
+        </repository>
+    </distributionManagement>
 
     <dependencies>
 
