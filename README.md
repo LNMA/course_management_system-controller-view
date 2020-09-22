@@ -7,7 +7,7 @@ controller-view component of course management system.
 
 ## Deploy
 
-1. Before deploy controller-view component you must finish deploy modal component.
+1. Before deploy controller-view component you must finish deploy [modal component](https://github.com/LNMA/course_management_system-model).
 2. Make sure you have [JDK 11](https://www.oracle.com/java/technologies/javase-downloads.html) && [tomcat v9.0.37](https://archive.apache.org/dist/tomcat/tomcat-9/)
 3. Edit all TODO comment inside the following path: `/src/main/java/com/louay/controller` .
 4. add to your Run/Debug configuration `com.louay.controller.config.MySpringBootMVCApplication` class.
@@ -40,4 +40,34 @@ I am [Louay Amr](https://www.linkedin.com/in/louay-amr-0b064b141) who is the aut
 13. mysql 8 using as database.
 14. spring orm side by side with hibernate.
 15. spring Ioc used at level dao and service also controllers. 
+
+>What are the features the project provides?
+
+1. login and sign up pages with suitable validation.
+2. home pages for each user according to its permission.
+3. search service, can search for user, course, material, feedback.
+4. edit and view user profile.
+5. search for course only.
+6. review page to account and course.
+7. student join service with suitable validation.
+8. logout service.
+9. course home page.
+10. instructor role can edit its course info.
+11. course search service can search at course material, feedback.
+12. exit from course, and change user status.
+13. user status can see at account review page online/offline, at course/out course.
+14. user notification for new material, feedback.
+15. feedback for each course, can post text/image/text-image post.
+16. comment at feedback service, can user write comment for each post.
+17. edit/delete feedback service.
+18. material service for each course, can users view/add/edit material according to its role.
+19. material can be link, image, pdf files.
+20. ajax used often to submit form, that mean reload page is neglected. 
+21. admin only can register instructor users, export attendace student sheet.
+23. after user finish sign up process email will be send at user email to valid user account.
+24. show user joined courses at home page.
+25. review account show user info plus status plus joined courses list.
+26. review course page show course info plus member list plus join to course service.
+27. add course service provide to instructor role.
+28. secuirity present at all level.
 
