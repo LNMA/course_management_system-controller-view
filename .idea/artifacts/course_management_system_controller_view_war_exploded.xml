@@ -14,7 +14,7 @@
           <element id="module-output" name="course_management_system-controller-view" />
         </element>
         <element id="directory" name="lib">
-          <element id="library" level="project" name="Maven: com.louay.model:course_management_system-model:1.1.0" />
+          <element id="library" level="project" name="Maven: com.louay.model:course_management_system-model:1.1.1" />
           <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter:2.3.2.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot:2.3.2.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-autoconfigure:2.3.2.RELEASE" />
