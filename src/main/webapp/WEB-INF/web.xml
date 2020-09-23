@@ -10,10 +10,6 @@
         <res-auth>Container</res-auth>
     </resource-ref>
 
-    <error-page>
-        <location>/error</location>
-    </error-page>
-
     <listener>
         <listener-class>
             org.springframework.security.web.session.HttpSessionEventPublisher

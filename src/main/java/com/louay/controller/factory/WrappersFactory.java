@@ -11,7 +11,7 @@ import java.io.Serializable;
 @Component
 @Scope(value = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class WrappersFactory implements Serializable {
-    private static final long serialVersionUID = -5461444849491744769L;
+    private static final long serialVersionUID = -1662542166873032597L;
 
     public StudentHomeWrapper getStudentHomeWrapper() {
         return new StudentHomeWrapper();
@@ -31,6 +31,10 @@ public class WrappersFactory implements Serializable {
 
     public InstructorHomeWrapper getInstructorHomeWrapper() {
         return new InstructorHomeWrapper();
+    }
+
+    public StudentAttendanceReport getStudentAttendanceReport() {
+        return new StudentAttendanceReport();
     }
 
 }

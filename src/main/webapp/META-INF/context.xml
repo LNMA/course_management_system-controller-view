@@ -6,7 +6,7 @@
           username="root"
           password="1729384#General"
           driverClassName="com.mysql.cj.jdbc.Driver"
-          url="jdbc:mysql://localhost:3306/course_management_system"/>
+          url="jdbc:mysql://localhost:3306/course_management_system"/> <!-- TODO: fix db.username and db.password -->
 
         <!--
         testWhileIdle="true"

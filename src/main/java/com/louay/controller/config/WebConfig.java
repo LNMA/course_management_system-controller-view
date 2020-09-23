@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.FileUrlResource;
 import org.springframework.http.CacheControl;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -27,6 +28,7 @@ import org.springframework.web.servlet.resource.VersionResourceResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -56,12 +58,24 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Bean
     public ViewResolver viewResolver() {
-        return new InternalResourceViewResolver();
+        InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
+        viewResolver.setOrder(1);
+
+        return viewResolver;
     }
 
     @Bean
     public CommonsMultipartResolver multipartResolver() {
-        return new CommonsMultipartResolver();
+        CommonsMultipartResolver commonsMultipartResolver = new CommonsMultipartResolver();
+        commonsMultipartResolver.setMaxUploadSize(1024 * 1024 * 70);
+        commonsMultipartResolver.setMaxUploadSizePerFile(1024 * 1024 * 70);
+        try {
+            FileUrlResource tempFolder = new FileUrlResource("tmp");
+            commonsMultipartResolver.setUploadTempDir(tempFolder);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+        return commonsMultipartResolver;
     }
 
     @Override
@@ -85,16 +99,20 @@ public class WebConfig implements WebMvcConfigurer {
     public ConfigurableServletWebServerFactory servletContainer() {
         TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory();
         tomcat.setProtocol("org.apache.coyote.http11.Http11Nio2Protocol");
-        tomcat.setHttp2(new Http2());
+        Http2 http2 = new Http2();
+        http2.setEnabled(true);
+        tomcat.setHttp2(http2);
         tomcat.addErrorPages(new ErrorPage("/error"));
+        tomcat.setPort(8080);
         tomcat.addAdditionalTomcatConnectors(getHttpConnector());
         return tomcat;
     }
 
     private Connector getHttpConnector() {
         Connector connector = new Connector("org.apache.coyote.http11.Http11Nio2Protocol");
+        Http2Protocol http2Protocol = new Http2Protocol();
         Http11Nio2Protocol protocol = (Http11Nio2Protocol) connector.getProtocolHandler();
-        connector.setMaxPostSize(1024*1024*70);
+        connector.setMaxPostSize(1024 * 1024 * 70);
 
         ClassPathResource keystoreResource = new ClassPathResource("jsse/keystore.jks");
         ClassPathResource truststoreResource = new ClassPathResource("jsse/cacerts.jks");
@@ -104,7 +122,7 @@ public class WebConfig implements WebMvcConfigurer {
         connector.setSecure(true);
         connector.setPort(8443);
         protocol.setSslImplementationName("org.apache.tomcat.util.net.jsse.JSSEImplementation");
-        protocol.addUpgradeProtocol(new Http2Protocol());
+        protocol.addUpgradeProtocol(http2Protocol);
         protocol.setSSLEnabled(true);
         protocol.setKeystoreType("jks");
         protocol.setTruststoreType("jks");

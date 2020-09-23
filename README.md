@@ -14,18 +14,18 @@ controller-view component of course management system.
 5. Check project Artifacts is Ok: Project must have one Exploded web application "war" and one Archive web application "war".
 >**Preferably** remove them then build project using maven and again create the previous `war files`.
 6. Mapping spring configuration classes.
->In intellij you can find it at project `structure/facets/spring/add` then add it all, also make sure there is no duplicates.
+>In intellij you can find it at project `structure/facets/spring/add` then add it all, also make sure there are no duplicates.
 7. Run MySpringBootMVCApplication.class.
 8. Past `https://localhost:8443/login` at browser address bar.
 
 ## About
 >What is course management system ?
 
-course ms is graduate project from `Software engineer trainning program at: Engineers Training Center / Jordan Engineers Association`.
-I am [Louay Amr](https://www.linkedin.com/in/louay-amr-0b064b141) who is the author and the designer of project.
+course ms is graduate project from `Software engineer training program at: Engineers Training Center / Jordan Engineers Association`.
+I am [Louay Amr](https://www.linkedin.com/in/louay-amr-0b064b141) who is the author, and the designer of project.
 
 >What is the idea of the project?
-1. course ms provide several authentication and authorization methods. 
+1. course ms provide several authentications and authorization methods. 
 2. sign up pages to student and instructor and verify user id by sending verification email.
 3. login page tracking the user via cookies and session and url.
 4. bootstrap 4 to order the page css.
@@ -33,11 +33,11 @@ I am [Louay Amr](https://www.linkedin.com/in/louay-amr-0b064b141) who is the aut
 6. REST API using spring web-mvc and angularjs 1.8. 
 7. json binding and converter using jackson.
 8. upload images and pdf files using commons-fileupload library.
-9. encrypted password using Argon2 Algorithm.
+9. an encrypted password using Argon2 Algorithm.
 10. secure channel using JSSE-https-TLSv1.3.
 11. build xls file using org.apache.poi.
 12. jpa-hibernate was used to build modal component of the project.
-13. mysql 8 using as database.
+13. mysql 8 uses as database.
 14. spring orm side by side with hibernate.
 15. spring Ioc used at level dao and service also controllers. 
 
@@ -62,12 +62,12 @@ I am [Louay Amr](https://www.linkedin.com/in/louay-amr-0b064b141) who is the aut
 17. edit/delete feedback service.
 18. material service for each course, can users view/add/edit material according to its role.
 19. material can be link, image, pdf files.
-20. ajax used often to submit form, that mean reload page is neglected. 
-21. admin only can register instructor users, export attendace student sheet.
-23. after user finish sign up process email will be send at user email to valid user account.
+20. ajax often used to submit form, that mean reloads page neglected. 
+21. admin only can register instructor users, export attendances student sheet.
+23. after user finish sign up process email will be sent at user email to valid user account.
 24. show user joined courses at home page.
 25. review account show user info plus status plus joined courses list.
 26. review course page show course info plus member list plus join to course service.
 27. add course service provide to instructor role.
-28. secuirity present at all level.
+28. security present at all level.
 
