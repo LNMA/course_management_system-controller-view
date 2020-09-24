@@ -6,6 +6,7 @@ import com.louay.model.entity.courses.Courses;
 import com.louay.model.entity.users.Instructor;
 import com.louay.model.util.file.FileProcess;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileUrlResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -157,9 +158,8 @@ public class CreateEditCourseController implements Serializable {
     private byte[] getDefaultPicture() {
         byte[] pictureBytes = null;
         try {
-            //TODO: change image path
-            pictureBytes = this.fileProcess.readFile("C:\\Users\\Oday Amr\\Documents\\IdeaProjects\\" +
-                    "course_management_system-controller-view\\src\\main\\webapp\\static\\images\\course_picture.jpg");
+            FileUrlResource fileUrlResource = new FileUrlResource("src/main/webapp/static/images/course_picture.jpg");
+            pictureBytes = this.fileProcess.readFile(fileUrlResource.getFile().getAbsolutePath());
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }

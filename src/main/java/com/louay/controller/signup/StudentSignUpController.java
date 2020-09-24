@@ -6,11 +6,13 @@ import com.louay.controller.verification.SendingVerificationEmail;
 import com.louay.model.entity.authentication.UsersAuthentication;
 import com.louay.model.entity.role.UsersRoles;
 import com.louay.model.entity.status.UserAccountStatus;
+import com.louay.model.entity.status.UserAtCourse;
 import com.louay.model.entity.users.Student;
 import com.louay.model.entity.users.constant.Role;
 import com.louay.model.entity.users.picute.AccountPicture;
 import com.louay.model.util.file.FileProcess;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileUrlResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -102,6 +104,7 @@ public class StudentSignUpController implements Serializable {
         createStudent(student);
         createUserAndAccountRole(student);
         createUserAccountStatus(student);
+        createUserAtCourse(student);
         createAccountPicture(student);
         UsersAuthentication usersAuthentication = createUserAuthentication(student);
         String emailResult = this.sendingVerificationEmail.sendMessage(usersAuthentication);
@@ -133,6 +136,20 @@ public class StudentSignUpController implements Serializable {
         return usersRoles;
     }
 
+    private void createUserAtCourse(Student student) {
+        UserAtCourse userAtCourse = buildUserAtCourse(student);
+
+        this.servicesFactory.getStatusService().createUserAtCourse(userAtCourse);
+    }
+
+    private UserAtCourse buildUserAtCourse(Student student) {
+        UserAtCourse userAtCourse = this.entitiesFactory.getUserAtCourse();
+        userAtCourse.setUsers(student);
+        userAtCourse.setBusy(false);
+
+        return userAtCourse;
+    }
+
     private void createUserAccountStatus(Student student) {
         UserAccountStatus accountStatus = buildUserAccountStatus(student);
 
@@ -158,9 +175,8 @@ public class StudentSignUpController implements Serializable {
         AccountPicture accountPicture = this.entitiesFactory.getAccountPicture();
         accountPicture.setUsers(student);
         try {
-            //TODO: change image path
-            accountPicture.setPicture(this.fileProcess.readFile("C:\\Users\\Oday Amr\\Documents\\IdeaProjects\\" +
-                    "course_management_system-controller-view\\src\\main\\webapp\\static\\images\\person_black.png"));
+            FileUrlResource fileUrlResource = new FileUrlResource("src/main/webapp/static/images/person_black.png");
+            accountPicture.setPicture(this.fileProcess.readFile(fileUrlResource.getFile().getAbsolutePath()));
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }

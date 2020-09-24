@@ -15,6 +15,7 @@ import java.util.Properties;
 @Scope(value = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class SendingVerificationEmail implements Serializable {
     private static final long serialVersionUID = -2607639254182683227L;
+    private static final String IP_ADDRESS = "192.168.1.6"; //TODO : change localhost IP to your sub-IP
 
     private Properties getEmailProperties() {
         Properties prop = new Properties();
@@ -96,7 +97,7 @@ public class SendingVerificationEmail implements Serializable {
                 "            <p>Thank you for sign up for course management system.</p>\n" +
                 "            <p>Please verify your email address by clicking the button below.</p>\n" +
                 "            <p>\n" +
-                "                <a href=\"https://192.168.1.11:8443/user_verify/perform_verify/" + usersAuthentication.getUsers().getEmail() + "/" + usersAuthentication.getVerificationNumber() + "\">\n" + //TODO : change localhost IP
+                "                <a href=\"https://" + SendingVerificationEmail.IP_ADDRESS + ":8443/user_verify/perform_verify/" + usersAuthentication.getUsers().getEmail() + "/" + usersAuthentication.getVerificationNumber() + "\">\n" +
                 "                    <button type=\"button\" style=\"height: 80px;border-radius: 2.5em;background: linear-gradient(to right,#e759fd,#206490,#88c7f0);color: white;font-weight: bold;font-size: 18px;width:40%;\">\n" +
                 "                        <h5>Confirm my account</h5>\n" +
                 "                    </button>\n" +

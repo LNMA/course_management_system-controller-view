@@ -53,6 +53,14 @@ function EditCourseCtrl($scope, $location, $http, $sce) {
     }
 
     $scope.editEndDate = function (date, time) {
+        let dateTime = new Date();
+        dateTime.setUTCFullYear(date.getFullYear());
+        dateTime.setUTCMonth(date.getMonth());
+        dateTime.setUTCDate(date.getDate());
+        let timeZoneOffset = dateTime.getTimezoneOffset() / 60;
+        dateTime.setUTCHours(time.getHours() - timeZoneOffset);
+        dateTime.setUTCMinutes(time.getMinutes());
+
         $scope.submitted = true;
         if ($scope.editEndDateForm.$valid) {
             $http({
@@ -66,7 +74,7 @@ function EditCourseCtrl($scope, $location, $http, $sce) {
                 processData: false, //To avoid making query String instead of JSON
                 timeout: 4000,
                 data: {
-                    endDate: date + 'T' + time
+                    endDate: dateTime
                 }
             }).then(
                 function successCallback(response) {

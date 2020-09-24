@@ -100,12 +100,14 @@
                                 <div class="collapse" id="createCourseForm" ng-controller="AddCourseController">
                                     <div ng-bind-html="errorRender"></div>
                                     <div class="card card-body bg-light">
-                                        <div class="container" id="addCourseSuccessAlert" ng-model="addCourseSuccessMessage"
+                                        <div class="container" id="addCourseSuccessAlert"
+                                             ng-model="addCourseSuccessMessage"
                                              ng-show="isAddCourseSuccess" role="alert">
                                             <div class="alert alert-success alert-dismissible fade show">
                                                 <strong>Success!</strong>
                                                 {{addCourseSuccessMessage}}
-                                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <button type="button" class="close" data-dismiss="alert"
+                                                        aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
@@ -135,13 +137,14 @@
                                                         end time Invalid!
                                                     </span>
                                                     {{addCourseErrorMessage}}
-                                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                    <button type="button" class="close" data-dismiss="alert"
+                                                            aria-label="Close">
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
                                                 </div>
                                             </div>
                                         </div>
-                                        <form ng-submit="addCourse(course.endDate | date : 'yyyy-MM-dd', course.endTime | date: 'HH:mm:ss')"
+                                        <form ng-submit="addCourse(course.endDate, course.endTime)"
                                               name="addCourseForm" method="post" novalidate>
                                             <div class="form-row">
                                                 <div class="col-md-12">
@@ -164,9 +167,9 @@
                                                         <label for="inputEndDate">End Date:</label>
                                                         <br>
                                                         <input class="form-control w-100" type="date"
-                                                              ng-model="course.endDate"
-                                                              id="inputEndDate" name="endDate" required
-                                                              ng-class="{'is-invalid': submitted &&
+                                                               ng-model="course.endDate"
+                                                               id="inputEndDate" name="endDate" required
+                                                               ng-class="{'is-invalid': submitted &&
                                                                     (addCourseForm.endDate.$error.required ||addCourseForm.endDate.$invalid),
                                                                     'is-valid': addCourseForm.endDate.$valid}"/>
                                                     </div>
@@ -187,7 +190,8 @@
                                                 </div>
                                             </div>
                                             <div class="row justify-content-center">
-                                                <input class="btn btn-success w-50 p-2" type="submit" value="Create" ng-disabled=""/>
+                                                <input class="btn btn-success w-50 p-2" type="submit" value="Create"
+                                                       ng-disabled=""/>
                                             </div>
                                         </form>
                                     </div>

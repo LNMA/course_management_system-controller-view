@@ -383,7 +383,7 @@ public class LoginController implements Serializable {
         secureNumberCookie.setMaxAge(60 * 60 * 24 * 30);
         secureNumberCookie.setSecure(true);
         secureNumberCookie.setHttpOnly(true);
-        secureNumberCookie.setPath("/"); //FIXME: change domain
+        secureNumberCookie.setPath("/"); //FIXME: change domain if required
 
         return secureNumberCookie;
     }
@@ -422,7 +422,7 @@ public class LoginController implements Serializable {
         emailCookie.setMaxAge(60 * 60 * 24 * 30);
         emailCookie.setSecure(true);
         emailCookie.setHttpOnly(true);
-        emailCookie.setPath("/"); //FIXME: change domain
+        emailCookie.setPath("/"); //FIXME: change domain if required
 
         return emailCookie;
     }

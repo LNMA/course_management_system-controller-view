@@ -11,9 +11,17 @@ app.config(function ($httpProvider) {
 AddCourseCtrl.$inject = ['$scope', '$http', '$location', '$sce'];
 
 function AddCourseCtrl($scope, $http, $location, $sce) {
-    $scope.addCourse = function (date, time){
+    $scope.addCourse = function (date, time) {
+        let dateTime = new Date();
+        dateTime.setUTCFullYear(date.getFullYear());
+        dateTime.setUTCMonth(date.getMonth());
+        dateTime.setUTCDate(date.getDate());
+        let timeZoneOffset = dateTime.getTimezoneOffset() / 60;
+        dateTime.setUTCHours(time.getHours() - timeZoneOffset);
+        dateTime.setUTCMinutes(time.getMinutes());
+
         $scope.submitted = true;
-        if ($scope.addCourseForm.$valid){
+        if ($scope.addCourseForm.$valid) {
             $http({
                 method: 'POST',
                 port: 8443,
@@ -26,7 +34,7 @@ function AddCourseCtrl($scope, $http, $location, $sce) {
                 timeout: 4000,
                 data: {
                     courseName: $scope.course.name,
-                    endDate: date+'T'+time
+                    endDate: dateTime
                 }
             }).then(
                 function successCallback(response) {

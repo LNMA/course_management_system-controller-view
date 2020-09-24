@@ -13,7 +13,7 @@ app.service('RegisterInstructorSubmitService', function () {
             async: false,    //Cross-domain requests and dataType: "jsonp" requests do not support synchronous operation
             cache: false,    //This will force requested pages not to be cached by the browser
             processData: false, //To avoid making query String instead of JSON
-            timeout: 20000,
+            timeout: -1,
             data: {
                 email: $scope.instructor.email,
                 forename: $scope.instructor.forename,

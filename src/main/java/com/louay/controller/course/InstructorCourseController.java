@@ -62,6 +62,7 @@ public class InstructorCourseController implements Serializable {
         UserAtCourse userAtCourse = this.entitiesFactory.getUserAtCourse();
         userAtCourse.setUsers(this.entitiesFactory.getUsers());
         userAtCourse.getUsers().setEmail(email);
+        userAtCourse.setBusy(true);
 
         return userAtCourse;
     }

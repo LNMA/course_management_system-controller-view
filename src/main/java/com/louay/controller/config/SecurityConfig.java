@@ -45,7 +45,7 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
                                 "/logout/**", "/session_id", "/user_verify/**", "/review/**", "/member/**", "/session_object/**",
                                 "/user/**")
                         .access("@securityConfig.hasStudentRole(request) or @securityConfig.hasInstructorRole(request) or @securityConfig.hasAdminRole(request)")
-                        .antMatchers("/student_sign_up/**", "/login/**", "/error/**", "/static/**", "/user_verify/**")
+                        .antMatchers("/student_sign_up/**", "/submit_student_sign_up/**", "/login/**", "/error/**", "/static/**", "/user_verify/**")
                         .permitAll()
                         .anyRequest().authenticated())
                 .formLogin(login -> login

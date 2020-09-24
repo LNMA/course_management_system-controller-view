@@ -98,9 +98,6 @@ public class CreateEditMaterialController implements Serializable {
             throw new IllegalStateException("It's seem there something wrong in while process this operation !.");
         }
 
-        System.out.println(multipartFile.getContentType());
-
-
         Long courseId = Long.valueOf(courseIdInPath);
         String contentType = multipartFile.getContentType();
         CourseMaterials courseMaterials = buildCourseMaterials(courseId, emailInSession);
@@ -108,7 +105,7 @@ public class CreateEditMaterialController implements Serializable {
         try {
             if (contentType.contains("image")) {
                 fileMaterials = buildFileMaterials(materialName, multipartFile.getBytes(), FileType.IMAGE);
-            } else if (contentType.contains("pdf")) {
+            } else if (contentType.equals("application/pdf")) {
                 fileMaterials = buildFileMaterials(materialName, multipartFile.getBytes(), FileType.PDF);
             } else {
                 throw new UnsupportedOperationException("the must be image or pdf ONLY!.");

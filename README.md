@@ -9,7 +9,8 @@ controller-view component of course management system.
 
 1. Before deploy controller-view component you must finish deploy [modal component](https://github.com/LNMA/course_management_system-model).
 2. Make sure you have [JDK 11](https://www.oracle.com/java/technologies/javase-downloads.html) && [tomcat v9.0.37](https://archive.apache.org/dist/tomcat/tomcat-9/)
-3. Edit all TODO comment inside the following path: `/src/main/java/com/louay/controller` .
+3. Edit TODO comment inside the following path: `/src/main/java/com/louay/controller` and it will be change ip-address to your sub-ip (usually start with `192.162.1.X` change `X`) 
+, also TODO comment inside the following path: `src\main\webapp\META-INF\context.xml` it well be change username and password of the database.
 4. add to your Run/Debug configuration `com.louay.controller.config.MySpringBootMVCApplication` class.
 5. Check project Artifacts is Ok: Project must have one Exploded web application "war" and one Archive web application "war".
 >**Preferably** remove them then build project using maven and again create the previous `war files`.
